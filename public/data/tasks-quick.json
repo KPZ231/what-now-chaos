@@ -1,0 +1,94 @@
+{
+  "tasks": [
+    {
+      "id": "quick-1",
+      "content": "Wszyscy klaszczą 3 razy. Kto nie zdąży, pije.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "quick-2",
+      "content": "Powiedz kolor skarpet osoby po lewej – albo pij.",
+      "difficulty": 1,
+      "players": "two"
+    },
+    {
+      "id": "quick-3",
+      "content": "Ostatnia osoba, która dotknie sufitu, pije.",
+      "difficulty": 2,
+      "players": "all"
+    },
+    {
+      "id": "quick-4",
+      "content": "Powtórz słowa 'szła Sasza suchą szosą' 3 razy szybko – albo pij.",
+      "difficulty": 2,
+      "players": "one"
+    },
+    {
+      "id": "quick-5",
+      "content": "Kto ma urodziny najbliżej dzisiejszej daty - wybiera osobę, która pije.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "quick-6",
+      "content": "Wszyscy pokazują na palcach liczbę od 1 do 5. Kto pokaże najmniej, pije.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "quick-7",
+      "content": "Kto ma na sobie coś czerwonego, pije.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "quick-8",
+      "content": "Wymień 5 europejskich stolic w 10 sekund – albo pij.",
+      "difficulty": 2,
+      "players": "one"
+    },
+    {
+      "id": "quick-9",
+      "content": "Osoba z najkrótszymi włosami pije.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "quick-10",
+      "content": "Kto ma najwyższy procent baterii w telefonie, wybiera kto pije.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "quick-11",
+      "content": "Wszyscy wstają na jednej nodze. Ostatnia osoba, która utrzyma równowagę, wybiera kto pije.",
+      "difficulty": 2,
+      "players": "all"
+    },
+    {
+      "id": "quick-12",
+      "content": "Na trzy wszyscy wskazują osobę, która ich zdaniem ma najwięcej rodzeństwa. Ta osoba pije.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "quick-13",
+      "content": "Kto ma dziś na sobie bieliznę innego koloru niż czarny/biały, pije.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "quick-14",
+      "content": "Wymień 3 marki piwa w 5 sekund – albo pij.",
+      "difficulty": 1,
+      "players": "one"
+    },
+    {
+      "id": "quick-15",
+      "content": "Ostatnia osoba, która dotknie nosa, pije dwa razy.",
+      "difficulty": 1,
+      "players": "all"
+    }
+  ]
+} 

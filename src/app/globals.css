@@ -1,26 +1,76 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --body-color: #120e29;
+  --text-color: #f5f5f5;
+  --container-color: #1a1542;
+  --border-color: #8559da;
+  
+  --primary: #ff4dbc;
+  --primary-light: #ff7ad0;
+  --primary-dark: #d932a0;
+  
+  --secondary: #5d4dff;
+  --secondary-light: #8270ff;
+  --secondary-dark: #4933d9;
+  
+  --accent: #48e8c2;
+  --accent-light: #7aefd2;
+  --accent-dark: #25c69f;
+  
+  --text-white: #ffffff;
+  --text-gray: #c8c8c8;
+  --text-light: #e6e6e6;
+  --text-dark: #120e29;
+  --text-dark-gray: #4d4d4d;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  body {
+    @apply bg-gradient-to-br from-[#120e29] to-[#1a1542];
+    color: var(--text-color);
+    font-family: var(--font-montserrat);
+    line-height: 1.5;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    overflow-x: hidden;
+    min-height: 100vh;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer components {
+  .btn {
+    @apply px-6 py-3 rounded-lg font-medium text-base transition-all duration-300 inline-block;
+  }
+  
+  .btn-primary {
+    @apply bg-[var(--primary)] hover:bg-[var(--primary-light)] text-white shadow-lg hover:shadow-xl hover:shadow-[var(--primary)]/20;
+  }
+  
+  .btn-secondary {
+    @apply bg-[var(--secondary)] hover:bg-[var(--secondary-light)] text-white shadow-lg hover:shadow-xl hover:shadow-[var(--secondary)]/20;
+  }
+  
+  .btn-outline {
+    @apply border-2 border-[var(--primary)] text-[var(--primary)] hover:bg-[var(--primary)] hover:text-white;
+  }
+  
+  .glow {
+    @apply relative;
+  }
+  
+  .glow::after {
+    content: '';
+    @apply absolute -inset-1 bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] opacity-70 blur-xl rounded-full -z-10;
+  }
+  
+  .card {
+    @apply bg-[var(--container-color)] p-6 rounded-xl border border-[var(--border-color)] shadow-lg backdrop-blur-sm;
+  }
+  
+  .gradient-text {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)];
+  }
 }
+

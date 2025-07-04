@@ -1,0 +1,94 @@
+{
+  "tasks": [
+    {
+      "id": "chaos-1",
+      "content": "Wszyscy muszą mówić wspak przez 1 minutę.",
+      "difficulty": 2,
+      "players": "all"
+    },
+    {
+      "id": "chaos-2",
+      "content": "Kto pierwszy stanie na krześle, ten rządzi przez 1 turę.",
+      "difficulty": 2,
+      "players": "all"
+    },
+    {
+      "id": "chaos-3",
+      "content": "Przez następne 2 minuty możesz mówić tylko pytaniami.",
+      "difficulty": 2,
+      "players": "one"
+    },
+    {
+      "id": "chaos-4",
+      "content": "Osoba z najdłuższymi włosami wybiera, kto ma wypić dwa shoty!",
+      "difficulty": 3,
+      "players": "two"
+    },
+    {
+      "id": "chaos-5",
+      "content": "Improwizuj przemowę polityczną przez 1 minutę.",
+      "difficulty": 2,
+      "players": "one"
+    },
+    {
+      "id": "chaos-6",
+      "content": "Zamieńcie się ubraniami z osobą po prawej na 15 minut.",
+      "difficulty": 3,
+      "players": "all"
+    },
+    {
+      "id": "chaos-7",
+      "content": "Niech każdy gracz wymyśli dla Ciebie ksywkę, której musisz używać przez resztę gry.",
+      "difficulty": 2,
+      "players": "one"
+    },
+    {
+      "id": "chaos-8",
+      "content": "Przez 2 minuty mów z obcym akcentem. Inni zgadują, jaki to akcent.",
+      "difficulty": 2,
+      "players": "one"
+    },
+    {
+      "id": "chaos-9",
+      "content": "Tańcz jak robot przez 1 minutę.",
+      "difficulty": 2,
+      "players": "one"
+    },
+    {
+      "id": "chaos-10",
+      "content": "Wszystkie osoby muszą zamienić się miejscami w ciągu 10 sekund.",
+      "difficulty": 2,
+      "players": "all"
+    },
+    {
+      "id": "chaos-11",
+      "content": "Wybierz osobę, która musi Ci przynieść napój wedle Twojego uznania.",
+      "difficulty": 2,
+      "players": "two"
+    },
+    {
+      "id": "chaos-12",
+      "content": "Wszyscy podskakują na jednej nodze przez 30 sekund. Kto się przewróci, wykonuje dodatkowe zadanie.",
+      "difficulty": 2,
+      "players": "all"
+    },
+    {
+      "id": "chaos-13",
+      "content": "Zamień się rolami z wybraną osobą - naśladujcie siebie nawzajem przez 3 minuty.",
+      "difficulty": 3,
+      "players": "two"
+    },
+    {
+      "id": "chaos-14",
+      "content": "Zrób zdjęcie w dziwnej pozie i opublikuj na swoich social mediach.",
+      "difficulty": 3,
+      "players": "one"
+    },
+    {
+      "id": "chaos-15",
+      "content": "Każdy gracz musi dodać składnik do 'koktajlu chaosu', który jedna osoba będzie musiała wypić.",
+      "difficulty": 4,
+      "players": "all"
+    }
+  ]
+} 

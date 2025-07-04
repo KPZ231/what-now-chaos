@@ -1,0 +1,94 @@
+{
+  "tasks": [
+    {
+      "id": "hardcore-1",
+      "content": "Najmłodszy gracz pije 2x.",
+      "difficulty": 3,
+      "players": "one"
+    },
+    {
+      "id": "hardcore-2",
+      "content": "Powiedz coś bardzo niewygodnego o sobie – albo pij.",
+      "difficulty": 4,
+      "players": "one"
+    },
+    {
+      "id": "hardcore-3",
+      "content": "Wykonaj 20 przysiadów albo wypij podwójnego shota.",
+      "difficulty": 3,
+      "players": "one"
+    },
+    {
+      "id": "hardcore-4",
+      "content": "Pokaż ostatnią wiadomość, jaką wysłałeś, albo pij 2x.",
+      "difficulty": 3,
+      "players": "one"
+    },
+    {
+      "id": "hardcore-5",
+      "content": "Niech osoba po Twojej prawej wybierze dla Ciebie drinka, który musisz wypić.",
+      "difficulty": 3,
+      "players": "two"
+    },
+    {
+      "id": "hardcore-6",
+      "content": "Zadzwoń do pierwszej osoby z listy kontaktów i powiedz, że jesteś na imprezie – albo pij.",
+      "difficulty": 4,
+      "players": "one"
+    },
+    {
+      "id": "hardcore-7",
+      "content": "Bądź służącym osoby po lewej przez 10 minut.",
+      "difficulty": 3,
+      "players": "two"
+    },
+    {
+      "id": "hardcore-8",
+      "content": "Wszyscy gracze głosują, kto musi wypić shota - większość decyduje!",
+      "difficulty": 3,
+      "players": "all"
+    },
+    {
+      "id": "hardcore-9",
+      "content": "Zadzwoń do swojej ex/byłego partnera albo pij podwójnie.",
+      "difficulty": 5,
+      "players": "one"
+    },
+    {
+      "id": "hardcore-10",
+      "content": "Wypij coś co zostanie wymieszane przez innych graczy.",
+      "difficulty": 4,
+      "players": "all"
+    },
+    {
+      "id": "hardcore-11",
+      "content": "Zatańcz erotycznie dla wybranej osoby albo pij 3x.",
+      "difficulty": 5,
+      "players": "one"
+    },
+    {
+      "id": "hardcore-12",
+      "content": "Odpowiedz szczerze na intymne pytanie zadane przez osobę po prawej albo pij 2x.",
+      "difficulty": 4,
+      "players": "two"
+    },
+    {
+      "id": "hardcore-13",
+      "content": "Pozwól, aby osoba po lewej przejrzała Twój telefon przez 1 minutę albo pij 3 shoty.",
+      "difficulty": 4,
+      "players": "two"
+    },
+    {
+      "id": "hardcore-14",
+      "content": "Weź łyk ze wszystkich drinków na imprezie.",
+      "difficulty": 3,
+      "players": "one"
+    },
+    {
+      "id": "hardcore-15",
+      "content": "Wymyśl i wykonaj wyzwanie dla osoby siedzącej naprzeciwko.",
+      "difficulty": 4,
+      "players": "two"
+    }
+  ]
+} 

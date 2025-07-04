@@ -1,0 +1,94 @@
+{
+  "tasks": [
+    {
+      "id": "soft-1",
+      "content": "Zamień się miejscem z osobą po lewej.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "soft-2",
+      "content": "Powiedz coś miłego każdemu graczowi.",
+      "difficulty": 1,
+      "players": "one"
+    },
+    {
+      "id": "soft-3",
+      "content": "Pokaż swoje ostatnie 3 zdjęcia w galerii telefonu.",
+      "difficulty": 2,
+      "players": "one"
+    },
+    {
+      "id": "soft-4",
+      "content": "Wszyscy gracze muszą zrobić selfie grupowe w zabawnej pozie.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "soft-5",
+      "content": "Opowiedz najśmieszniejszą sytuację z twojego życia.",
+      "difficulty": 1,
+      "players": "one"
+    },
+    {
+      "id": "soft-6",
+      "content": "Pokaż swój talent (taniec, śpiew, itp.).",
+      "difficulty": 2,
+      "players": "one"
+    },
+    {
+      "id": "soft-7",
+      "content": "Naśladuj głos znanych postaci, a inni muszą zgadnąć, kogo naśladujesz.",
+      "difficulty": 2,
+      "players": "one"
+    },
+    {
+      "id": "soft-8",
+      "content": "Wszyscy gracze niech zrobią najdziwniejszą minę, jaką potrafią.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "soft-9",
+      "content": "Opisz osobę po prawej trzema pozytywnymi słowami.",
+      "difficulty": 1,
+      "players": "one"
+    },
+    {
+      "id": "soft-10",
+      "content": "Zagrajcie w papier-kamień-nożyce z osobą naprzeciwko.",
+      "difficulty": 1,
+      "players": "two"
+    },
+    {
+      "id": "soft-11",
+      "content": "Wymień trzy rzeczy, które najbardziej w sobie lubisz.",
+      "difficulty": 1,
+      "players": "one"
+    },
+    {
+      "id": "soft-12",
+      "content": "Opowiedz o swoim najciekawszym hobby.",
+      "difficulty": 1,
+      "players": "one"
+    },
+    {
+      "id": "soft-13",
+      "content": "Wymyśl krótki rymowany toast.",
+      "difficulty": 2,
+      "players": "one"
+    },
+    {
+      "id": "soft-14",
+      "content": "Zamieńcie się telefonami z osobą po lewej na 5 minut.",
+      "difficulty": 2,
+      "players": "all"
+    },
+    {
+      "id": "soft-15",
+      "content": "Wszyscy gracze niech pokażą swój ulubiony taniec z TikToka.",
+      "difficulty": 2,
+      "players": "all"
+    }
+  ]
+} 

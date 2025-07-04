@@ -1,0 +1,69 @@
+{
+    "appName": "WhatNow?! – Chaos Generator",
+    "description": "Imprezowa aplikacja webowa i mobilna (PWA), która co kilka minut rzuca grupie znajomych absurdalne, śmieszne lub wyzywające zadania do wykonania, zwiększając zabawę i chaos na imprezach.",
+    "features": [
+      "Ustawienie liczby graczy i wybór trybu gry",
+      "Cztery tryby gry: Soft, Chaos, Hardcore, Quick",
+      "Losowe zadanie wyświetlane co X minut z licznikiem i dźwiękiem",
+      "Możliwość pomijania zadań",
+      "Historia sesji: zapisywanie wykonanych zadań, statystyki graczy",
+      "Eksport sesji jako Imprezowy Raport PDF",
+      "Tryb premium: dodatkowe paczki zadań, personalizacja, tryb AI generujący zadania",
+      "Kolorowy, imprezowy UI z animacjami"
+    ],
+    "technology": {
+      "frontend": "React (Next.js) + Tailwind CSS + Framer Motion",
+      "backend": "Opcjonalnie Supabase/Firebase do przechowywania kont i płatności",
+      "pwa": "Obsługa offline jako Progressive Web App",
+      "monetization": "Stripe/PayPal - zakupy jednorazowe i subskrypcje",
+      "pdfExport": "jsPDF lub pdfmake",
+      "audio": "Dźwięki i animacje dla lepszego UX"
+    },
+    "roadmap_7_days": {
+      "day1": "Setup projektu, struktura plików, routing, konfiguracja UI",
+      "day2": "Ekran startowy z wyborem trybu i liczby graczy, ładowanie zadań z JSON",
+      "day3": "Logika timerów, losowanie i wyświetlanie zadań, animacje, dźwięki",
+      "day4": "Zapis sesji w localStorage, ekran podsumowania",
+      "day5": "Testy responsywności i UX, poprawki",
+      "day6": "Integracja płatności i trybów premium",
+      "day7": "Deployment, PWA, landing page, podstawowa promocja"
+    },
+    "monetization": [
+      "Darmowy dostęp do podstawowych trybów",
+      "Płatne paczki dodatkowych zadań i trybów",
+      "Subskrypcja dająca dostęp do nowych zadań co tydzień",
+      "Eksport PDF z sesji",
+      "Tworzenie i udostępnianie własnych zadań (wersja PRO)"
+    ],
+    "example_tasks": {
+      "soft": [
+        "Zamień się miejscem z osobą po lewej.",
+        "Powiedz coś miłego każdemu graczowi."
+      ],
+      "chaos": [
+        "Wszyscy muszą mówić wspak przez 1 minutę.",
+        "Kto pierwszy stanie na krześle, ten rządzi przez 1 turę."
+      ],
+      "hardcore": [
+        "Najmłodszy gracz pije 2x.",
+        "Powiedz coś bardzo niewygodnego o sobie – albo pij."
+      ],
+      "quick": [
+        "Wszyscy klaszczą 3 razy. Kto nie zdąży, pije.",
+        "Powiedz kolor skarpet osoby po lewej – albo pij."
+      ]
+    },
+    "goals": "Dostarczyć łatwo dostępne, szybkie i zabawne zadania na imprezy, które integrują grupę i zapewniają rozrywkę, działając na telefonie i komputerze bez zbędnych formalności.",
+    "notes": [
+      "Priorytet: prostota i szybkość działania",
+      "Elastyczność rozbudowy o AI i monetizację",
+      "Obsługa offline (PWA)",
+      "Dobra oprawa wizualna i dźwiękowa"
+    ],
+    "user_wants": [
+      "Pliki JSON z gotowymi zadaniami",
+      "Roadmapa max tydzień",
+      "Prosty i atrakcyjny UX/UI"
+    ]
+  }
+  
