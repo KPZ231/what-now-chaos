@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 // Animation variants
 const fadeIn = {
@@ -101,18 +102,18 @@ export default function Home() {
            transition={{ duration: 0.5, delay: 0.2 }}
            className="hidden md:flex gap-6 items-center"
          >
-           <a href="/" className="hover:text-[var(--primary)] transition-colors font-medium">
+           <Link href="/" className="hover:text-[var(--primary)] transition-colors font-medium">
              Start
-           </a>
-           <a href="/modes" className="hover:text-[var(--primary)] transition-colors">
+           </Link>
+           <Link href="/modes" className="hover:text-[var(--primary)] transition-colors">
              Tryby Gry
-           </a>
+           </Link>
            <a href="/about" className="hover:text-[var(--primary)] transition-colors">
              O Nas
            </a>
-           <a href="/premium" className="hover:text-[var(--accent)] transition-colors">
+           <Link href="/premium" className="hover:text-[var(--accent)] transition-colors">
              Premium
-           </a>
+           </Link>
            <motion.a 
              whileHover={{ scale: 1.05 }}
              whileTap={{ scale: 0.95 }}
@@ -335,10 +336,10 @@ export default function Home() {
             transition={{ duration: 0.5 }}
             className={`card border-l-4 bg-gradient-to-r ${gameModes[activeMode].color}/10 max-w-3xl mx-auto`}
           >
-            <h3 className={`text-2xl font-bold mb-3 bg-clip-text text-transparent bg-gradient-to-r ${gameModes[activeMode].color}`}>
+            <h3 className={`text-2xl font-bold mb-3 text-white`}>
               {gameModes[activeMode].title}
             </h3>
-            <p className="text-[var(--text-gray)] mb-6">
+            <p className="text-white mb-6">
               {gameModes[activeMode].description}
             </p>
             <div className="space-y-4">
