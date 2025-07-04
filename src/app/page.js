@@ -76,6 +76,64 @@ export default function Home() {
   return (
     <>
      {/* Navbar */}
+     <motion.nav 
+       initial={{ y: -100 }}
+       animate={{ y: 0 }}
+       transition={{ type: "spring", stiffness: 100 }}
+       className="fixed top-0 left-0 w-full bg-[var(--container-color)]/90 backdrop-blur-sm z-50 py-3 px-6 border-b border-[var(--border-color)]"
+     >
+       <div className="container mx-auto flex justify-between items-center">
+         <motion.div 
+           initial={{ opacity: 0 }}
+           animate={{ opacity: 1 }}
+           transition={{ duration: 0.5 }}
+           className="flex items-center gap-2"
+         >
+           <div className="w-10 h-10 rounded-full bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] flex items-center justify-center text-white font-bold text-lg">
+             W!
+           </div>
+           <span className="text-xl font-bold gradient-text">WhatNow?!</span>
+         </motion.div>
+         
+         <motion.div 
+           initial={{ opacity: 0 }}
+           animate={{ opacity: 1 }}
+           transition={{ duration: 0.5, delay: 0.2 }}
+           className="hidden md:flex gap-6 items-center"
+         >
+           <a href="/" className="hover:text-[var(--primary)] transition-colors font-medium">
+             Start
+           </a>
+           <a href="/modes" className="hover:text-[var(--primary)] transition-colors">
+             Tryby Gry
+           </a>
+           <a href="/about" className="hover:text-[var(--primary)] transition-colors">
+             O Nas
+           </a>
+           <a href="/premium" className="hover:text-[var(--accent)] transition-colors">
+             Premium
+           </a>
+           <motion.a 
+             whileHover={{ scale: 1.05 }}
+             whileTap={{ scale: 0.95 }}
+             href="/play" 
+             className="btn btn-primary"
+           >
+             Zagraj Teraz
+           </motion.a>
+         </motion.div>
+         
+         <motion.button
+           initial={{ opacity: 0 }}
+           animate={{ opacity: 1 }}
+           transition={{ duration: 0.5, delay: 0.2 }}
+           className="block md:hidden text-2xl"
+           aria-label="Menu"
+         >
+           ☰
+         </motion.button>
+       </div>
+     </motion.nav>
 
       {/* Hero section */}
       <section className="relative pt-28 pb-20 md:pt-40 md:pb-32 overflow-hidden">
