@@ -1,9 +1,10 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useAuth } from "@/lib/AuthContext";
 
 // Animation variants
 const fadeIn = {
@@ -35,6 +36,9 @@ const pulse = {
 
 export default function Home() {
   const [activeMode, setActiveMode] = useState("chaos");
+  const [showUserMenu, setShowUserMenu] = useState(false);
+  const { user, isLoading, isAuthenticated, logout } = useAuth();
+  
   const gameModes = {
     soft: {
       title: "Soft",
@@ -74,6 +78,11 @@ export default function Home() {
     }
   };
 
+  const handleLogout = async () => {
+    await logout();
+    setShowUserMenu(false);
+  };
+
   return (
     <>
      {/* Navbar */}
@@ -111,9 +120,57 @@ export default function Home() {
            <a href="/about" className="hover:text-[var(--primary)] transition-colors">
              O Nas
            </a>
-           <Link href="/premium" className="hover:text-[var(--accent)] transition-colors">
+           <Link href="/premium" className="hover:text-[var(--primary)] transition-colors">
              Premium
            </Link>
+           
+           {isLoading ? (
+             <div className="w-8 h-8 rounded-full bg-[var(--border-color)]/30 animate-pulse"></div>
+           ) : isAuthenticated ? (
+             <div className="relative">
+               <button 
+                 onClick={() => setShowUserMenu(!showUserMenu)} 
+                 className="flex items-center gap-2 hover:text-[var(--accent)] transition-colors"
+               >
+                 <div className="w-8 h-8 rounded-full bg-[var(--accent)] flex items-center justify-center text-[var(--text-dark)] font-medium">
+                   {user.name ? user.name.charAt(0) : user.email.charAt(0).toUpperCase()}
+                 </div>
+                 <span className="font-medium">{user.name || user.email.split('@')[0]}</span>
+               </button>
+               
+               {showUserMenu && (
+                 <div className="absolute top-full right-0 mt-2 w-48 bg-[var(--container-color)] border border-[var(--border-color)] rounded-lg shadow-lg py-2 z-50">
+                   <Link href="/profile" className="block px-4 py-2 hover:bg-[var(--primary)]/20 transition-colors">
+                     Profil
+                   </Link>
+                   <Link href="/history" className="block px-4 py-2 hover:bg-[var(--primary)]/20 transition-colors">
+                     Historia sesji
+                   </Link>
+                   {user.isPremium && (
+                     <Link href="/premium-content" className="block px-4 py-2 hover:bg-[var(--primary)]/20 transition-colors">
+                       Zawartość Premium
+                     </Link>
+                   )}
+                   <button 
+                     onClick={handleLogout}
+                     className="w-full text-left px-4 py-2 text-red-400 hover:bg-red-500/20 transition-colors"
+                   >
+                     Wyloguj się
+                   </button>
+                 </div>
+               )}
+             </div>
+           ) : (
+             <>
+               <Link href="/login" className="hover:text-[var(--accent)] transition-colors">
+                 Logowanie
+               </Link>
+               <Link href="/register" className="px-4 py-1 rounded border border-[var(--accent)] text-[var(--accent)] hover:bg-[var(--accent)] hover:text-white transition-colors">
+                 Rejestracja
+               </Link>
+             </>
+           )}
+           
            <motion.a 
              whileHover={{ scale: 1.05 }}
              whileTap={{ scale: 0.95 }}
