@@ -16,15 +16,19 @@ datasource db {
 
 // User model for authentication and user management
 model User {
-  id              String         @id @default(uuid())
-  email           String         @unique
-  name            String?
-  password        String
-  isPremium       Boolean        @default(false)
-  createdAt       DateTime       @default(now())
-  updatedAt       DateTime       @updatedAt
-  sessions        GameSession[]
-  customTaskSets  TaskSet[]      @relation("UserCreatedTaskSets")
+  id                 String         @id @default(uuid())
+  email              String         @unique
+  name               String?
+  password           String
+  profilePicture     String?        // URL to profile image
+  description        String?        // User profile description
+  resetPasswordToken String?        // Token for password reset
+  resetTokenExpiry   DateTime?      // Expiry time for reset token
+  isPremium          Boolean        @default(false)
+  createdAt          DateTime       @default(now())
+  updatedAt          DateTime       @updatedAt
+  sessions           GameSession[]
+  customTaskSets     TaskSet[]      @relation("UserCreatedTaskSets")
 }
 
 // Game session tracking for history and statistics

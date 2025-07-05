@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { verifyToken } from '../lib/authh'
+import { verifyToken } from '../lib/auth'
 
 export const runtime = 'nodejs'
 
@@ -8,9 +8,13 @@ const publicPaths = [
   '/',
   '/login',
   '/register',
+  '/reset-password',
+  '/reset-password/',
   '/about',
   '/api/auth/login',
   '/api/auth/register',
+  '/api/auth/reset-password/request',
+  '/api/auth/reset-password/confirm',
 ]
 
 // Check if the path matches a public path

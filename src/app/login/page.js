@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/lib/AuthContext";
+import Comeback from "@/app/partial/comeback";  
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -94,6 +95,7 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-4">
+      <Comeback />
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -172,10 +174,17 @@ export default function LoginPage() {
           </form>
           
           <div className="mt-6 text-center text-[var(--text-gray)]">
-            Nie masz jeszcze konta?{" "}
-            <Link href="/register" className="text-[var(--primary)] hover:text-[var(--primary-light)]">
-              Zarejestruj się
-            </Link>
+            <div className="mb-2">
+              Nie masz jeszcze konta?{" "}
+              <Link href="/register" className="text-[var(--primary)] hover:text-[var(--primary-light)]">
+                Zarejestruj się
+              </Link>
+            </div>
+            <div>
+              <Link href="/reset-password" className="text-[var(--primary)] hover:text-[var(--primary-light)]">
+                Zapomniałeś hasła?
+              </Link>
+            </div>
           </div>
         </div>
       </motion.div>

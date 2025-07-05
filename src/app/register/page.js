@@ -3,7 +3,8 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import Navbar from "@/app/partial/navbar";
+import Comeback from "@/app/partial/comeback";
+
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/AuthContext";
 
@@ -126,14 +127,7 @@ export default function RegisterPage() {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-4">
-      <Navbar 
-        isLoading={isLoading} 
-        isAuthenticated={false} 
-        user={null} 
-        showUserMenu={false} 
-        setShowUserMenu={() => {}} 
-        handleLogout={() => {}} 
-      />
+      <Comeback />
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

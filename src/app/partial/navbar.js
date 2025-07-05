@@ -62,9 +62,6 @@ export default function Navbar({ isLoading, isAuthenticated, user, showUserMenu,
                   <Link href="/profile" className="block px-4 py-2 hover:bg-[var(--primary)]/20 transition-colors">
                     Profil
                   </Link>
-                  <Link href="/history" className="block px-4 py-2 hover:bg-[var(--primary)]/20 transition-colors">
-                    Historia sesji
-                  </Link>
                   {user.isPremium && (
                     <Link href="/premium-content" className="block px-4 py-2 hover:bg-[var(--primary)]/20 transition-colors">
                       Zawartość Premium
