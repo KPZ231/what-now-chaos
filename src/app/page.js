@@ -373,7 +373,7 @@ export default function Home() {
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="gradient-text font-bold text-lg">WhatNow?!</div>
             <div className="text-[var(--text-gray)] text-sm">
-              © 2023 WhatNow?! – Generator Chaosu. Wszystkie prawa zastrzeżone.
+              © 2023 WhatNow?! &ndash; Generator Chaosu. Wszystkie prawa zastrzeżone.
             </div>
             <div className="flex gap-4">
               <a href="/privacy" className="text-[var(--text-gray)] hover:text-[var(--primary)] transition-colors text-sm">
