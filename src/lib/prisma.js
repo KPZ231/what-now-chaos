@@ -6,9 +6,22 @@ import { PrismaClient } from '../generated/prisma'
 
 let prisma
 
+// Check if we're running on Vercel
+const isVercel = process.env.VERCEL === '1'
+
 if (process.env.NODE_ENV === 'production') {
   try {
     prisma = new PrismaClient()
+    
+    // Add a ping to test the connection
+    if (isVercel) {
+      prisma.$connect()
+        .then(() => console.log('Successfully connected to the database'))
+        .catch((e) => {
+          console.error('Failed to connect to the database:', e)
+          throw e
+        })
+    }
   } catch (error) {
     console.error('Failed to initialize Prisma client in production:', error)
     throw error

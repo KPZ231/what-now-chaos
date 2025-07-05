@@ -1,0 +1,6 @@
+{
+  "buildCommand": "mkdir -p src/generated && prisma generate && next build",
+  "installCommand": "npm install",
+  "framework": "nextjs",
+  "outputDirectory": ".next"
+} 
