@@ -1,3 +1,5 @@
+"use client";
+
 import { NextResponse } from 'next/server'
 import { verifyToken } from '../lib/auth'
 
@@ -15,12 +17,16 @@ const publicPaths = [
   '/api/auth/register',
   '/api/auth/reset-password/request',
   '/api/auth/reset-password/confirm',
+  '/play',
+  '/premium',
+  '/modes'
 ]
 
 // Check if the path matches a public path
 const isPublicPath = (path) => {
   return publicPaths.some(publicPath => {
-    return path === publicPath || path.startsWith(`${publicPath}/`)
+    return path === publicPath || path.startsWith(`${publicPath}/`) ||
+      (publicPath.includes('*') && path.startsWith(publicPath.replace('*', '')))
   })
 }
 

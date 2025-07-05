@@ -123,7 +123,7 @@ export default function Home() {
                 variants={fadeIn}
                 className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
               >
-                <a href="/play" className="btn btn-primary">Rozpocznij zabawę</a>
+                <Link href="/play" className="btn btn-primary">Rozpocznij zabawę</Link>
                 <a href="/modes" className="btn btn-outline">Zobacz tryby gry</a>
               </motion.div>
             </div>

@@ -7,6 +7,7 @@ const AuthContext = createContext({
   user: null,
   isLoading: true,
   isAuthenticated: false,
+  setUser: () => {},
   login: async () => {},
   logout: async () => {},
   register: async () => {},
@@ -205,6 +206,7 @@ export function AuthProvider({ children }) {
         user, 
         isLoading, 
         isAuthenticated: !!user, 
+        setUser,
         login, 
         logout,
         register

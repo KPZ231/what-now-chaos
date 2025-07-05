@@ -20,19 +20,29 @@ export async function GET(request) {
       return NextResponse.json({ error: 'Invalid token' }, { status: 401 })
     }
 
-    // Get user from database
+    // Get user from database with premium fields
     const user = await prisma.user.findUnique({
-      where: { id: decoded.id }
+      where: { id: decoded.id },
+      select: {
+        id: true,
+        email: true,
+        name: true,
+        description: true,
+        profilePicture: true,
+        isPremium: true,
+        hasPremium: true,
+        premiumPlan: true,
+        premiumExpiry: true,
+        createdAt: true,
+        updatedAt: true
+      }
     })
 
     if (!user) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 })
     }
 
-    // Don't return the password
-    const { password, ...userWithoutPassword } = user
-
-    return NextResponse.json({ user: userWithoutPassword }, { status: 200 })
+    return NextResponse.json({ user }, { status: 200 })
   } catch (error) {
     console.error('Get user error:', error)
     return NextResponse.json(

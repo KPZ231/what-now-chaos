@@ -7,6 +7,7 @@ import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import Comeback from "@/app/partial/comeback";
+import PremiumStatus from './PremiumStatus';
 
 export default function ProfilePage() {
   const { user, isLoading, isAuthenticated } = useAuth();
@@ -413,6 +414,11 @@ export default function ProfilePage() {
     }
   };
 
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
+    setMessage({ type: '', text: '' }); // Clear messages when switching tabs
+  };
+
   if (isLoading || !user) {
     return (
       <div className="flex justify-center items-center min-h-screen">
@@ -460,7 +466,7 @@ export default function ProfilePage() {
               ? 'bg-[var(--primary)] text-white' 
               : 'bg-[var(--container-color)] text-[var(--text-color)]'
           }`}
-          onClick={() => setActiveTab('profile')}
+          onClick={() => handleTabChange('profile')}
         >
           Profil
         </button>
@@ -470,7 +476,7 @@ export default function ProfilePage() {
               ? 'bg-[var(--primary)] text-white' 
               : 'bg-[var(--container-color)] text-[var(--text-color)]'
           }`}
-          onClick={() => setActiveTab('password')}
+          onClick={() => handleTabChange('password')}
         >
           Zmień hasło
         </button>
@@ -480,9 +486,19 @@ export default function ProfilePage() {
               ? 'bg-[var(--primary)] text-white' 
               : 'bg-[var(--container-color)] text-[var(--text-color)]'
           }`}
-          onClick={() => setActiveTab('picture')}
+          onClick={() => handleTabChange('picture')}
         >
           Zdjęcie profilowe
+        </button>
+        <button
+          className={`px-4 py-2 rounded-t-md ${
+            activeTab === 'premium' 
+              ? 'bg-[var(--primary)] text-white' 
+              : 'bg-[var(--container-color)] text-[var(--text-color)]'
+          }`}
+          onClick={() => handleTabChange('premium')}
+        >
+          Premium
         </button>
       </motion.div>
 
@@ -731,6 +747,23 @@ export default function ProfilePage() {
                 </div>
               </form>
             </div>
+          </motion.div>
+        )}
+        {activeTab === 'premium' && (
+          <motion.div
+            variants={itemVariants}
+            initial="hidden"
+            animate="visible"
+            exit="hidden"
+          >
+            <div className="mb-6">
+              <h2 className="text-2xl font-bold mb-4">Status Premium</h2>
+              <p className="text-[var(--text-gray)] mb-6">
+                Sprawdź status swojego konta premium i dostępne funkcje.
+              </p>
+            </div>
+            
+            <PremiumStatus user={user} />
           </motion.div>
         )}
       </motion.div>

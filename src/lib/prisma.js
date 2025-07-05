@@ -7,12 +7,22 @@ import { PrismaClient } from '../generated/prisma'
 let prisma
 
 if (process.env.NODE_ENV === 'production') {
-  prisma = new PrismaClient()
+  try {
+    prisma = new PrismaClient()
+  } catch (error) {
+    console.error('Failed to initialize Prisma client in production:', error)
+    throw error
+  }
 } else {
   if (!global.prisma) {
-    global.prisma = new PrismaClient({
-      log: ['query'],
-    })
+    try {
+      global.prisma = new PrismaClient({
+        log: ['query', 'error', 'warn'],
+      })
+    } catch (error) {
+      console.error('Failed to initialize Prisma client in development:', error)
+      throw error
+    }
   }
   prisma = global.prisma
 }

@@ -30,7 +30,7 @@ export default function Navbar({ isLoading, isAuthenticated, user, showUserMenu,
           transition={{ duration: 0.5, delay: 0.2 }}
           className="hidden md:flex gap-6 items-center"
         >
-          <Link href="/" className="hover:text-[var(--primary)] transition-colors font-medium">
+          <Link href="/play" className="hover:text-[var(--primary)] transition-colors font-medium">
             Start
           </Link>
           <Link href="/modes" className="hover:text-[var(--primary)] transition-colors">
