@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import Navbar from "@/app/partial/navbar";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/AuthContext";
 
@@ -15,8 +16,73 @@ export default function RegisterPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   
+  // Field-specific validation states
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [confirmPasswordError, setConfirmPasswordError] = useState("");
+  const [termsAccepted, setTermsAccepted] = useState(false);
+  
   const router = useRouter();
   const { register } = useAuth();
+
+  // Real-time validation functions
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return "Proszę podać poprawny adres email";
+    }
+    return "";
+  };
+
+  const validatePassword = (password) => {
+    if (password.length < 6) {
+      return "Hasło musi mieć co najmniej 6 znaków";
+    }
+    // Additional password strength checks could be added here
+    return "";
+  };
+
+  const validateConfirmPassword = (confirmPassword) => {
+    if (confirmPassword !== password) {
+      return "Hasła nie są identyczne";
+    }
+    return "";
+  };
+
+  // Sanitize input to prevent SQL injection (basic client-side)
+  const sanitizeInput = (input) => {
+    if (typeof input !== 'string') return input;
+    // Replace potentially dangerous SQL characters
+    return input.replace(/[';\\]/g, '');
+  };
+
+  // Handle input changes with sanitization
+  const handleEmailChange = (e) => {
+    const sanitizedValue = sanitizeInput(e.target.value);
+    setEmail(sanitizedValue);
+    setEmailError(validateEmail(sanitizedValue));
+  };
+
+  const handlePasswordChange = (e) => {
+    const sanitizedValue = sanitizeInput(e.target.value);
+    setPassword(sanitizedValue);
+    setPasswordError(validatePassword(sanitizedValue));
+    
+    // Also validate confirm password when password changes
+    if (confirmPassword) {
+      setConfirmPasswordError(validateConfirmPassword(confirmPassword));
+    }
+  };
+
+  const handleConfirmPasswordChange = (e) => {
+    const sanitizedValue = sanitizeInput(e.target.value);
+    setConfirmPassword(sanitizedValue);
+    setConfirmPasswordError(validateConfirmPassword(sanitizedValue));
+  };
+
+  const handleNameChange = (e) => {
+    setName(sanitizeInput(e.target.value));
+  };
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -24,15 +90,16 @@ export default function RegisterPage() {
     setSuccessMessage("");
     setIsLoading(true);
 
-    // Client-side validation
-    if (password !== confirmPassword) {
-      setError("Hasła nie są identyczne");
-      setIsLoading(false);
-      return;
-    }
+    // Final validation before submission
+    const currentEmailError = validateEmail(email);
+    const currentPasswordError = validatePassword(password);
+    const currentConfirmPasswordError = validateConfirmPassword(confirmPassword);
 
-    if (password.length < 6) {
-      setError("Hasło musi mieć co najmniej 6 znaków");
+    if (currentEmailError || currentPasswordError || currentConfirmPasswordError || !termsAccepted) {
+      setEmailError(currentEmailError);
+      setPasswordError(currentPasswordError);
+      setConfirmPasswordError(currentConfirmPasswordError);
+      setError("Proszę poprawić błędy w formularzu");
       setIsLoading(false);
       return;
     }
@@ -59,6 +126,14 @@ export default function RegisterPage() {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-4">
+      <Navbar 
+        isLoading={isLoading} 
+        isAuthenticated={false} 
+        user={null} 
+        showUserMenu={false} 
+        setShowUserMenu={() => {}} 
+        handleLogout={() => {}} 
+      />
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -99,7 +174,7 @@ export default function RegisterPage() {
                 id="name"
                 type="text"
                 value={name}
-                onChange={(e) => setName(e.target.value)}
+                onChange={handleNameChange}
                 className="w-full bg-[var(--body-color)] border border-[var(--border-color)] rounded-lg p-3 text-white focus:outline-none focus:ring-2 focus:ring-[var(--primary)] transition-all"
                 placeholder="Twoje imię"
               />
@@ -113,11 +188,15 @@ export default function RegisterPage() {
                 id="email"
                 type="email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={handleEmailChange}
                 required
-                className="w-full bg-[var(--body-color)] border border-[var(--border-color)] rounded-lg p-3 text-white focus:outline-none focus:ring-2 focus:ring-[var(--primary)] transition-all"
+                className={`w-full bg-[var(--body-color)] border ${emailError ? 'border-red-500' : 'border-[var(--border-color)]'} rounded-lg p-3 text-white focus:outline-none focus:ring-2 focus:ring-[var(--primary)] transition-all`}
                 placeholder="twoj@email.pl"
+                onBlur={() => setEmailError(validateEmail(email))}
               />
+              {emailError && (
+                <p className="mt-1 text-red-400 text-sm">{emailError}</p>
+              )}
             </div>
             
             <div>
@@ -128,11 +207,15 @@ export default function RegisterPage() {
                 id="password"
                 type="password"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={handlePasswordChange}
                 required
-                className="w-full bg-[var(--body-color)] border border-[var(--border-color)] rounded-lg p-3 text-white focus:outline-none focus:ring-2 focus:ring-[var(--primary)] transition-all"
+                className={`w-full bg-[var(--body-color)] border ${passwordError ? 'border-red-500' : 'border-[var(--border-color)]'} rounded-lg p-3 text-white focus:outline-none focus:ring-2 focus:ring-[var(--primary)] transition-all`}
                 placeholder="Minimum 6 znaków"
+                onBlur={() => setPasswordError(validatePassword(password))}
               />
+              {passwordError && (
+                <p className="mt-1 text-red-400 text-sm">{passwordError}</p>
+              )}
             </div>
             
             <div>
@@ -143,16 +226,36 @@ export default function RegisterPage() {
                 id="confirmPassword"
                 type="password"
                 value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
+                onChange={handleConfirmPasswordChange}
                 required
-                className="w-full bg-[var(--body-color)] border border-[var(--border-color)] rounded-lg p-3 text-white focus:outline-none focus:ring-2 focus:ring-[var(--primary)] transition-all"
+                className={`w-full bg-[var(--body-color)] border ${confirmPasswordError ? 'border-red-500' : 'border-[var(--border-color)]'} rounded-lg p-3 text-white focus:outline-none focus:ring-2 focus:ring-[var(--primary)] transition-all`}
                 placeholder="Powtórz hasło"
+                onBlur={() => setConfirmPasswordError(validateConfirmPassword(confirmPassword))}
               />
+              {confirmPasswordError && (
+                <p className="mt-1 text-red-400 text-sm">{confirmPasswordError}</p>
+              )}
             </div>
             
+
+            <div>
+              <label htmlFor="terms" className="block text-[var(--text-gray)] mb-1">
+                <input 
+                  type="checkbox" 
+                  id="terms" 
+                  className="mr-2" 
+                  required
+                  checked={termsAccepted}
+                  onChange={(e) => setTermsAccepted(e.target.checked)} 
+                />
+                Akceptuję <Link href="/terms" className="text-[var(--primary)] hover:text-[var(--primary-light)]">regulamin</Link>
+              </label>
+            </div>
+
+
             <button
               type="submit"
-              disabled={isLoading}
+              disabled={isLoading || emailError || passwordError || confirmPasswordError || !termsAccepted}
               className="w-full btn btn-primary flex justify-center items-center"
             >
               {isLoading ? (

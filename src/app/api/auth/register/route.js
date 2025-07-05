@@ -4,49 +4,85 @@ import { hashPassword } from '@/lib/auth'
 
 export const runtime = 'nodejs'
 
+// Utility function for input sanitization
+function sanitizeInput(input) {
+  if (typeof input !== 'string') return input;
+  // Remove potentially harmful characters
+  return input.replace(/['";\\]/g, '');
+}
+
+// Email validation regex
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 export async function POST(request) {
   try {
     const { email, password, name } = await request.json()
 
-    // Validation
-    if (!email || !password) {
+    // Sanitize inputs
+    const sanitizedEmail = sanitizeInput(email)?.trim().toLowerCase();
+    const sanitizedName = name ? sanitizeInput(name)?.trim() : null;
+    
+    // Enhanced validation
+    if (!sanitizedEmail || !password) {
       return NextResponse.json(
         { error: 'Email i hasło są wymagane' },
         { status: 400 }
       )
     }
 
-    // Check if user already exists
-    const existingUser = await prisma.user.findUnique({
-      where: { email }
-    })
-
-    if (existingUser) {
+    // Validate email format
+    if (!emailRegex.test(sanitizedEmail)) {
       return NextResponse.json(
-        { error: 'Użytkownik z tym adresem email już istnieje' },
-        { status: 409 }
+        { error: 'Podany adres email jest nieprawidłowy' },
+        { status: 400 }
       )
     }
 
-    // Hash password
-    const hashedPassword = await hashPassword(password)
+    // Validate password strength
+    if (password.length < 6) {
+      return NextResponse.json(
+        { error: 'Hasło musi mieć co najmniej 6 znaków' },
+        { status: 400 }
+      )
+    }
 
-    // Create user
-    const user = await prisma.user.create({
-      data: {
-        email,
-        password: hashedPassword,
-        name: name || null
+    try {
+      // Check if user already exists
+      const existingUser = await prisma.user.findUnique({
+        where: { email: sanitizedEmail }
+      })
+
+      if (existingUser) {
+        return NextResponse.json(
+          { error: 'Użytkownik z tym adresem email już istnieje' },
+          { status: 409 }
+        )
       }
-    })
+      
+      // Hash password
+      const hashedPassword = await hashPassword(password)
 
-    // Don't return the password
-    const { password: _, ...userWithoutPassword } = user
+      // Create user with sanitized inputs
+      const user = await prisma.user.create({
+        data: {
+          email: sanitizedEmail,
+          password: hashedPassword,
+          name: sanitizedName
+        }
+      })
+    } catch (dbError) {
+      console.error('Database error:', dbError)
+      return NextResponse.json(
+        { error: 'Błąd bazy danych podczas rejestracji' },
+        { status: 500 }
+      )
+    }
 
+    // Return success without user data for security
     return NextResponse.json(
       { 
         message: 'Rejestracja zakończona pomyślnie',
-        user: userWithoutPassword
+        success: true
       }, 
       { status: 201 }
     )

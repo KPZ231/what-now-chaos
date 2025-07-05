@@ -12,15 +12,69 @@ export default function LoginPage() {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   
+  // Field-specific validation states
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  
   const router = useRouter();
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || "/";
   const { login } = useAuth();
 
+  // Real-time validation functions
+  const validateEmail = (email) => {
+    if (!email) return "Email jest wymagany";
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return "Proszę podać poprawny adres email";
+    }
+    return "";
+  };
+
+  const validatePassword = (password) => {
+    if (!password) return "Hasło jest wymagane";
+    if (password.length < 6) {
+      return "Hasło musi mieć co najmniej 6 znaków";
+    }
+    return "";
+  };
+
+  // Sanitize input to prevent SQL injection (basic client-side)
+  const sanitizeInput = (input) => {
+    if (typeof input !== 'string') return input;
+    // Replace potentially dangerous SQL characters
+    return input.replace(/[';\\]/g, '');
+  };
+
+  // Handle input changes with sanitization
+  const handleEmailChange = (e) => {
+    const sanitizedValue = sanitizeInput(e.target.value);
+    setEmail(sanitizedValue);
+    setEmailError(validateEmail(sanitizedValue));
+  };
+
+  const handlePasswordChange = (e) => {
+    const sanitizedValue = sanitizeInput(e.target.value);
+    setPassword(sanitizedValue);
+    setPasswordError(validatePassword(sanitizedValue));
+  };
+
   async function handleSubmit(e) {
     e.preventDefault();
     setError("");
     setIsLoading(true);
+
+    // Final validation before submission
+    const currentEmailError = validateEmail(email);
+    const currentPasswordError = validatePassword(password);
+
+    if (currentEmailError || currentPasswordError) {
+      setEmailError(currentEmailError);
+      setPasswordError(currentPasswordError);
+      setError("Proszę poprawić błędy w formularzu");
+      setIsLoading(false);
+      return;
+    }
 
     try {
       const result = await login(email, password);
@@ -74,11 +128,15 @@ export default function LoginPage() {
                 id="email"
                 type="email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={handleEmailChange}
                 required
-                className="w-full bg-[var(--body-color)] border border-[var(--border-color)] rounded-lg p-3 text-white focus:outline-none focus:ring-2 focus:ring-[var(--primary)] transition-all"
+                className={`w-full bg-[var(--body-color)] border ${emailError ? 'border-red-500' : 'border-[var(--border-color)]'} rounded-lg p-3 text-white focus:outline-none focus:ring-2 focus:ring-[var(--primary)] transition-all`}
                 placeholder="twoj@email.pl"
+                onBlur={() => setEmailError(validateEmail(email))}
               />
+              {emailError && (
+                <p className="mt-1 text-red-400 text-sm">{emailError}</p>
+              )}
             </div>
             
             <div>
@@ -89,16 +147,20 @@ export default function LoginPage() {
                 id="password"
                 type="password"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={handlePasswordChange}
                 required
-                className="w-full bg-[var(--body-color)] border border-[var(--border-color)] rounded-lg p-3 text-white focus:outline-none focus:ring-2 focus:ring-[var(--primary)] transition-all"
+                className={`w-full bg-[var(--body-color)] border ${passwordError ? 'border-red-500' : 'border-[var(--border-color)]'} rounded-lg p-3 text-white focus:outline-none focus:ring-2 focus:ring-[var(--primary)] transition-all`}
                 placeholder="********"
+                onBlur={() => setPasswordError(validatePassword(password))}
               />
+              {passwordError && (
+                <p className="mt-1 text-red-400 text-sm">{passwordError}</p>
+              )}
             </div>
             
             <button
               type="submit"
-              disabled={isLoading}
+              disabled={isLoading || emailError || passwordError}
               className="w-full btn btn-primary flex justify-center items-center"
             >
               {isLoading ? (

@@ -4,21 +4,42 @@ import { verifyPassword, generateToken } from '@/lib/auth'
 
 export const runtime = 'nodejs'
 
+// Utility function for input sanitization
+function sanitizeInput(input) {
+  if (typeof input !== 'string') return input;
+  // Remove potentially harmful characters
+  return input.replace(/['";\\]/g, '');
+}
+
+// Email validation regex
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 export async function POST(request) {
   try {
     const { email, password } = await request.json()
 
-    // Validation
-    if (!email || !password) {
+    // Sanitize inputs
+    const sanitizedEmail = sanitizeInput(email)?.trim().toLowerCase();
+    
+    // Enhanced validation
+    if (!sanitizedEmail || !password) {
       return NextResponse.json(
         { error: 'Email i hasło są wymagane' },
         { status: 400 }
       )
     }
 
-    // Find user
+    // Validate email format
+    if (!emailRegex.test(sanitizedEmail)) {
+      return NextResponse.json(
+        { error: 'Podany adres email jest nieprawidłowy' },
+        { status: 400 }
+      )
+    }
+
+    // Find user with sanitized email
     const user = await prisma.user.findUnique({
-      where: { email }
+      where: { email: sanitizedEmail }
     })
 
     // User not found or password doesn't match
