@@ -1,5 +1,9 @@
 import { prisma } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
+import fs from 'fs/promises';
+import path from 'path';
+
+export const runtime = 'nodejs';
 
 // Helper function to validate if it's the user's turn
 async function validateTurn(gameId, participantId) {
@@ -42,9 +46,10 @@ async function selectNextPlayer(gameId, currentParticipantId) {
 // Helper function to select a random task
 async function selectRandomTask(gameId, mode) {
   try {
-    // Fetch tasks data from JSON
-    const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL || ''}/data/tasks-${mode}.json`);
-    const data = await response.json();
+    // Read tasks file directly from filesystem to avoid fetch issues
+    const filePath = path.join(process.cwd(), 'public', 'data', `tasks-${mode}.json`);
+    const fileContent = await fs.readFile(filePath, 'utf8');
+    const data = JSON.parse(fileContent);
     
     if (!data.tasks || data.tasks.length === 0) {
       throw new Error('No tasks available');
