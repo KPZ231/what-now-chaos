@@ -47,9 +47,9 @@ export default function MultiplayerGamePage() {
     return ((totalSeconds - timeRemaining) / totalSeconds) * 100;
   };
   
-  // Start a timer when it's user's turn
+  // Start a timer when game is active
   useEffect(() => {
-    if (isMyTurn && game && game.status === 'active') {
+    if (game && game.status === 'active') {
       // Clear any existing timer
       if (timerIntervalRef.current) {
         clearInterval(timerIntervalRef.current);
@@ -68,7 +68,7 @@ export default function MultiplayerGamePage() {
           return prev - 1;
         });
       }, 1000);
-    } else {
+    } else if (game && game.status !== 'active') {
       // Clear timer when not user's turn
       if (timerIntervalRef.current) {
         clearInterval(timerIntervalRef.current);
@@ -81,7 +81,7 @@ export default function MultiplayerGamePage() {
         clearInterval(timerIntervalRef.current);
       }
     };
-  }, [isMyTurn, game]);
+  }, [game?.status, game?.currentTurn]);
   
   // Fetch game state
   const fetchGameState = useCallback(async () => {
@@ -122,7 +122,10 @@ export default function MultiplayerGamePage() {
           playSound('taskAppear');
           // Update the last played task
           lastPlayedTaskRef.current = data.game.currentTaskId;
-          // Reset timer
+        }
+        
+        // Reset timer whenever the current turn changes
+        if (data.game.currentTurn !== game?.currentTurn) {
           setTimeRemaining(data.game.timerMinutes * 60);
         }
       }
@@ -133,7 +136,7 @@ export default function MultiplayerGamePage() {
       setError(error.message || 'Failed to fetch game state');
       setIsLoading(false);
     }
-  }, [gameId, participantId, isMyTurn]);
+  }, [gameId, participantId, isMyTurn, game?.currentTurn]);
   
   // Set up polling for game state updates
   useEffect(() => {
@@ -531,31 +534,29 @@ export default function MultiplayerGamePage() {
               {/* Task area */}
               <div className="w-full md:w-2/3">
                 <div className="card relative">
-                  {/* Timer Circle */}
-                  {isMyTurn && (
-                    <div className="absolute -top-5 right-6">
-                      <div className="w-20 h-20 rounded-full bg-[var(--container-color)] border-4 border-[var(--border-color)] flex items-center justify-center shadow-lg">
-                        <div className="relative w-full h-full flex items-center justify-center">
-                          <svg className="w-full h-full -rotate-90 absolute">
-                            <circle
-                              cx="40"
-                              cy="40"
-                              r="36"
-                              strokeWidth="4"
-                              stroke="var(--primary)"
-                              fill="transparent"
-                              strokeDasharray={`${2 * Math.PI * 36}`}
-                              strokeDashoffset={`${2 * Math.PI * 36 * (1 - calculateProgress() / 100)}`}
-                              className="transition-all duration-1000"
-                            />
-                          </svg>
-                          <span className={`text-xl font-bold ${timeRemaining <= 30 ? 'text-red-500 animate-pulse' : ''}`}>
-                            {formatTime(timeRemaining)}
-                          </span>
-                        </div>
+                  {/* Timer Circle - zawsze widoczny */}
+                  <div className="absolute -top-5 right-6">
+                    <div className="w-20 h-20 rounded-full bg-[var(--container-color)] border-4 border-[var(--border-color)] flex items-center justify-center shadow-lg">
+                      <div className="relative w-full h-full flex items-center justify-center">
+                        <svg className="w-full h-full -rotate-90 absolute">
+                          <circle
+                            cx="40"
+                            cy="40"
+                            r="36"
+                            strokeWidth="4"
+                            stroke="var(--primary)"
+                            fill="transparent"
+                            strokeDasharray={`${2 * Math.PI * 36}`}
+                            strokeDashoffset={`${2 * Math.PI * 36 * (1 - calculateProgress() / 100)}`}
+                            className="transition-all duration-1000"
+                          />
+                        </svg>
+                        <span className={`text-xl font-bold ${timeRemaining <= 30 ? 'text-red-500 animate-pulse' : ''}`}>
+                          {formatTime(timeRemaining)}
+                        </span>
                       </div>
                     </div>
-                  )}
+                  </div>
 
                   <div className="flex justify-between items-start mb-6">
                     <div>
