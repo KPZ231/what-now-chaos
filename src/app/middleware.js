@@ -18,6 +18,9 @@ const publicPaths = [
   '/api/auth/reset-password/request',
   '/api/auth/reset-password/confirm',
   '/play',
+  '/play/multiplayer/join',
+  '/api/multiplayer/join',
+  '/api/multiplayer/create',
   '/premium',
   '/modes'
 ]
@@ -30,12 +33,41 @@ const isPublicPath = (path) => {
   })
 }
 
+// Check if the path is a multiplayer path that requires participant validation
+const isMultiplayerPath = (path) => {
+  return path.startsWith('/play/multiplayer/') ||
+         path.startsWith('/api/multiplayer/game/');
+}
+
 export function middleware(request) {
   const path = request.nextUrl.pathname
+  const response = NextResponse.next();
 
+  // Add security headers to all responses
+  response.headers.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload'); // Enforce HTTPS
+  response.headers.set('X-Content-Type-Options', 'nosniff'); // Prevent MIME type sniffing
+  response.headers.set('X-Frame-Options', 'DENY'); // Prevent clickjacking
+  response.headers.set('X-XSS-Protection', '1; mode=block'); // Basic XSS protection
+  response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin'); // Control referrer info
+  response.headers.set('Content-Security-Policy', "default-src 'self'; connect-src 'self' https://whatnow-kapieksperimental-2f90.c.aivencloud.com:15657; img-src 'self' data:; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline';");
+  
   // Allow public paths
   if (isPublicPath(path)) {
-    return NextResponse.next()
+    return response;
+  }
+  
+  // Special handling for multiplayer paths - need to check for participantId
+  if (isMultiplayerPath(path)) {
+    // For API endpoints, we'll validate in the route handlers
+    if (path.startsWith('/api/')) {
+      return response;
+    }
+    
+    // For page routes, check if participantId is in the URL
+    const participantId = request.nextUrl.searchParams.get('participantId');
+    if (participantId) {
+      return response;
+    }
   }
 
   // Check for auth token
@@ -56,7 +88,7 @@ export function middleware(request) {
     return NextResponse.redirect(new URL('/premium-required', request.url))
   }
 
-  return NextResponse.next()
+  return response;
 }
 
 // Configure which paths the middleware applies to

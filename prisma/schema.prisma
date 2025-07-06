@@ -16,22 +16,24 @@ datasource db {
 
 // User model for authentication and user management
 model User {
-  id                 String         @id @default(uuid())
-  email              String         @unique
+  id                 String                   @id @default(uuid())
+  email              String                   @unique
   name               String?
   password           String
-  profilePicture     String?        // URL to profile image
-  description        String?        // User profile description
-  resetPasswordToken String?        // Token for password reset
-  resetTokenExpiry   DateTime?      // Expiry time for reset token
-  isPremium          Boolean        @default(false)
-  hasPremium         Boolean        @default(false)  // Flag for premium access
-  premiumPlan        String?        // monthly, yearly, lifetime
-  premiumExpiry      DateTime?      // When premium access expires
-  createdAt          DateTime       @default(now())
-  updatedAt          DateTime       @updatedAt
+  profilePicture     String?                  // URL to profile image
+  description        String?                  // User profile description
+  resetPasswordToken String?                  // Token for password reset
+  resetTokenExpiry   DateTime?                // Expiry time for reset token
+  isPremium          Boolean                  @default(false)
+  hasPremium         Boolean                  @default(false)  // Flag for premium access
+  premiumPlan        String?                  // monthly, yearly, lifetime
+  premiumExpiry      DateTime?                // When premium access expires
+  createdAt          DateTime                 @default(now())
+  updatedAt          DateTime                 @updatedAt
   sessions           GameSession[]
-  customTaskSets     TaskSet[]      @relation("UserCreatedTaskSets")
+  customTaskSets     TaskSet[]                @relation("UserCreatedTaskSets")
+  hostedGames        MultiplayerGame[]        @relation("GameHost")
+  participatedGames  MultiplayerParticipant[]
 }
 
 // Game session tracking for history and statistics
@@ -93,4 +95,57 @@ model Subscription {
   paymentId       String?        // External payment ID
   createdAt       DateTime       @default(now())
   updatedAt       DateTime       @updatedAt
+}
+
+// Multiplayer game sessions
+model MultiplayerGame {
+  id              String                  @id @default(uuid())
+  joinCode        String                  @unique // 6-digit code for joining
+  status          String                  @default("lobby") // lobby, active, completed
+  mode            String                  // soft, chaos, hardcore, quick
+  timerMinutes    Int                     @default(5)
+  maxPlayers      Int                     @default(8)
+  host            User                    @relation("GameHost", fields: [hostId], references: [id])
+  hostId          String
+  currentTaskId   String?                 // ID of current task
+  currentTaskContent String?              // Content of current task
+  currentTurn     String?                 // ID of user whose turn it is
+  lastTaskChange  DateTime?               // When the last task was assigned
+  participants    MultiplayerParticipant[]
+  createdAt       DateTime                @default(now())
+  updatedAt       DateTime                @updatedAt
+  completedTasks  MultiplayerCompletedTask[]
+}
+
+// Participants in multiplayer games
+model MultiplayerParticipant {
+  id              String         @id @default(uuid())
+  nickname        String         // Required even for registered users
+  isRegistered    Boolean        @default(false) // Is this a registered user or guest
+  isReady         Boolean        @default(false) // For lobby state
+  isActive        Boolean        @default(true)  // If player disconnected
+  game            MultiplayerGame @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  gameId          String
+  user            User?          @relation(fields: [userId], references: [id])
+  userId          String?        // Can be null for guest players
+  joinedAt        DateTime       @default(now())
+  lastActive      DateTime       @default(now())
+  turnOrder       Int            // Position in turn order
+  tasksCompleted  Int            @default(0)
+  tasksSkipped    Int            @default(0)
+
+  @@unique([gameId, userId])
+  @@unique([gameId, turnOrder]) // Ensure unique turn order within game
+}
+
+// Tasks completed during a multiplayer game
+model MultiplayerCompletedTask {
+  id              String         @id @default(uuid())
+  taskId          String
+  taskContent     String         // The actual task text
+  completedAt     DateTime       @default(now())
+  skipped         Boolean        @default(false)
+  game            MultiplayerGame @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  gameId          String
+  completedById   String         // ID of participant who completed task
 }
