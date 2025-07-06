@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter, useSearchParams, useParams } from 'next/navigation';
 import { useAuth } from '@/lib/AuthContext';
@@ -20,6 +20,11 @@ export default function MultiplayerGamePage() {
   const [isReady, setIsReady] = useState(false);
   const [isMyTurn, setIsMyTurn] = useState(false);
   const [pollingInterval, setPollingInterval] = useState(null);
+  const [timeRemaining, setTimeRemaining] = useState(0);
+  
+  // Refs to track which tasks we've already played sounds for
+  const lastPlayedTaskRef = useRef(null);
+  const timerIntervalRef = useRef(null);
   
   const { user } = useAuth();
   const router = useRouter();
@@ -27,6 +32,56 @@ export default function MultiplayerGamePage() {
   const gameUrl = typeof window !== 'undefined' 
     ? `${window.location.origin}/play/multiplayer/join?code=${game?.joinCode}` 
     : '';
+  
+  // Format time as MM:SS
+  const formatTime = (seconds) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+  };
+  
+  // Calculate timer progress
+  const calculateProgress = () => {
+    if (!game) return 0;
+    const totalSeconds = game.timerMinutes * 60;
+    return ((totalSeconds - timeRemaining) / totalSeconds) * 100;
+  };
+  
+  // Start a timer when it's user's turn
+  useEffect(() => {
+    if (isMyTurn && game && game.status === 'active') {
+      // Clear any existing timer
+      if (timerIntervalRef.current) {
+        clearInterval(timerIntervalRef.current);
+      }
+      
+      // Set initial time
+      setTimeRemaining(game.timerMinutes * 60);
+      
+      // Set up timer
+      timerIntervalRef.current = setInterval(() => {
+        setTimeRemaining(prev => {
+          if (prev <= 1) {
+            // Time's up - handle automatically if needed
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    } else {
+      // Clear timer when not user's turn
+      if (timerIntervalRef.current) {
+        clearInterval(timerIntervalRef.current);
+      }
+    }
+    
+    // Clean up on unmount
+    return () => {
+      if (timerIntervalRef.current) {
+        clearInterval(timerIntervalRef.current);
+      }
+    };
+  }, [isMyTurn, game]);
   
   // Fetch game state
   const fetchGameState = useCallback(async () => {
@@ -53,12 +108,22 @@ export default function MultiplayerGamePage() {
           setIsReady(participant.isReady);
         }
         
-        // Check if it's this user's turn
-        setIsMyTurn(data.game.currentTurn === participantId);
+        // Check if it's this user's turn and the currentTaskId has changed
+        const wasMyTurn = isMyTurn;
+        const newIsMyTurn = data.game.currentTurn === participantId;
+        setIsMyTurn(newIsMyTurn);
         
-        // Play sound if it's my turn and the game is active
-        if (data.game.status === 'active' && data.game.currentTurn === participantId) {
+        // Play sound if it's now my turn but wasn't before OR
+        // if it's my turn and the task has changed
+        if (
+          (newIsMyTurn && !wasMyTurn) || 
+          (newIsMyTurn && lastPlayedTaskRef.current !== data.game.currentTaskId)
+        ) {
           playSound('taskAppear');
+          // Update the last played task
+          lastPlayedTaskRef.current = data.game.currentTaskId;
+          // Reset timer
+          setTimeRemaining(data.game.timerMinutes * 60);
         }
       }
       
@@ -68,7 +133,7 @@ export default function MultiplayerGamePage() {
       setError(error.message || 'Failed to fetch game state');
       setIsLoading(false);
     }
-  }, [gameId, participantId]);
+  }, [gameId, participantId, isMyTurn]);
   
   // Set up polling for game state updates
   useEffect(() => {
@@ -169,6 +234,14 @@ export default function MultiplayerGamePage() {
       if (!response.ok) {
         throw new Error(data.error || 'Failed to process task action');
       }
+      
+      // Clear timer
+      if (timerIntervalRef.current) {
+        clearInterval(timerIntervalRef.current);
+      }
+      
+      // Reset lastPlayedTask to allow playing sound for the next task
+      lastPlayedTaskRef.current = null;
       
       // Refresh game state
       fetchGameState();
@@ -457,7 +530,33 @@ export default function MultiplayerGamePage() {
               
               {/* Task area */}
               <div className="w-full md:w-2/3">
-                <div className="card">
+                <div className="card relative">
+                  {/* Timer Circle */}
+                  {isMyTurn && (
+                    <div className="absolute -top-5 right-6">
+                      <div className="w-20 h-20 rounded-full bg-[var(--container-color)] border-4 border-[var(--border-color)] flex items-center justify-center shadow-lg">
+                        <div className="relative w-full h-full flex items-center justify-center">
+                          <svg className="w-full h-full -rotate-90 absolute">
+                            <circle
+                              cx="40"
+                              cy="40"
+                              r="36"
+                              strokeWidth="4"
+                              stroke="var(--primary)"
+                              fill="transparent"
+                              strokeDasharray={`${2 * Math.PI * 36}`}
+                              strokeDashoffset={`${2 * Math.PI * 36 * (1 - calculateProgress() / 100)}`}
+                              className="transition-all duration-1000"
+                            />
+                          </svg>
+                          <span className={`text-xl font-bold ${timeRemaining <= 30 ? 'text-red-500 animate-pulse' : ''}`}>
+                            {formatTime(timeRemaining)}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
                   <div className="flex justify-between items-start mb-6">
                     <div>
                       <span className="text-xs text-[var(--text-gray)]">Tura gracza</span>
