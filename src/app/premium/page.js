@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/AuthContext';
 import Link from 'next/link';
+import Footer from "@/app/partial/footer";
 
 export default function PremiumPage() {
   const [selectedPlan, setSelectedPlan] = useState('monthly');
@@ -18,7 +19,7 @@ export default function PremiumPage() {
   // Redirect authenticated users if they already have premium
   useEffect(() => {
     if (!isLoading && user && user.hasPremium) {
-      router.push('/play');
+      router.push('/premium-advantages');
     }
   }, [user, isLoading, router]);
   
@@ -82,9 +83,9 @@ export default function PremiumPage() {
       
       setSuccess(true);
       
-      // Redirect to play page after showing success message
+      // Redirect to premium advantages page after showing success message
       setTimeout(() => {
-        router.push('/play');
+        router.push('/premium-advantages');
       }, 2000);
       
     } catch (err) {
@@ -94,8 +95,20 @@ export default function PremiumPage() {
       setIsProcessing(false);
     }
   };
+
+  // Show loading state while checking authentication
+  if (isLoading || (user && user.hasPremium)) {
+    return (
+      <main className="flex min-h-screen flex-col items-center justify-center p-4 sm:p-8">
+        <div className="card p-8 max-w-md w-full text-center">
+          <div className="animate-pulse">Ładowanie...</div>
+        </div>
+      </main>
+    );
+  }
   
   return (
+    <>
     <main className="flex min-h-screen flex-col items-center justify-between p-4 sm:p-8">
       <div className="w-full max-w-5xl flex flex-col items-center">
         <motion.div
@@ -248,22 +261,23 @@ export default function PremiumPage() {
               
               <p className="text-sm text-center mt-4 text-[var(--text-gray)]">
                 Bezpieczne płatności kartą, BLIK lub PayPal.<br />
-                30-dniowa gwarancja zwrotu pieniędzy.
+                Możesz anulować subskrypcję w dowolnym momencie.
               </p>
-            </div>
-            
-            {/* Navigation Links */}
-            <div className="flex flex-col sm:flex-row gap-4 mt-6">
-              <Link href="/play" className="btn btn-outline">
-                Wróć do Gry
-              </Link>
-              <Link href="/" className="btn btn-outline">
-                Strona Główna
-              </Link>
+              
+              {user && (
+                <p className="text-sm text-center mt-4">
+                  <Link href="/play" className="text-[var(--primary)] hover:underline">
+                    Powrót do gry
+                  </Link>
+                </p>
+              )}
             </div>
           </div>
         </motion.div>
       </div>
+      
     </main>
+    <Footer />
+  </>
   );
 } 

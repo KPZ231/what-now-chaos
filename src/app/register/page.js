@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Comeback from "@/app/partial/comeback";
+import Footer from "@/app/partial/footer";
 
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/AuthContext";
@@ -126,6 +127,7 @@ export default function RegisterPage() {
   }
 
   return (
+    <>
     <div className="min-h-screen flex flex-col items-center justify-center px-4">
       <Comeback />
       <motion.div
@@ -268,6 +270,11 @@ export default function RegisterPage() {
           </div>
         </div>
       </motion.div>
+
+      
     </div>
+
+    <Footer />
+    </>
   );
 } 

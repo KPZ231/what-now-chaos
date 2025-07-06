@@ -6,8 +6,10 @@ import Image from "next/image";
 import Link from "next/link";
 import Navbar from "@/app/partial/navbar";
 import { useAuth } from "@/lib/AuthContext";
+import Footer from "@/app/partial/footer";
+import SEO from "@/lib/SEO";
 
-export default function Home() {
+export default function AboutPage() {
     const [activeMode, setActiveMode] = useState("chaos");
     const [showUserMenu, setShowUserMenu] = useState(false);
     const { user, isLoading, isAuthenticated, logout } = useAuth();
@@ -95,8 +97,31 @@ export default function Home() {
         }
     };
 
+    // Structured data for this page
+    const aboutPageStructuredData = {
+        "@context": "https://schema.org",
+        "@type": "AboutPage",
+        "name": "About KPZsProductions - WhatNow?! Party Chaos Generator",
+        "description": "Learn about the creators of WhatNow?! Party Chaos Generator - a party game that brings fun and challenges to your gatherings.",
+        "publisher": {
+            "@type": "Organization",
+            "name": "KPZsProductions",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://what-now-chaos.vercel.app/logo.png"
+            }
+        }
+    };
+
     return (
         <>
+            <SEO 
+                title="About Us - WhatNow?! Party Chaos Generator"
+                description="Learn about the creators of WhatNow?! Party Chaos Generator - a party game that brings fun and challenges to your gatherings."
+                canonicalUrl="/about"
+                keywords={["about us", "party game developers", "game creators", "KPZsProductions"]}
+                structuredData={aboutPageStructuredData}
+            />
             <Navbar 
                 isLoading={isLoading} 
                 isAuthenticated={isAuthenticated} 
@@ -252,12 +277,15 @@ export default function Home() {
                                         </svg>
                                         Sending...
                                     </span>
-                                ) : "Send Message"}
+                                ) : (
+                                    "Send Message"
+                                )}
                             </motion.button>
                         </form>
                     )}
                 </motion.div>
             </main>
+            <Footer />
         </>
     );
 }

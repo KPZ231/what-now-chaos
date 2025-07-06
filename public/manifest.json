@@ -1,12 +1,17 @@
 {
-  "name": "WhatNow?! - Generator Chaosu",
+  "name": "WhatNow?! - Party Chaos Generator",
   "short_name": "WhatNow?!",
-  "description": "Rozkręć każdą imprezę dzięki absurdalnym, śmiesznym i wyzywającym zadaniom dla grupy znajomych.",
+  "description": "Boost any party with absurd, funny, and challenging tasks for groups of friends. Different game modes, timer, and session history export!",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#120e29",
   "theme_color": "#ff4dbc",
   "orientation": "portrait-primary",
+  "id": "whatnow-party-chaos-generator",
+  "categories": ["entertainment", "games", "social"],
+  "lang": "en",
+  "dir": "ltr",
+  "prefer_related_applications": false,
   "icons": [
     {
       "src": "/icons/icon-72x72.png",
@@ -59,11 +64,32 @@
   ],
   "shortcuts": [
     {
-      "name": "Rozpocznij grę",
-      "short_name": "Graj",
-      "description": "Rozpocznij nową sesję gry",
+      "name": "Start Game",
+      "short_name": "Play",
+      "description": "Start a new game session",
       "url": "/play",
       "icons": [{ "src": "/icons/play-shortcut.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Game Modes",
+      "short_name": "Modes",
+      "description": "Browse different game modes",
+      "url": "/modes",
+      "icons": [{ "src": "/icons/modes-shortcut.png", "sizes": "192x192" }]
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshots/screen1.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "label": "Home screen of WhatNow?! app"
+    },
+    {
+      "src": "/screenshots/screen2.png", 
+      "sizes": "1280x720",
+      "type": "image/png",
+      "label": "Challenge screen during gameplay"
     }
   ]
 } 

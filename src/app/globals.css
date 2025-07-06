@@ -37,11 +37,15 @@
     overflow-x: hidden;
     min-height: 100vh;
   }
+
+  button, a, [role="button"] {
+    @apply cursor-pointer;
+  }
 }
 
 @layer components {
   .btn {
-    @apply px-6 py-3 rounded-lg font-medium text-base transition-all duration-300 inline-block;
+    @apply px-6 py-3 rounded-lg font-medium text-base transition-all duration-300 inline-block cursor-pointer;
   }
   
   .btn-primary {

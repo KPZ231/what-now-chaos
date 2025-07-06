@@ -1,0 +1,25 @@
+# WhatNow?! - Party Chaos Generator - Robots.txt
+# Website: https://what-now-chaos.vercel.app/
+
+# Allow all robots full access
+User-agent: *
+Allow: /
+Allow: /api/sitemap
+
+# Disallow access to API routes, except sitemap
+User-agent: *
+Disallow: /api/
+Allow: /api/sitemap
+
+# Disallow certain administrative routes
+User-agent: *
+Disallow: /reset-password/
+Disallow: /profile/
+
+# Sitemap locations
+Sitemap: https://what-now-chaos.vercel.app/sitemap.xml
+Sitemap: https://what-now-chaos.vercel.app/api/sitemap
+
+# Crawl delay to prevent overloading server
+User-agent: *
+Crawl-delay: 1 

@@ -9,13 +9,43 @@ const montserrat = Montserrat({
 });
 
 export const metadata = {
-  title: "WhatNow?! - Generator Chaosu na Imprezy",
-  description: "Rozkręć każdą imprezę dzięki absurdalnym, śmiesznym i wyzywającym zadaniom dla grupy znajomych. Różne tryby gry, timer i eksport historii!",
-  keywords: ["impreza", "gra towarzyska", "zabawa", "wyzwania", "picie", "gra na imprezę", "zadania", "losowanie"],
+  title: "WhatNow?! - Party Chaos Generator",
+  description: "Boost any party with absurd, funny, and challenging tasks for groups of friends. Different game modes, timer, and session history export!",
+  keywords: ["party game", "drinking game", "challenges", "fun activities", "party tasks", "random challenges", "group games", "party entertainment"],
   authors: [{ name: "WhatNow?!" }],
   creator: "WhatNow?!",
   publisher: "WhatNow?!",
   manifest: "/manifest.json",
+  metadataBase: new URL("https://what-now-chaos.vercel.app"),
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    title: "WhatNow?! - Party Chaos Generator",
+    description: "Boost any party with absurd, funny, and challenging tasks for groups of friends. Different game modes, timer, and session history export!",
+    url: "https://what-now-chaos.vercel.app",
+    siteName: "WhatNow?!",
+    images: [
+      {
+        url: "/logo.png",
+        width: 800,
+        height: 600,
+        alt: "WhatNow?! Logo",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "WhatNow?! - Party Chaos Generator",
+    description: "Boost any party with absurd, funny, and challenging tasks for groups of friends. Different game modes, timer, and session history export!",
+    images: ["/logo.png"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export const viewport = {
@@ -27,7 +57,7 @@ export const viewport = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="pl">
+    <html lang="en">
       <body
         className={`${montserrat.variable} antialiased`}
       >

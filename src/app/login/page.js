@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/lib/AuthContext";
 import Comeback from "@/app/partial/comeback";  
+import Footer from "@/app/partial/footer";
 
 // Create a client component to use useSearchParams
 function LoginForm() {
@@ -187,6 +188,7 @@ function LoginForm() {
 
 export default function LoginPage() {
   return (
+    <>
     <div className="min-h-screen flex flex-col items-center justify-center px-4">
       <Comeback />
       <motion.div
@@ -203,6 +205,11 @@ export default function LoginPage() {
           <LoginForm />
         </Suspense>
       </motion.div>
+
+      
     </div>
+
+    <Footer />
+    </>
   );
 } 

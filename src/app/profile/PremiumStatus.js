@@ -114,6 +114,10 @@ export default function PremiumStatus({ user }) {
                 <li>Eksport sesji jako PDF</li>
                 <li>Tryb AI generujący zadania</li>
               </ul>
+              
+              <Link href="/premium-advantages" className="btn btn-outline w-full mt-4">
+                Zarządzaj kontem Premium
+              </Link>
             </div>
           )}
         </>

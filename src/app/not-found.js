@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
+import Footer from "@/app/partial/footer";
 
 export default function NotFound() {
   return (
@@ -30,6 +31,8 @@ export default function NotFound() {
           </Link>
         </div>
       </motion.div>
+
+      <Footer />
     </div>
   );
 } 
