@@ -248,105 +248,196 @@ export default function Game({ config, onEndGame }) {
   
   return (
     <motion.div 
-      className="w-full"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
+      className="flex flex-col items-center justify-center space-y-6 p-2 sm:p-6"
     >
-      <div className="flex flex-col items-center justify-center space-y-6 p-2 sm:p-6">
-        {/* Header with mode and players */}
-        <div className="w-full flex justify-between items-center">
-          <div>
-            <h2 className="text-xl font-medium">Tryb: <span className="gradient-text">{config.mode.toUpperCase()}</span></h2>
-            <p className="text-sm text-[var(--text-gray)]">Graczy: {config.playerCount}</p>
-          </div>
-          <div className="text-right">
-            <p className="text-sm text-[var(--text-gray)]">Wykonano: {stats.completedTasks}</p>
-            <p className="text-sm text-[var(--text-gray)]">Pominięto: {stats.skippedTasks}</p>
-          </div>
+      <div className="flex justify-between items-center w-full">
+        <div className="flex items-center gap-2">
+          <div className={`w-3 h-3 rounded-full ${isGameOver ? 'bg-red-500' : 'bg-green-500'}`}></div>
+          <span className="text-sm">{isGameOver ? 'Gra zakończona' : 'Gra aktywna'}</span>
         </div>
         
-        {/* Sound toggle button */}
-        <button 
-          className="absolute top-4 right-4 text-2xl p-2 rounded-full bg-[var(--container-color)]/50 hover:bg-[var(--container-color)]"
-          onClick={handleToggleSound}
-          aria-label={soundMuted ? "Włącz dźwięk" : "Wycisz dźwięk"}
-        >
-          {soundMuted ? '🔇' : '🔊'}
-        </button>
-        
-        {/* Timer Circle */}
-        <div className="relative flex items-center justify-center">
-          <svg className="w-32 h-32 transform -rotate-90">
-            <circle
-              cx="64"
-              cy="64"
-              r="58"
-              stroke="rgba(255,255,255,0.1)"
-              strokeWidth="12"
-              fill="none"
-            />
-            <circle
-              cx="64"
-              cy="64"
-              r="58"
-              stroke={timeRemaining <= 30 ? "var(--accent)" : "var(--primary)"}
-              strokeWidth="12"
-              strokeDasharray="364.4"
-              strokeDashoffset={364.4 - (364.4 * calculateProgress() / 100)}
-              strokeLinecap="round"
-              fill="none"
-              className={timeRemaining <= 10 ? "animate-pulse" : ""}
-            />
-          </svg>
-          <div className="absolute text-3xl font-bold">{formatTime(timeRemaining)}</div>
+        <div className="flex items-center gap-4">
+          <button 
+            onClick={handleToggleSound}
+            className="text-2xl hover:text-[var(--primary)] transition-colors"
+            aria-label={soundMuted ? "Włącz dźwięk" : "Wycisz dźwięk"}
+          >
+            {soundMuted ? '🔇' : '🔊'}
+          </button>
+          
+          <button 
+            onClick={handleEndGame}
+            className="px-4 py-1 rounded-full border border-red-500 text-red-500 hover:bg-red-500/20 transition-colors"
+          >
+            Zakończ grę
+          </button>
         </div>
-        
-        {/* Current Task */}
-        <AnimatePresence mode="wait">
-          {currentTask && (
-            <motion.div 
-              key={currentTask.id}
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              exit={{ y: -20, opacity: 0 }}
-              transition={{ duration: 0.3 }}
-              className="card w-full max-w-lg my-6 p-6"
-            >
-              <div className="text-sm mb-2 text-[var(--accent)]">
-                {getTaskTarget(currentTask.players)}
+      </div>
+      
+      <div className="flex flex-col md:flex-row gap-6 w-full">
+        {/* Game info sidebar */}
+        <div className="w-full md:w-1/3">
+          <div className="card h-full">
+            <h2 className="text-xl font-bold mb-4">Informacje o grze</h2>
+            
+            <div className="space-y-4">
+              <div>
+                <h3 className="text-sm text-[var(--text-gray)]">Tryb</h3>
+                <p className="font-medium">{config.mode.charAt(0).toUpperCase() + config.mode.slice(1)}</p>
               </div>
-              <h3 className="text-2xl font-bold mb-4">{currentTask.content}</h3>
-              <div className="text-sm mb-4 text-[var(--text-gray)]">
-                Poziom trudności: {Array(currentTask.difficulty).fill('★').join('')}
+              
+              <div>
+                <h3 className="text-sm text-[var(--text-gray)]">Liczba graczy</h3>
+                <p className="font-medium">{config.playerCount}</p>
+              </div>
+              
+              <div>
+                <h3 className="text-sm text-[var(--text-gray)]">Czas na zadanie</h3>
+                <p className="font-medium">{config.timerMinutes} min</p>
+              </div>
+              
+              <div className="border-t border-[var(--border-color)] pt-4">
+                <h3 className="text-sm text-[var(--text-gray)] mb-2">Statystyki</h3>
+                
+                <div className="grid grid-cols-2 gap-2">
+                  <div className="bg-[var(--container-color)]/50 p-3 rounded-lg">
+                    <div className="text-sm text-[var(--text-gray)]">Wykonane</div>
+                    <div className="text-xl font-bold text-[var(--primary)]">{stats.completedTasks}</div>
+                  </div>
+                  
+                  <div className="bg-[var(--container-color)]/50 p-3 rounded-lg">
+                    <div className="text-sm text-[var(--text-gray)]">Pominięte</div>
+                    <div className="text-xl font-bold text-[var(--accent)]">{stats.skippedTasks}</div>
+                  </div>
+                  
+                  <div className="bg-[var(--container-color)]/50 p-3 rounded-lg col-span-2">
+                    <div className="text-sm text-[var(--text-gray)]">Całkowity czas</div>
+                    <div className="text-xl font-bold">{stats.totalTime} min</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        {/* Main task area */}
+        <div className="w-full md:w-2/3">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={currentTask ? currentTask.id : 'loading'}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+              className="card relative"
+            >
+              {/* Timer */}
+              <div className="absolute -top-5 right-6">
+                <div className="w-20 h-20 rounded-full bg-[var(--container-color)] border-4 border-[var(--border-color)] flex items-center justify-center shadow-lg">
+                  <div className="relative w-full h-full flex items-center justify-center">
+                    <svg className="w-full h-full -rotate-90 absolute">
+                      <circle
+                        cx="40"
+                        cy="40"
+                        r="36"
+                        strokeWidth="4"
+                        stroke="var(--primary)"
+                        fill="transparent"
+                        strokeDasharray={`${2 * Math.PI * 36}`}
+                        strokeDashoffset={`${2 * Math.PI * 36 * (1 - calculateProgress() / 100)}`}
+                        className="transition-all duration-1000"
+                      />
+                    </svg>
+                    <span className={`text-xl font-bold ${timeRemaining <= 30 ? 'text-red-500 animate-pulse' : ''}`}>
+                      {formatTime(timeRemaining)}
+                    </span>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Task content */}
+              <div className="pt-10">
+                <div className="flex justify-between items-start mb-6">
+                  <div>
+                    <span className="text-xs text-[var(--text-gray)]">Wyzwanie #{taskHistory.length + 1}</span>
+                    <h2 className="text-2xl font-bold gradient-text">Losowe Wyzwanie</h2>
+                  </div>
+                  
+                  {currentTask && currentTask.target && (
+                    <div className="bg-[var(--primary)]/10 px-3 py-1 rounded-full">
+                      <span className="text-sm font-medium text-[var(--primary)]">
+                        {getTaskTarget(currentTask.target)}
+                      </span>
+                    </div>
+                  )}
+                </div>
+                
+                <div className="bg-[var(--container-color)]/50 p-6 rounded-lg mb-6 min-h-[120px] flex items-center justify-center">
+                  <p className="text-xl sm:text-2xl text-center">
+                    {currentTask ? currentTask.content : "Ładowanie zadania..."}
+                  </p>
+                </div>
+                
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <button 
+                    onClick={handleCompleteTask}
+                    className="btn btn-primary flex-1"
+                  >
+                    Wykonane
+                  </button>
+                  <button 
+                    onClick={handleSkipTask}
+                    className="btn btn-outline flex-1"
+                  >
+                    Pomiń
+                  </button>
+                </div>
               </div>
             </motion.div>
+          </AnimatePresence>
+          
+          {/* Recent history */}
+          {taskHistory.length > 0 && (
+            <div className="mt-6">
+              <h3 className="text-lg font-semibold mb-3">Ostatnie wyzwania</h3>
+              <div className="space-y-2">
+                {taskHistory.slice(-3).reverse().map((task, index) => (
+                  <div 
+                    key={`${task.id}-${index}`}
+                    className={`p-3 rounded-lg border ${
+                      task.completed 
+                        ? 'border-green-500/30 bg-green-500/10' 
+                        : task.expired
+                          ? 'border-amber-500/30 bg-amber-500/10'
+                          : 'border-red-500/30 bg-red-500/10'
+                    }`}
+                  >
+                    <div className="flex justify-between items-start">
+                      <p className="text-sm">{task.content}</p>
+                      <span className={`text-xs px-2 py-0.5 rounded-full ${
+                        task.completed 
+                          ? 'bg-green-500/20 text-green-400' 
+                          : task.expired
+                            ? 'bg-amber-500/20 text-amber-400'
+                            : 'bg-red-500/20 text-red-400'
+                      }`}>
+                        {task.completed 
+                          ? 'Wykonane' 
+                          : task.expired
+                            ? 'Czas minął'
+                            : 'Pominięte'
+                        }
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
           )}
-        </AnimatePresence>
-        
-        {/* Action Buttons */}
-        <div className="flex flex-col sm:flex-row gap-4 w-full max-w-lg">
-          <button 
-            className="btn btn-primary flex-1"
-            onClick={handleCompleteTask}
-          >
-            Wykonane!
-          </button>
-          <button 
-            className="btn btn-outline flex-1"
-            onClick={handleSkipTask}
-          >
-            Pomiń
-          </button>
         </div>
-        
-        {/* End Game Button */}
-        <button 
-          className="btn btn-outline border-red-500 text-red-500 hover:bg-red-500 mt-8"
-          onClick={handleEndGame}
-        >
-          Zakończ Grę
-        </button>
       </div>
     </motion.div>
   );

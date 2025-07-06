@@ -9,9 +9,9 @@ const montserrat = Montserrat({
 });
 
 export const metadata = {
-  title: "WhatNow?! - Party Chaos Generator",
-  description: "Boost any party with absurd, funny, and challenging tasks for groups of friends. Different game modes, timer, and session history export!",
-  keywords: ["party game", "drinking game", "challenges", "fun activities", "party tasks", "random challenges", "group games", "party entertainment"],
+  title: "WhatNow?! - Generator Imprezowego Chaosu",
+  description: "Ożyw każdą imprezę absurdalnymi, zabawnymi i wyzywającymi zadaniami dla grup znajomych. Różne tryby gry, licznik czasu i eksport historii sesji!",
+  keywords: ["gra imprezowa", "gra alkoholowa", "wyzwania", "zabawy", "zadania imprezowe", "losowe wyzwania", "gry grupowe", "rozrywka na imprezę"],
   authors: [{ name: "WhatNow?!" }],
   creator: "WhatNow?!",
   publisher: "WhatNow?!",
@@ -21,8 +21,8 @@ export const metadata = {
     canonical: "/",
   },
   openGraph: {
-    title: "WhatNow?! - Party Chaos Generator",
-    description: "Boost any party with absurd, funny, and challenging tasks for groups of friends. Different game modes, timer, and session history export!",
+    title: "WhatNow?! - Generator Imprezowego Chaosu",
+    description: "Ożyw każdą imprezę absurdalnymi, zabawnymi i wyzywającymi zadaniami dla grup znajomych. Różne tryby gry, licznik czasu i eksport historii sesji!",
     url: "https://what-now-chaos.vercel.app",
     siteName: "WhatNow?!",
     images: [
@@ -30,16 +30,16 @@ export const metadata = {
         url: "/logo.png",
         width: 800,
         height: 600,
-        alt: "WhatNow?! Logo",
+        alt: "Logo WhatNow?!",
       },
     ],
-    locale: "en_US",
+    locale: "pl_PL",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "WhatNow?! - Party Chaos Generator",
-    description: "Boost any party with absurd, funny, and challenging tasks for groups of friends. Different game modes, timer, and session history export!",
+    title: "WhatNow?! - Generator Imprezowego Chaosu",
+    description: "Ożyw każdą imprezę absurdalnymi, zabawnymi i wyzywającymi zadaniami dla grup znajomych. Różne tryby gry, licznik czasu i eksport historii sesji!",
     images: ["/logo.png"],
   },
   robots: {
@@ -57,7 +57,7 @@ export const viewport = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="pl">
       <body
         className={`${montserrat.variable} antialiased`}
       >

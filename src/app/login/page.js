@@ -5,7 +5,6 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/lib/AuthContext";
-import Comeback from "@/app/partial/comeback";  
 import Footer from "@/app/partial/footer";
 
 // Create a client component to use useSearchParams
@@ -190,7 +189,6 @@ export default function LoginPage() {
   return (
     <>
     <div className="min-h-screen flex flex-col items-center justify-center px-4">
-      <Comeback />
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

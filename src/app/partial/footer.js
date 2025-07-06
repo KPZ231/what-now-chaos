@@ -24,7 +24,7 @@ export default function Footer() {
                             </Link>
 
                             <p className="text-xs sm:text-sm text-[var(--text-white)]">
-                                &copy; {new Date().getFullYear()} KPZsProductions. All rights reserved.
+                                &copy; {new Date().getFullYear()} KPZsProductions. Wszelkie prawa zastrzeżone.
                             </p>
                         </div>
 
@@ -59,10 +59,10 @@ export default function Footer() {
                     <div className="mt-6 flex flex-col md:flex-row justify-between gap-6">
                         {/* Important Links */}
                         <div className="flex flex-wrap justify-center md:justify-start gap-x-6 gap-y-2">
-                            <Link href="/privacy-policy" className="text-xs sm:text-sm text-[var(--text-gray)] hover:text-white transition-colors">Privacy Policy</Link>
-                            <Link href="/terms-of-service" className="text-xs sm:text-sm text-[var(--text-gray)] hover:text-white transition-colors">Terms of Service</Link>
-                            <Link href="/subscription-policy" className="text-xs sm:text-sm text-[var(--text-gray)] hover:text-white transition-colors">Subscription Policy</Link>
-                            <Link href="/cookie-policy" className="text-xs sm:text-sm text-[var(--text-gray)] hover:text-white transition-colors">Cookie Policy</Link>
+                            <Link href="/privacy-policy" className="text-xs sm:text-sm text-[var(--text-gray)] hover:text-white transition-colors">Polityka Prywatności</Link>
+                            <Link href="/terms-of-service" className="text-xs sm:text-sm text-[var(--text-gray)] hover:text-white transition-colors">Regulamin</Link>
+                            <Link href="/subscription-policy" className="text-xs sm:text-sm text-[var(--text-gray)] hover:text-white transition-colors">Zasady Subskrypcji</Link>
+                            <Link href="/cookie-policy" className="text-xs sm:text-sm text-[var(--text-gray)] hover:text-white transition-colors">Polityka Cookies</Link>
                         </div>
 
                         {/* Contact */}
@@ -84,9 +84,9 @@ export default function Footer() {
                 {
                     "@context": "https://schema.org",
                     "@type": "WebApplication",
-                    "name": "WhatNow?! - Party Chaos Generator",
+                    "name": "WhatNow?! - Generator Imprezowego Chaosu",
                     "url": "https://what-now-chaos.vercel.app/",
-                    "description": "Boost any party with absurd, funny, and challenging tasks for groups of friends. Different game modes, timer, and session history export!",
+                    "description": "Ożyw każdą imprezę absurdalnymi, zabawnymi i wyzywającymi zadaniami dla grup znajomych. Różne tryby gry, licznik czasu i eksport historii sesji!",
                     "applicationCategory": "Entertainment",
                     "operatingSystem": "Web, Android, iOS",
                     "offers": {

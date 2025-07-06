@@ -43,10 +43,10 @@ export default function Navbar({ isLoading, isAuthenticated, user, showUserMenu,
             Start
           </Link>
           <Link href="/modes" className="hover:text-[var(--primary)] transition-colors">
-            Game Modes
+            Tryby Gry
           </Link>
           <Link href="/about" className="hover:text-[var(--primary)] transition-colors">
-            About Us
+            O Nas
           </Link>
           <Link 
             href={isAuthenticated && user?.hasPremium ? "/premium-advantages" : "/premium"} 
@@ -72,18 +72,18 @@ export default function Navbar({ isLoading, isAuthenticated, user, showUserMenu,
               {showUserMenu && (
                 <div className="absolute top-full right-0 mt-2 w-48 bg-[var(--container-color)] border border-[var(--border-color)] rounded-lg shadow-lg py-2 z-50">
                   <Link href="/profile" className="block px-4 py-2 hover:bg-[var(--primary)]/20 transition-colors">
-                    Profile
+                    Profil
                   </Link>
                   {user.hasPremium && (
                     <Link href="/premium-advantages" className="block px-4 py-2 hover:bg-[var(--primary)]/20 transition-colors">
-                      Premium Status
+                      Status Premium
                     </Link>
                   )}
                   <button 
                     onClick={handleLogout}
                     className="w-full text-left px-4 py-2 text-red-400 hover:bg-red-500/20 transition-colors cursor-pointer"
                   >
-                    Log Out
+                    Wyloguj
                   </button>
                 </div>
               )}
@@ -91,10 +91,10 @@ export default function Navbar({ isLoading, isAuthenticated, user, showUserMenu,
           ) : (
             <>
               <Link href="/login" className="hover:text-[var(--accent)] transition-colors">
-                Login
+                Logowanie
               </Link>
               <Link href="/register" className="px-4 py-1 rounded border border-[var(--accent)] text-[var(--accent)] hover:bg-[var(--accent)] hover:text-white transition-colors">
-                Register
+                Rejestracja
               </Link>
             </>
           )}
@@ -108,7 +108,7 @@ export default function Navbar({ isLoading, isAuthenticated, user, showUserMenu,
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              Play Now
+              Zagraj Teraz
             </motion.div>
           </Link>
         </motion.div>
@@ -152,14 +152,14 @@ export default function Navbar({ isLoading, isAuthenticated, user, showUserMenu,
               className="p-3 hover:bg-[var(--primary)]/10 rounded-lg transition-colors"
               onClick={toggleMobileMenu}
             >
-              Game Modes
+              Tryby Gry
             </Link>
             <Link 
               href="/about" 
               className="p-3 hover:bg-[var(--primary)]/10 rounded-lg transition-colors"
               onClick={toggleMobileMenu}
             >
-              About Us
+              O Nas
             </Link>
             <Link 
               href={isAuthenticated && user?.hasPremium ? "/premium-advantages" : "/premium"} 
@@ -185,7 +185,7 @@ export default function Navbar({ isLoading, isAuthenticated, user, showUserMenu,
                     className="p-3 hover:bg-[var(--primary)]/10 rounded-lg transition-colors"
                     onClick={toggleMobileMenu}
                   >
-                    Profile
+                    Profil
                   </Link>
                   {user.hasPremium && (
                     <Link 
@@ -193,7 +193,7 @@ export default function Navbar({ isLoading, isAuthenticated, user, showUserMenu,
                       className="p-3 hover:bg-[var(--primary)]/10 rounded-lg transition-colors"
                       onClick={toggleMobileMenu}
                     >
-                      Premium Status
+                      Status Premium
                     </Link>
                   )}
                   <button 
@@ -203,7 +203,7 @@ export default function Navbar({ isLoading, isAuthenticated, user, showUserMenu,
                     }}
                     className="w-full text-left p-3 text-red-400 hover:bg-red-500/20 rounded-lg transition-colors cursor-pointer"
                   >
-                    Log Out
+                    Wyloguj
                   </button>
                 </div>
               ) : (
@@ -213,14 +213,14 @@ export default function Navbar({ isLoading, isAuthenticated, user, showUserMenu,
                     className="p-3 hover:bg-[var(--primary)]/10 rounded-lg transition-colors"
                     onClick={toggleMobileMenu}
                   >
-                    Login
+                    Logowanie
                   </Link>
                   <Link 
                     href="/register" 
                     className="p-3 hover:bg-[var(--primary)]/10 rounded-lg transition-colors"
                     onClick={toggleMobileMenu}
                   >
-                    Register
+                    Rejestracja
                   </Link>
                 </div>
               )}
@@ -231,7 +231,7 @@ export default function Navbar({ isLoading, isAuthenticated, user, showUserMenu,
               className="btn btn-primary mt-4 text-center"
               onClick={toggleMobileMenu}
             >
-              Play Now
+              Zagraj Teraz
             </Link>
           </div>
         </motion.div>

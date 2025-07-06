@@ -14,54 +14,54 @@ export default function ModesPage() {
   const modes = {
     soft: {
       title: "Soft",
-      description: "Gentle and safe challenges, perfect for warm-ups or more social gatherings. Tasks focus on integration, conversations and easier activities.",
+      description: "Łagodne i bezpieczne wyzwania, idealne na rozgrzewkę lub bardziej towarzyskie spotkania. Zadania skupiają się na integracji, rozmowach i łatwiejszych aktywnościach.",
       color: "from-blue-500 to-purple-500",
       premium: false,
       examples: [
-        "Switch places with the person on your left.",
-        "Say something nice to every player.",
-        "Show your last 3 photos from your phone gallery.",
-        "Describe the person on your right with three positive words.",
-        "Talk about your most interesting hobby."
+        "Zamień się miejscem z osobą po lewej.",
+        "Powiedz coś miłego każdemu graczowi.",
+        "Pokaż 3 ostatnie zdjęcia ze swojej galerii.",
+        "Opisz osobę po swojej prawej stronie trzema pozytywnymi słowami.",
+        "Opowiedz o swoim najbardziej interesującym hobby."
       ]
     },
     chaos: {
       title: "Chaos",
-      description: "Crazy and creative tasks that cause laughter and unexpected situations. This mode brings more energy and unexpected twists to the party.",
+      description: "Szalone i kreatywne zadania, które wywołują śmiech i niespodziewane sytuacje. Ten tryb wprowadza więcej energii i nieoczekiwanych zwrotów akcji na imprezie.",
       color: "from-pink-500 to-orange-500",
       premium: false,
       examples: [
-        "Everyone must speak backwards for 1 minute.",
-        "Whoever stands on a chair first rules for 1 round.",
-        "Exchange clothes with the person on your right for 5 minutes.",
-        "For the next 2 minutes, answer all questions by singing.",
-        "Make the weirdest face you can and hold it for 30 seconds."
+        "Wszyscy muszą mówić wspak przez 1 minutę.",
+        "Kto pierwszy stanie na krześle, ten rządzi przez 1 rundę.",
+        "Zamień się ubraniami z osobą po prawej na 5 minut.",
+        "Przez następne 2 minuty odpowiadaj na wszystkie pytania śpiewając.",
+        "Zrób najdziwniejszą minę jaką potrafisz i utrzymaj ją przez 30 sekund."
       ]
     },
     hardcore: {
       title: "Hardcore",
-      description: "Bold and challenging tasks for real party-goers. This mode contains adult-oriented tasks, often involving drinking and daring challenges.",
+      description: "Odważne i wyzywające zadania dla prawdziwych imprezowiczów. Ten tryb zawiera zadania dla dorosłych, często związane z piciem alkoholu i odważnymi wyzwaniami.",
       color: "from-red-500 to-rose-700",
       premium: true,
       examples: [
-        "The youngest player drinks twice.",
-        "Say something very uncomfortable about yourself - or drink.",
-        "The person with the most siblings drinks as many times as they have siblings.",
-        "Do 10 push-ups or take a shot.",
-        "Play 'Never have I ever' - the loser drinks."
+        "Najmłodszy gracz pije dwa razy.",
+        "Powiedz coś bardzo niewygodnego o sobie - albo pij.",
+        "Osoba z największą liczbą rodzeństwa pije tyle razy, ile ma rodzeństwa.",
+        "Zrób 10 pompek albo wypij shota.",
+        "Zagrajcie w 'Nigdy przenigdy' - przegrany pije."
       ]
     },
     quick: {
       title: "Quick",
-      description: "Fast reflex challenges that will immediately boost the atmosphere. This mode tests reflexes and concentration, introducing an element of competition and quick action.",
+      description: "Szybkie wyzwania na refleks, które natychmiast podkręcą atmosferę. Ten tryb testuje refleks i koncentrację, wprowadzając element rywalizacji i szybkiego działania.",
       color: "from-amber-400 to-yellow-600",
       premium: true,
       examples: [
-        "Everyone claps 3 times. Whoever doesn't make it, drinks.",
-        "Tell the sock color of the person to your left - or drink.",
-        "Last person to touch the floor - drinks.",
-        "Stand up and turn around 3 times. Last one to do it - drinks.",
-        "First person to find something red and bring it, chooses who drinks."
+        "Wszyscy klaszczą 3 razy. Kto nie zdąży, pije.",
+        "Powiedz kolor skarpet osoby po lewej - albo pij.",
+        "Ostatnia osoba, która dotknie podłogi - pije.",
+        "Wstań i obróć się 3 razy. Ostatnia osoba, która to zrobi - pije.",
+        "Pierwsza osoba, która znajdzie coś czerwonego i przyniesie, wybiera kto pije."
       ]
     }
   };
@@ -74,8 +74,8 @@ export default function ModesPage() {
   const modesPageStructuredData = {
     "@context": "https://schema.org",
     "@type": "WebPage",
-    "name": "Game Modes - WhatNow?! Party Chaos Generator",
-    "description": "Explore different game modes in WhatNow?! - from gentle Soft mode to wild Hardcore challenges for your party.",
+    "name": "Tryby Gry - WhatNow?! Generator Imprezowego Chaosu",
+    "description": "Odkryj różne tryby gry w WhatNow?! - od łagodnego trybu Soft po dzikie wyzwania Hardcore na Twoją imprezę.",
     "url": "https://what-now-chaos.vercel.app/modes",
     "mainEntity": {
       "@type": "ItemList",
@@ -92,10 +92,10 @@ export default function ModesPage() {
   return (
     <>
       <SEO 
-        title="Game Modes - WhatNow?! Party Chaos Generator"
-        description="Explore different game modes in WhatNow?! - from gentle Soft mode to wild Hardcore challenges for your party."
+        title="Tryby Gry - WhatNow?! Generator Imprezowego Chaosu"
+        description="Odkryj różne tryby gry w WhatNow?! - od łagodnego trybu Soft po dzikie wyzwania Hardcore na Twoją imprezę."
         canonicalUrl="/modes"
-        keywords={["party game modes", "drinking game challenges", "fun party activities", "party game types"]}
+        keywords={["tryby gry imprezowej", "wyzwania w grach alkoholowych", "zabawy imprezowe", "rodzaje gier imprezowych"]}
         structuredData={modesPageStructuredData}
       />
       <main className="flex min-h-screen flex-col items-center justify-between p-4 sm:p-8">
@@ -108,7 +108,7 @@ export default function ModesPage() {
           >
             <div className="flex flex-col items-center justify-center space-y-8 p-2 sm:p-6">
               <h1 className="text-3xl sm:text-4xl font-bold gradient-text text-center mb-8">
-                Game Modes
+                Tryby Gry
               </h1>
 
               {/* Mode selector tabs */}
@@ -165,7 +165,7 @@ export default function ModesPage() {
 
                     {/* Examples */}
                     <div className="mb-8">
-                      <h3 className="text-xl font-semibold mb-4">Example Challenges:</h3>
+                      <h3 className="text-xl font-semibold mb-4">Przykładowe Wyzwania:</h3>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         {modes[activeMode].examples.map((example, index) => (
                           <div 
@@ -183,12 +183,12 @@ export default function ModesPage() {
                       <div className="absolute inset-0 bg-black/80 backdrop-blur-sm flex flex-col items-center justify-center z-10 rounded-xl">
                         <div className="text-center p-6">
                           <div className="text-5xl mb-4">🔒</div>
-                          <h3 className="text-2xl font-bold mb-2">Premium Mode</h3>
+                          <h3 className="text-2xl font-bold mb-2">Tryb Premium</h3>
                           <p className="mb-6 max-w-md mx-auto text-[var(--text-gray)]">
-                            This game mode is only available to users with an active premium subscription.
+                            Ten tryb gry jest dostępny tylko dla użytkowników z aktywną subskrypcją premium.
                           </p>
                           <Link href="/premium" className="btn btn-primary">
-                            Unlock Premium
+                            Odblokuj Premium
                           </Link>
                         </div>
                       </div>
@@ -200,10 +200,10 @@ export default function ModesPage() {
               {/* Call to action */}
               <div className="flex flex-col sm:flex-row gap-4 mt-6">
                 <Link href="/play" className="btn btn-primary">
-                  Start Game
+                  Rozpocznij Grę
                 </Link>
                 <Link href="/" className="btn btn-outline">
-                  Back to Menu
+                  Powrót do Menu
                 </Link>
               </div>
             </div>

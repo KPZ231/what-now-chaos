@@ -6,7 +6,6 @@ import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
-import Comeback from "@/app/partial/comeback";
 import PremiumStatus from './PremiumStatus';
 
 
@@ -457,7 +456,6 @@ export default function ProfilePage() {
           {message.text}
         </motion.div>
       )}
-        <Comeback />
       <motion.div 
         className="flex flex-wrap mb-6 border-b border-[var(--border-color)]"
         variants={itemVariants}
