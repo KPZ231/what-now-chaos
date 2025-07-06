@@ -15,13 +15,14 @@ export const metadata = {
   authors: [{ name: "WhatNow?!" }],
   creator: "WhatNow?!",
   publisher: "WhatNow?!",
-  themeColor: "#ff4dbc",
-  viewport: {
-    width: "device-width",
-    initialScale: 1,
-    maximumScale: 1,
-  },
   manifest: "/manifest.json",
+};
+
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  themeColor: "#ff4dbc",
 };
 
 export default function RootLayout({ children }) {
