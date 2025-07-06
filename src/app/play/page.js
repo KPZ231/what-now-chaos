@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import GameCreator from './GameCreator';
 import Game from './Game';
 import GameHistory from './GameHistory';
+import NavbarWrapper from '@/app/components/NavbarWrapper';
 
 export default function PlayPage() {
   const [gameState, setGameState] = useState('setup'); // setup, play, summary, history
@@ -118,10 +119,12 @@ export default function PlayPage() {
   };
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-4 sm:p-8">
-      <div className="w-full max-w-5xl">
-        {renderContent()}
-      </div>
-    </main>
+    <NavbarWrapper>
+      <main className="flex min-h-screen flex-col items-center justify-between p-4 sm:p-8 pt-20 pb-24">
+        <div className="w-full max-w-5xl">
+          {renderContent()}
+        </div>
+      </main>
+    </NavbarWrapper>
   );
 } 

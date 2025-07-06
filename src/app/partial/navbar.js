@@ -134,12 +134,12 @@ export default function Navbar({ isLoading, isAuthenticated, user, showUserMenu,
         )}
 
         {/* Mobile menu */}
-        <motion.div 
-          className={`fixed top-0 right-0 h-full w-4/5 max-w-sm bg-[var(--container-color)] z-40 shadow-xl transform transition-transform duration-300 ease-in-out ${mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}
+        <motion.div
+          className="fixed top-0 right-0 h-full w-4/5 max-w-sm bg-[var(--container-color)] z-40 shadow-xl transform transition-transform duration-300 ease-in-out"
           initial={{ x: "100%" }}
           animate={{ x: mobileMenuOpen ? 0 : "100%" }}
         >
-          <div className="p-6 pt-20 flex flex-col gap-4">
+          <div className="p-6 pt-20 flex flex-col gap-4 bg-black">
             <Link 
               href="/play" 
               className="p-3 hover:bg-[var(--primary)]/10 rounded-lg transition-colors font-medium"
@@ -169,7 +169,7 @@ export default function Navbar({ isLoading, isAuthenticated, user, showUserMenu,
               Premium
             </Link>
             
-            <div className="border-t border-[var(--border-color)]/50 my-2 pt-2">
+            <div className="mt-4">
               {isLoading ? (
                 <div className="w-full p-3 rounded-lg bg-[var(--border-color)]/30 animate-pulse"></div>
               ) : isAuthenticated ? (

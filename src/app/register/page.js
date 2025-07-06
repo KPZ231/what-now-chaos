@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Footer from "@/app/partial/footer";
+import NavbarWrapper from "@/app/components/NavbarWrapper";
 
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/AuthContext";
@@ -126,153 +127,151 @@ export default function RegisterPage() {
   }
 
   return (
-    <>
-    <div className="min-h-screen flex flex-col items-center justify-center px-4">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="w-full max-w-md"
-      >
-        <Link 
-          href="/"
-          className="flex items-center justify-center gap-2 mb-8"
+    <NavbarWrapper>
+      <div className="min-h-screen flex flex-col items-center justify-center px-4 pt-16 pb-20">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="w-full max-w-md"
         >
-          <div className="w-10 h-10 rounded-full bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] flex items-center justify-center text-white font-bold text-lg">
-            W!
-          </div>
-          <span className="text-2xl font-bold gradient-text">WhatNow?!</span>
-        </Link>
-        
-        <div className="card">
-          <h1 className="text-2xl font-bold mb-6 text-center">Rejestracja</h1>
+          <Link 
+            href="/"
+            className="flex items-center justify-center gap-2 mb-8"
+          >
+            <div className="w-10 h-10 rounded-full bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] flex items-center justify-center text-white font-bold text-lg">
+              W!
+            </div>
+            <span className="text-2xl font-bold gradient-text">WhatNow?!</span>
+          </Link>
           
-          {error && (
-            <div className="bg-red-500/20 border border-red-500 text-white rounded-lg p-3 mb-6">
-              {error}
-            </div>
-          )}
-          
-          {successMessage && (
-            <div className="bg-green-500/20 border border-green-500 text-white rounded-lg p-3 mb-6">
-              {successMessage}
-            </div>
-          )}
-          
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label htmlFor="name" className="block text-[var(--text-gray)] mb-1">
-                Imię (opcjonalnie)
-              </label>
-              <input
-                id="name"
-                type="text"
-                value={name}
-                onChange={handleNameChange}
-                className="w-full bg-[var(--body-color)] border border-[var(--border-color)] rounded-lg p-3 text-white focus:outline-none focus:ring-2 focus:ring-[var(--primary)] transition-all"
-                placeholder="Twoje imię"
-              />
-            </div>
+          <div className="card">
+            <h1 className="text-2xl font-bold mb-6 text-center">Rejestracja</h1>
             
-            <div>
-              <label htmlFor="email" className="block text-[var(--text-gray)] mb-1">
-                Email*
-              </label>
-              <input
-                id="email"
-                type="email"
-                value={email}
-                onChange={handleEmailChange}
-                required
-                className={`w-full bg-[var(--body-color)] border ${emailError ? 'border-red-500' : 'border-[var(--border-color)]'} rounded-lg p-3 text-white focus:outline-none focus:ring-2 focus:ring-[var(--primary)] transition-all`}
-                placeholder="twoj@email.pl"
-                onBlur={() => setEmailError(validateEmail(email))}
-              />
-              {emailError && (
-                <p className="mt-1 text-red-400 text-sm">{emailError}</p>
-              )}
-            </div>
+            {error && (
+              <div className="bg-red-500/20 border border-red-500 text-white rounded-lg p-3 mb-6">
+                {error}
+              </div>
+            )}
             
-            <div>
-              <label htmlFor="password" className="block text-[var(--text-gray)] mb-1">
-                Hasło*
-              </label>
-              <input
-                id="password"
-                type="password"
-                value={password}
-                onChange={handlePasswordChange}
-                required
-                className={`w-full bg-[var(--body-color)] border ${passwordError ? 'border-red-500' : 'border-[var(--border-color)]'} rounded-lg p-3 text-white focus:outline-none focus:ring-2 focus:ring-[var(--primary)] transition-all`}
-                placeholder="Minimum 6 znaków"
-                onBlur={() => setPasswordError(validatePassword(password))}
-              />
-              {passwordError && (
-                <p className="mt-1 text-red-400 text-sm">{passwordError}</p>
-              )}
-            </div>
+            {successMessage && (
+              <div className="bg-green-500/20 border border-green-500 text-white rounded-lg p-3 mb-6">
+                {successMessage}
+              </div>
+            )}
             
-            <div>
-              <label htmlFor="confirmPassword" className="block text-[var(--text-gray)] mb-1">
-                Potwierdź hasło*
-              </label>
-              <input
-                id="confirmPassword"
-                type="password"
-                value={confirmPassword}
-                onChange={handleConfirmPasswordChange}
-                required
-                className={`w-full bg-[var(--body-color)] border ${confirmPasswordError ? 'border-red-500' : 'border-[var(--border-color)]'} rounded-lg p-3 text-white focus:outline-none focus:ring-2 focus:ring-[var(--primary)] transition-all`}
-                placeholder="Powtórz hasło"
-                onBlur={() => setConfirmPasswordError(validateConfirmPassword(confirmPassword))}
-              />
-              {confirmPasswordError && (
-                <p className="mt-1 text-red-400 text-sm">{confirmPasswordError}</p>
-              )}
-            </div>
-            
-
-            <div>
-              <label htmlFor="terms" className="block text-[var(--text-gray)] mb-1">
-                <input 
-                  type="checkbox" 
-                  id="terms" 
-                  className="mr-2" 
-                  required
-                  checked={termsAccepted}
-                  onChange={(e) => setTermsAccepted(e.target.checked)} 
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <label htmlFor="name" className="block text-[var(--text-gray)] mb-1">
+                  Imię (opcjonalnie)
+                </label>
+                <input
+                  id="name"
+                  type="text"
+                  value={name}
+                  onChange={handleNameChange}
+                  className="w-full bg-[var(--body-color)] border border-[var(--border-color)] rounded-lg p-3 text-white focus:outline-none focus:ring-2 focus:ring-[var(--primary)] transition-all"
+                  placeholder="Twoje imię"
                 />
-                Akceptuję <Link href="/terms" className="text-[var(--primary)] hover:text-[var(--primary-light)]">regulamin</Link>
-              </label>
+              </div>
+              
+              <div>
+                <label htmlFor="email" className="block text-[var(--text-gray)] mb-1">
+                  Email*
+                </label>
+                <input
+                  id="email"
+                  type="email"
+                  value={email}
+                  onChange={handleEmailChange}
+                  required
+                  className={`w-full bg-[var(--body-color)] border ${emailError ? 'border-red-500' : 'border-[var(--border-color)]'} rounded-lg p-3 text-white focus:outline-none focus:ring-2 focus:ring-[var(--primary)] transition-all`}
+                  placeholder="twoj@email.pl"
+                  onBlur={() => setEmailError(validateEmail(email))}
+                />
+                {emailError && (
+                  <p className="mt-1 text-red-400 text-sm">{emailError}</p>
+                )}
+              </div>
+              
+              <div>
+                <label htmlFor="password" className="block text-[var(--text-gray)] mb-1">
+                  Hasło*
+                </label>
+                <input
+                  id="password"
+                  type="password"
+                  value={password}
+                  onChange={handlePasswordChange}
+                  required
+                  className={`w-full bg-[var(--body-color)] border ${passwordError ? 'border-red-500' : 'border-[var(--border-color)]'} rounded-lg p-3 text-white focus:outline-none focus:ring-2 focus:ring-[var(--primary)] transition-all`}
+                  placeholder="Minimum 6 znaków"
+                  onBlur={() => setPasswordError(validatePassword(password))}
+                />
+                {passwordError && (
+                  <p className="mt-1 text-red-400 text-sm">{passwordError}</p>
+                )}
+              </div>
+              
+              <div>
+                <label htmlFor="confirmPassword" className="block text-[var(--text-gray)] mb-1">
+                  Potwierdź hasło*
+                </label>
+                <input
+                  id="confirmPassword"
+                  type="password"
+                  value={confirmPassword}
+                  onChange={handleConfirmPasswordChange}
+                  required
+                  className={`w-full bg-[var(--body-color)] border ${confirmPasswordError ? 'border-red-500' : 'border-[var(--border-color)]'} rounded-lg p-3 text-white focus:outline-none focus:ring-2 focus:ring-[var(--primary)] transition-all`}
+                  placeholder="Powtórz hasło"
+                  onBlur={() => setConfirmPasswordError(validateConfirmPassword(confirmPassword))}
+                />
+                {confirmPasswordError && (
+                  <p className="mt-1 text-red-400 text-sm">{confirmPasswordError}</p>
+                )}
+              </div>
+              
+
+              <div>
+                <label htmlFor="terms" className="block text-[var(--text-gray)] mb-1">
+                  <input 
+                    type="checkbox" 
+                    id="terms" 
+                    className="mr-2" 
+                    required
+                    checked={termsAccepted}
+                    onChange={(e) => setTermsAccepted(e.target.checked)} 
+                  />
+                  Akceptuję <Link href="/terms" className="text-[var(--primary)] hover:text-[var(--primary-light)]">regulamin</Link>
+                </label>
+              </div>
+
+
+              <button
+                type="submit"
+                disabled={isLoading || emailError || passwordError || confirmPasswordError || !termsAccepted}
+                className="w-full btn btn-primary flex justify-center items-center"
+              >
+                {isLoading ? (
+                  <span className="animate-pulse">Rejestracja...</span>
+                ) : (
+                  "Zarejestruj się"
+                )}
+              </button>
+            </form>
+            
+            <div className="mt-6 text-center text-[var(--text-gray)]">
+              Masz już konto?{" "}
+              <Link href="/login" className="text-[var(--primary)] hover:text-[var(--primary-light)]">
+                Zaloguj się
+              </Link>
             </div>
-
-
-            <button
-              type="submit"
-              disabled={isLoading || emailError || passwordError || confirmPasswordError || !termsAccepted}
-              className="w-full btn btn-primary flex justify-center items-center"
-            >
-              {isLoading ? (
-                <span className="animate-pulse">Rejestracja...</span>
-              ) : (
-                "Zarejestruj się"
-              )}
-            </button>
-          </form>
-          
-          <div className="mt-6 text-center text-[var(--text-gray)]">
-            Masz już konto?{" "}
-            <Link href="/login" className="text-[var(--primary)] hover:text-[var(--primary-light)]">
-              Zaloguj się
-            </Link>
           </div>
-        </div>
-      </motion.div>
+        </motion.div>
+      </div>
 
-      
-    </div>
-
-    <Footer />
-    </>
+      <Footer />
+    </NavbarWrapper>
   );
 } 

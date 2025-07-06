@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useAuth } from '@/lib/AuthContext';
 import Footer from "@/app/partial/footer";
 import SEO from "@/lib/SEO";
+import NavbarWrapper from "@/app/components/NavbarWrapper";
 
 export default function ModesPage() {
   const [activeMode, setActiveMode] = useState('soft');
@@ -90,7 +91,7 @@ export default function ModesPage() {
   };
 
   return (
-    <>
+    <NavbarWrapper>
       <SEO 
         title="Tryby Gry - WhatNow?! Generator Imprezowego Chaosu"
         description="Odkryj różne tryby gry w WhatNow?! - od łagodnego trybu Soft po dzikie wyzwania Hardcore na Twoją imprezę."
@@ -98,7 +99,7 @@ export default function ModesPage() {
         keywords={["tryby gry imprezowej", "wyzwania w grach alkoholowych", "zabawy imprezowe", "rodzaje gier imprezowych"]}
         structuredData={modesPageStructuredData}
       />
-      <main className="flex min-h-screen flex-col items-center justify-between p-4 sm:p-8">
+      <main className="flex min-h-screen flex-col items-center justify-between p-4 sm:p-8 pt-20 pb-24">
         <div className="w-full max-w-5xl flex flex-col items-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -211,6 +212,6 @@ export default function ModesPage() {
         </div>
       </main>
       <Footer />
-    </>
+    </NavbarWrapper>
   );
 } 

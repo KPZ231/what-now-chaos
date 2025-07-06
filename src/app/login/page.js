@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/lib/AuthContext";
 import Footer from "@/app/partial/footer";
+import NavbarWrapper from "@/app/components/NavbarWrapper";
 
 // Create a client component to use useSearchParams
 function LoginForm() {
@@ -187,27 +188,25 @@ function LoginForm() {
 
 export default function LoginPage() {
   return (
-    <>
-    <div className="min-h-screen flex flex-col items-center justify-center px-4">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="w-full max-w-md"
-      >
-        <Suspense fallback={
-          <div className="card">
-            <p className="text-center">Ładowanie...</p>
-          </div>
-        }>
-          <LoginForm />
-        </Suspense>
-      </motion.div>
+    <NavbarWrapper>
+      <div className="min-h-screen flex flex-col items-center justify-center px-4 pt-16 pb-20">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="w-full max-w-md"
+        >
+          <Suspense fallback={
+            <div className="card">
+              <p className="text-center">Ładowanie...</p>
+            </div>
+          }>
+            <LoginForm />
+          </Suspense>
+        </motion.div>
+      </div>
 
-      
-    </div>
-
-    <Footer />
-    </>
+      <Footer />
+    </NavbarWrapper>
   );
 } 

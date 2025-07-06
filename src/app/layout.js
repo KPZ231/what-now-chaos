@@ -1,6 +1,7 @@
 import { Montserrat } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from '@/lib/AuthContext';
+import MobileNavbar from './partial/mobile-navbar';
 
 const montserrat = Montserrat({
   variable: "--font-montserrat",
@@ -63,6 +64,7 @@ export default function RootLayout({ children }) {
       >
         <AuthProvider>
           {children}
+          <MobileNavbar />
         </AuthProvider>
       </body>
     </html>
