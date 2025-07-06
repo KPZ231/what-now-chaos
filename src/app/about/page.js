@@ -121,78 +121,13 @@ export default function Home() {
                 </motion.div>
 
                 {/* Main Content */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-                    {/* Left Sidebar */}
-                    <motion.div
-                        initial={{ opacity: 0, x: -30 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.7, delay: 0.2 }}
-                        className="md:col-span-1"
-                    >
-                        <div className="card mb-6 glow">
-                            <h3 className="text-xl font-semibold text-[var(--primary)] mb-3">Our Skills</h3>
-                            <div className="space-y-4">
-                                <div>
-                                    <div className="flex justify-between mb-1">
-                                        <span>HTML/CSS/JavaScript</span>
-                                        <span>95%</span>
-                                    </div>
-                                    <div className="h-2 bg-[var(--container-color)] rounded-full">
-                                        <div className="h-full bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] rounded-full" style={{ width: '95%' }}></div>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div className="flex justify-between mb-1">
-                                        <span>C# / C++</span>
-                                        <span>90%</span>
-                                    </div>
-                                    <div className="h-2 bg-[var(--container-color)] rounded-full">
-                                        <div className="h-full bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] rounded-full" style={{ width: '90%' }}></div>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div className="flex justify-between mb-1">
-                                        <span>PHP / SQL</span>
-                                        <span>85%</span>
-                                    </div>
-                                    <div className="h-2 bg-[var(--container-color)] rounded-full">
-                                        <div className="h-full bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] rounded-full" style={{ width: '85%' }}></div>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div className="flex justify-between mb-1">
-                                        <span>Python</span>
-                                        <span>70%</span>
-                                    </div>
-                                    <div className="h-2 bg-[var(--container-color)] rounded-full">
-                                        <div className="h-full bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] rounded-full" style={{ width: '70%' }}></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <motion.div 
-                            className="card text-center"
-                            whileHover={{ scale: 1.02 }}
-                            transition={{ duration: 0.3 }}
-                        >
-                            <Link 
-                                href="https://kpz231.github.io/KPZsProduction_Website/about.html" 
-                                target="_blank" 
-                                rel="noopener noreferrer"
-                                className="btn btn-primary w-full"
-                            >
-                                Visit Our Website
-                            </Link>
-                        </motion.div>
-                    </motion.div>
-
+                <div className="grid grid-cols-1 gap-8 mb-16">
                     {/* Main Content */}
                     <motion.div
                         variants={containerVariants}
                         initial="hidden"
                         animate="visible"
-                        className="card md:col-span-2 relative overflow-hidden"
+                        className="card relative overflow-hidden"
                     >
                         <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-bl from-[var(--accent)] to-transparent opacity-10 rounded-bl-full"></div>
                         
