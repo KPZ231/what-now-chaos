@@ -1,3 +1,4 @@
+![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit/prs/github/KPZ231/what-now-chaos?utm_source=oss&utm_medium=github&utm_campaign=KPZ231%2Fwhat-now-chaos&labelColor=171717&color=FF570A&link=https%3A%2F%2Fcoderabbit.ai&label=CodeRabbit+Reviews)
 # WhatNow?! - Party Chaos Generator
 
 A web and mobile application (PWA) that throws absurd, funny, or challenging tasks at a group of friends every few minutes, increasing the fun and chaos at parties.
