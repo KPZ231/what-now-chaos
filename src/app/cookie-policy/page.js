@@ -19,7 +19,7 @@ export default function CookiePolicy() {
           
           <h2 className="text-xl font-semibold mt-6 mb-3">1. Wprowadzenie</h2>
           <p>
-            Niniejsza Polityka Cookies wyjaśnia, w jaki sposób KPZsProductions ("my", "nas", "nasze") używa plików cookie i podobnych technologii w aplikacji i witrynie WhatNow?! – Chaos Generator. Wyjaśnia, czym są te technologie i dlaczego ich używamy, a także Twoje prawa do kontrolowania ich wykorzystania.
+            Niniejsza Polityka Cookies wyjaśnia, w jaki sposób KPZsProductions (&quot;my&quot;, &quot;nas&quot;, &quot;nasze&quot;) używa plików cookie i podobnych technologii w aplikacji i witrynie WhatNow?! – Chaos Generator. Wyjaśnia, czym są te technologie i dlaczego ich używamy, a także Twoje prawa do kontrolowania ich wykorzystania.
           </p>
           
           <h2 className="text-xl font-semibold mt-6 mb-3">2. Czym są pliki cookie?</h2>

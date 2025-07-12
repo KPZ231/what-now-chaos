@@ -71,7 +71,7 @@ export default function TermsOfService() {
           
           <h2 className="text-xl font-semibold mt-6 mb-3">8. Wyłączenie Gwarancji</h2>
           <p>
-            Aplikacja jest dostarczana "tak jak jest" i "w miarę dostępności" bez żadnych gwarancji. Nie gwarantujemy, że aplikacja będzie działać bez przerw, bezpiecznie lub bez błędów.
+            Aplikacja jest dostarczana &quot;tak jak jest&quot; i &quot;w miarę dostępności&quot; bez żadnych gwarancji. Nie gwarantujemy, że aplikacja będzie działać bez przerw, bezpiecznie lub bez błędów.
           </p>
           
           <h2 className="text-xl font-semibold mt-6 mb-3">9. Ograniczenie Odpowiedzialności</h2>
@@ -93,7 +93,7 @@ export default function TermsOfService() {
           <p>
             Jeśli masz pytania dotyczące niniejszych Warunków, skontaktuj się z nami pod adresem:{" "}
             <Link href="mailto:info@KPZsProductions.com" className="text-[var(--primary)] hover:underline">
-              info@KPZsProductions.0com
+              info@KPZsProductions.com
             </Link>
           </p>
         </div>

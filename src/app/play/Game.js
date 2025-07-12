@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { playSound, preloadSounds, toggleSoundMute, isSoundMuted } from '@/lib/sounds';
 import { saveGameSession } from '@/lib/gameStorage';
@@ -51,7 +51,7 @@ export default function Game({ config, onEndGame }) {
     };
     
     loadTasks();
-  }, [config.mode]);
+  }, [config.mode, selectRandomTask]);
   
   // Set up timer
   useEffect(() => {
@@ -89,10 +89,10 @@ export default function Game({ config, onEndGame }) {
       clearInterval(timerInterval);
       clearInterval(statsInterval);
     };
-  }, [isLoading, isGameOver, config.timerMinutes]);
+  }, [isLoading, isGameOver, config.timerMinutes, handleNextTask]);
   
   // Select a random task
-  const selectRandomTask = (taskList) => {
+  const selectRandomTask = useCallback((taskList) => {
     const availableTasks = taskList.filter(
       task => !taskHistory.some(histTask => histTask.id === task.id)
     );
@@ -112,7 +112,7 @@ export default function Game({ config, onEndGame }) {
     
     const randomIndex = Math.floor(Math.random() * availableTasks.length);
     setCurrentTask(availableTasks[randomIndex]);
-  };
+  }, [taskHistory]);
   
   // Handle completing the current task
   const handleCompleteTask = () => {
@@ -159,7 +159,7 @@ export default function Game({ config, onEndGame }) {
   };
   
   // Handle showing the next task (when timer expires)
-  const handleNextTask = () => {
+  const handleNextTask = useCallback(() => {
     // Consider current task as skipped
     if (currentTask) {
       setTaskHistory(prev => [...prev, {...currentTask, completed: false, timestamp: Date.now(), expired: true}]);
@@ -174,7 +174,7 @@ export default function Game({ config, onEndGame }) {
     
     // Reset warning flag
     hasPlayedWarningRef.current = false;
-  };
+  }, [currentTask, tasks, selectRandomTask]);
   
   // Format time as MM:SS
   const formatTime = (seconds) => {

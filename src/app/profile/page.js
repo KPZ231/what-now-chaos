@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { useAuth } from '../../lib/AuthContext';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
@@ -143,21 +143,23 @@ export default function ProfilePage() {
     }
   };
   
-  const validateFile = (file) => {
-    if (!file) return '';
-    
-    // Sprawdź rozmiar pliku
-    if (file.size > MAX_FILE_SIZE) {
-      return `Plik jest za duży. Maksymalny rozmiar to 8MB.`;
-    }
+  // Walidacja pliku
+  const validateFile = useCallback((file) => {
+    if (!file) return 'Wybierz plik ze zdjęciem';
     
     // Sprawdź typ pliku
-    if (!ALLOWED_FILE_TYPES.includes(file.type)) {
-      return 'Niedozwolony format pliku. Dozwolone są tylko obrazy (JPEG, PNG, GIF, WebP, SVG).';
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+    if (!allowedTypes.includes(file.type)) {
+      return 'Dozwolone typy plików: JPG, PNG, GIF, WEBP';
+    }
+    
+    // Sprawdź rozmiar pliku (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      return 'Maksymalny rozmiar pliku to 5MB';
     }
     
     return '';
-  };
+  }, []);
 
   const validatePassword = (password, field) => {
     if (!password) {
@@ -183,10 +185,12 @@ export default function ProfilePage() {
 
   // Update form validity
   useEffect(() => {
+    // Profile form validation
     const nameError = validateName(formData.name);
     const descriptionError = validateDescription(formData.description);
     setIsProfileFormValid(!nameError && !descriptionError);
 
+    // Password form validation
     const currentPasswordError = validatePassword(formData.currentPassword, 'currentPassword');
     const newPasswordError = validatePassword(formData.newPassword, 'newPassword');
     const confirmPasswordError = validateConfirmPassword(formData.confirmPassword, formData.newPassword);
@@ -194,7 +198,7 @@ export default function ProfilePage() {
 
     const fileError = selectedFile ? validateFile(selectedFile) : '';
     setIsPictureFormValid(selectedFile && !fileError);
-  }, [formData, selectedFile]);
+  }, [formData, selectedFile, validateFile]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;

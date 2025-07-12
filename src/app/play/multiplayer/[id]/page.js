@@ -28,6 +28,8 @@ export default function MultiplayerGamePage() {
   const lastPlayedTaskRef = useRef(null);
   const timerIntervalRef = useRef(null);
   const notificationTimeoutRef = useRef(null);
+  const hasPlayedWarningRef = useRef(false); // New ref for warning sound
+  const fetchGameStateRef = useRef(null); // Ref for fetchGameState function
   
   const { user } = useAuth();
   const router = useRouter();
@@ -49,34 +51,138 @@ export default function MultiplayerGamePage() {
     const totalSeconds = game.timerMinutes * 60;
     return ((totalSeconds - timeRemaining) / totalSeconds) * 100;
   };
+
+  // Handle errors
+  const handleError = useCallback((message, isCritical = false) => {
+    setError(message);
+    
+    if (isCritical) {
+      // Redirect to join page for critical errors
+      router.push('/play/multiplayer/join');
+    } else {
+      // Show notification for non-critical errors
+      setNotification({
+        message,
+        type: 'error',
+        visible: true
+      });
+      
+      // Hide notification after 5 seconds
+      if (notificationTimeoutRef.current) {
+        clearTimeout(notificationTimeoutRef.current);
+      }
+      
+      notificationTimeoutRef.current = setTimeout(() => {
+        setNotification(prev => ({...prev, visible: false}));
+      }, 5000);
+    }
+  }, [router]);
+
+  // Hide notification
+  const hideNotification = () => {
+    setNotification(prev => ({...prev, visible: false}));
+  };
+
+  // Handle task complete/skip
+  const handleTaskAction = useCallback(async (action) => {
+    try {
+      if (action === 'complete') {
+        playSound('taskComplete');
+      } else {
+        playSound('taskSkip');
+      }
+      
+      const response = await fetch(`/api/multiplayer/game/${gameId}/task`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          participantId,
+          action
+        }),
+      });
+      
+      const data = await response.json();
+      
+      if (!response.ok) {
+        // Non-critical errors when performing task actions
+        const nonCriticalErrors = [
+          'It is not your turn',
+          'Game is not active',
+          'No active task'
+        ];
+        
+        const errorMessage = data.error || 'Failed to process task action';
+        throw new Error(errorMessage);
+      }
+      
+      // Clear timer
+      if (timerIntervalRef.current) {
+        clearInterval(timerIntervalRef.current);
+      }
+      
+      // Reset lastPlayedTask to allow playing sound for the next task
+      lastPlayedTaskRef.current = null;
+      
+      // Refresh game state using the ref to avoid circular dependency
+      if (fetchGameStateRef.current) {
+        fetchGameStateRef.current();
+      }
+      
+    } catch (error) {
+      console.error('Error processing task action:', error);
+      
+      // Check if this is a non-critical error
+      const nonCriticalErrors = [
+        'It is not your turn',
+        'Game is not active',
+        'No active task'
+      ];
+      
+      const isCritical = !nonCriticalErrors.some(msg => 
+        error.message && error.message.includes(msg)
+      );
+      
+      handleError(error.message || 'Failed to process task action', isCritical);
+    }
+  }, [gameId, participantId, playSound, handleError]);
   
   // Start a timer when game is active
   useEffect(() => {
-    if (game && game.status === 'active') {
-      // Clear any existing timer
-      if (timerIntervalRef.current) {
-        clearInterval(timerIntervalRef.current);
-      }
-      
-      // Set initial time
-      setTimeRemaining(game.timerMinutes * 60);
-      
-      // Set up timer
-      timerIntervalRef.current = setInterval(() => {
-        setTimeRemaining(prev => {
-          if (prev <= 1) {
-            // Time's up - handle automatically if needed
-            return 0;
-          }
-          return prev - 1;
-        });
-      }, 1000);
-    } else if (game && game.status !== 'active') {
-      // Clear timer when not user's turn
-      if (timerIntervalRef.current) {
-        clearInterval(timerIntervalRef.current);
-      }
+    // Only set up timer if game is active and it's someone's turn
+    if (game?.status !== 'active' || !game?.currentTurn) return;
+    
+    // Clear any existing timer
+    if (timerIntervalRef.current) {
+      clearInterval(timerIntervalRef.current);
     }
+    
+    // Set up new timer
+    timerIntervalRef.current = setInterval(() => {
+      setTimeRemaining(prev => {
+        // If it's this user's turn, play warning sound at 30 seconds
+        if (isMyTurn && prev <= 30 && !hasPlayedWarningRef.current) {
+          playSound('timerWarning');
+          hasPlayedWarningRef.current = true;
+        }
+        
+        // Time's up
+        if (prev <= 1) {
+          // Only the current player should handle the task expiration
+          if (isMyTurn) {
+            playSound('timerExpire');
+            handleTaskAction('skip');
+          }
+          
+          // Reset timer for everyone
+          hasPlayedWarningRef.current = false;
+          return game?.timerMinutes * 60 || 60;
+        }
+        
+        return prev - 1;
+      });
+    }, 1000);
     
     // Clean up on unmount
     return () => {
@@ -84,7 +190,7 @@ export default function MultiplayerGamePage() {
         clearInterval(timerIntervalRef.current);
       }
     };
-  }, [game?.status, game?.currentTurn]);
+  }, [game?.status, game?.currentTurn, game, isMyTurn, handleTaskAction, game?.timerMinutes]);
   
   // Fetch game state
   const fetchGameState = useCallback(async () => {
@@ -162,8 +268,13 @@ export default function MultiplayerGamePage() {
       handleError(error.message || 'Failed to fetch game state', isCritical);
       setIsLoading(false);
     }
-  }, [gameId, participantId, isMyTurn, game?.currentTurn]);
+  }, [gameId, participantId, isMyTurn, game?.currentTurn, handleError]);
   
+  // Store fetchGameState in ref to avoid circular dependencies
+  useEffect(() => {
+    fetchGameStateRef.current = fetchGameState;
+  }, [fetchGameState]);
+
   // Set up polling for game state updates
   useEffect(() => {
     // Initial fetch
@@ -180,7 +291,10 @@ export default function MultiplayerGamePage() {
     return () => {
       if (interval) clearInterval(interval);
       if (timerIntervalRef.current) clearInterval(timerIntervalRef.current);
-      if (notificationTimeoutRef.current) clearTimeout(notificationTimeoutRef.current);
+      
+      // Store ref value in a variable to use in cleanup
+      const notificationTimeout = notificationTimeoutRef.current;
+      if (notificationTimeout) clearTimeout(notificationTimeout);
       
       // Ensure the participant is marked as inactive when leaving the page
       if (gameId && participantId) {
@@ -271,69 +385,6 @@ export default function MultiplayerGamePage() {
       );
       
       handleError(error.message || 'Failed to start game', isCritical);
-    }
-  };
-  
-  // Handle task complete/skip
-  const handleTaskAction = async (action) => {
-    try {
-      if (action === 'complete') {
-        playSound('taskComplete');
-      } else {
-        playSound('taskSkip');
-      }
-      
-      const response = await fetch(`/api/multiplayer/game/${gameId}/task`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          participantId,
-          action
-        }),
-      });
-      
-      const data = await response.json();
-      
-      if (!response.ok) {
-        // Non-critical errors when performing task actions
-        const nonCriticalErrors = [
-          'It is not your turn',
-          'Game is not active',
-          'No active task'
-        ];
-        
-        const errorMessage = data.error || 'Failed to process task action';
-        throw new Error(errorMessage);
-      }
-      
-      // Clear timer
-      if (timerIntervalRef.current) {
-        clearInterval(timerIntervalRef.current);
-      }
-      
-      // Reset lastPlayedTask to allow playing sound for the next task
-      lastPlayedTaskRef.current = null;
-      
-      // Refresh game state
-      fetchGameState();
-      
-    } catch (error) {
-      console.error('Error processing task action:', error);
-      
-      // Check if this is a non-critical error
-      const nonCriticalErrors = [
-        'It is not your turn',
-        'Game is not active',
-        'No active task'
-      ];
-      
-      const isCritical = !nonCriticalErrors.some(msg => 
-        error.message && error.message.includes(msg)
-      );
-      
-      handleError(error.message || 'Failed to process task action', isCritical);
     }
   };
   
@@ -442,6 +493,7 @@ export default function MultiplayerGamePage() {
   
   // Render lobby or game based on status
   return (
+    <>
     <div className="flex flex-col min-h-screen bg-gradient-to-br from-purple-900 to-indigo-950 text-white">
       {/* Navigation Header */}
       <header className="sticky top-0 z-10 bg-black/60 backdrop-blur-lg border-b border-white/10 py-3 px-4 flex justify-between items-center">
@@ -575,264 +627,240 @@ export default function MultiplayerGamePage() {
                 {/* Ready toggle and start game buttons */}
                 <div className="mt-6 space-y-3">
                   <button 
-                    className={`btn w-full ${isReady ? 'btn-success' : 'btn-outline'}`}
+                    className={`
+                      w-full btn ${isReady ? 'btn-secondary' : 'btn-primary'}`}
                     onClick={handleReadyToggle}
                   >
-                    {isReady ? 'Gotowy' : 'Oznacz jako gotowy'}
+                    {isReady ? 'Nie jestem gotowy' : 'Jestem gotowy'}
                   </button>
                   
-                  {/* Only host can start the game */}
-                  {currentParticipant && currentParticipant.turnOrder === 0 && (
-                    <div className="space-y-2">
-                      <button 
-                        className="btn btn-primary w-full"
-                        onClick={() => handleStartGame(false)}
-                      >
-                        Rozpocznij grę
-                      </button>
-                      <button 
-                        className="btn btn-outline w-full"
-                        onClick={() => handleStartGame(true)}
-                      >
-                        Wymuś start
-                      </button>
-                      <p className="text-xs text-[var(--text-gray)] text-center">
-                        Wymuś start pomija sprawdzanie gotowości graczy
-                      </p>
-                    </div>
+                  {currentParticipant?.isHost && (
+                    <button 
+                      className="w-full btn btn-accent"
+                      onClick={() => handleStartGame(false)}
+                    >
+                      Rozpocznij grę
+                    </button>
+                  )}
+                  
+                  {currentParticipant?.isHost && (
+                    <button 
+                      className="w-full btn btn-outline"
+                      onClick={() => handleStartGame(true)}
+                    >
+                      Rozpocznij bez czekania
+                    </button>
                   )}
                 </div>
               </div>
               
-              {/* Players list */}
+              {/* Participants */}
               <div className="w-full md:w-1/2 card p-6">
-                <h2 className="text-xl font-bold mb-4">
-                  Gracze ({game.participants.length}/{game.maxPlayers})
-                </h2>
+                <h2 className="text-xl font-bold mb-4">Uczestnicy ({game.participants.filter(p => p.isActive).length}/{game.maxPlayers})</h2>
                 
                 <div className="space-y-3">
-                  {game.participants.map((participant) => (
-                    <div 
-                      key={participant.id}
-                      className={`p-3 rounded-lg border ${
-                        participant.id === participantId
-                          ? 'border-[var(--primary)] bg-[var(--primary)]/10'
-                          : 'border-[var(--border-color)] bg-[var(--container-color)]'
-                      }`}
-                    >
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          {participant.turnOrder === 0 && (
-                            <span className="bg-[var(--primary)] text-white text-xs px-2 py-0.5 rounded">
-                              HOST
-                            </span>
-                          )}
-                          <span className="font-medium">{participant.nickname}</span>
-                          {participant.id === participantId && (
-                            <span className="text-xs text-[var(--text-gray)]">(Ty)</span>
-                          )}
+                  {game.participants
+                    .filter(p => p.isActive)
+                    .map(participant => (
+                      <div 
+                        key={participant.id}
+                        className={`flex items-center justify-between p-3 rounded-lg ${
+                          participant.id === participantId 
+                            ? 'bg-[var(--primary)]/20 border border-[var(--primary)]/50' 
+                            : 'bg-[var(--container-color)]'
+                        }`}
+                      >
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center text-lg font-bold">
+                            {participant.nickname.charAt(0).toUpperCase()}
+                          </div>
+                          <div>
+                            <p className="font-medium">{participant.nickname}</p>
+                            <p className="text-xs text-[var(--text-gray)]">
+                              {participant.isHost ? 'Host' : 'Gracz'}
+                            </p>
+                          </div>
                         </div>
-                        <div className={`w-3 h-3 rounded-full ${
-                          participant.isReady ? 'bg-green-500' : 'bg-yellow-500'
-                        }`}></div>
+                        
+                        <div className={`px-3 py-1 rounded-full text-xs font-medium ${
+                          participant.isReady 
+                            ? 'bg-green-500/20 text-green-400' 
+                            : 'bg-yellow-500/20 text-yellow-400'
+                        }`}>
+                          {participant.isReady ? 'Gotowy' : 'Nie gotowy'}
+                        </div>
                       </div>
-                    </div>
-                  ))}
-                  
-                  {/* Empty slots */}
-                  {Array.from({ length: game.maxPlayers - game.participants.length }).map((_, i) => (
-                    <div 
-                      key={`empty-${i}`}
-                      className="p-3 rounded-lg border border-dashed border-[var(--border-color)] flex items-center justify-center text-[var(--text-gray)]"
-                    >
-                      Wolne miejsce...
-                    </div>
-                  ))}
+                    ))}
                 </div>
                 
-                <div className="mt-6 text-center">
-                  <p className="text-sm text-[var(--text-gray)]">
-                    {game.participants.filter(p => p.isReady).length} z {game.participants.length} graczy jest gotowych
-                  </p>
-                </div>
+                {game.participants.filter(p => p.isActive).length < 2 && (
+                  <div className="mt-4 p-4 bg-yellow-900/30 border border-yellow-700/30 rounded-lg">
+                    <p className="text-sm text-yellow-300">
+                      Potrzeba co najmniej 2 graczy, aby rozpocząć grę.
+                    </p>
+                  </div>
+                )}
               </div>
             </motion.div>
           </AnimatePresence>
         ) : (
           <AnimatePresence mode="wait">
             <motion.div
-              key="gameplay"
+              key="game"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.3 }}
-              className="flex flex-col md:flex-row gap-6"
+              className="w-full"
             >
-              {/* Player list and stats */}
-              <div className="w-full md:w-1/3">
-                <div className="card h-full">
-                  <h2 className="text-xl font-bold mb-4">Gracze</h2>
-                  
-                  <div className="space-y-3">
-                    {game.participants.map((participant) => (
-                      <div 
-                        key={participant.id}
-                        className={`p-3 rounded-lg ${
-                          participant.id === game.currentTurn
-                            ? 'bg-[var(--primary)]/20 border border-[var(--primary)]'
-                            : 'bg-[var(--container-color)]'
-                        }`}
-                      >
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-2">
-                            {participant.id === participantId && (
-                              <span className="text-xs text-[var(--text-gray)]">(Ty)</span>
-                            )}
-                            <span className="font-medium">{participant.nickname}</span>
-                            {participant.id === game.currentTurn && (
-                              <span className="text-xs bg-[var(--primary)] text-white px-2 py-0.5 rounded">
-                                TURA
-                              </span>
-                            )}
-                          </div>
-                        </div>
-                        <div className="mt-2 flex justify-between text-xs text-[var(--text-gray)]">
-                          <span>Wykonane: {participant.tasksCompleted}</span>
-                          <span>Pominięte: {participant.tasksSkipped}</span>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-              
-              {/* Task area */}
-              <div className="w-full md:w-2/3">
-                <div className="card relative">
-                  {/* Timer Circle - zawsze widoczny */}
-                  <div className="absolute -top-5 right-6">
-                    <div className="w-20 h-20 rounded-full bg-[var(--container-color)] border-4 border-[var(--border-color)] flex items-center justify-center shadow-lg">
-                      <div className="relative w-full h-full flex items-center justify-center">
-                        <svg className="w-full h-full -rotate-90 absolute">
-                          <circle
-                            cx="40"
-                            cy="40"
-                            r="36"
-                            strokeWidth="4"
-                            stroke="var(--primary)"
-                            fill="transparent"
-                            strokeDasharray={`${2 * Math.PI * 36}`}
-                            strokeDashoffset={`${2 * Math.PI * 36 * (1 - calculateProgress() / 100)}`}
-                            className="transition-all duration-1000"
-                          />
-                        </svg>
-                        <span className={`text-xl font-bold ${timeRemaining <= 30 ? 'text-red-500 animate-pulse' : ''}`}>
-                          {formatTime(timeRemaining)}
-                        </span>
-                      </div>
+              {/* Active game UI */}
+              <div className="flex flex-col lg:flex-row gap-6">
+                {/* Current task */}
+                <div className="w-full lg:w-2/3 card p-6">
+                  <div className="mb-4 flex justify-between items-center">
+                    <h2 className="text-xl font-bold">Aktualne zadanie</h2>
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm text-[var(--text-gray)]">Tura:</span>
+                      <span className="font-medium">{getCurrentPlayerName()}</span>
                     </div>
                   </div>
-
-                  <div className="flex justify-between items-start mb-6">
-                    <div>
-                      <span className="text-xs text-[var(--text-gray)]">Tura gracza</span>
-                      <h2 className="text-2xl font-bold gradient-text">
-                        {getCurrentPlayerName()}
-                      </h2>
+                  
+                  {/* Timer */}
+                  <div className="mb-6">
+                    <div className="flex justify-between items-center mb-2">
+                      <span className="text-sm text-[var(--text-gray)]">Pozostały czas:</span>
+                      <span className="font-mono text-lg">{formatTime(timeRemaining)}</span>
+                    </div>
+                    <div className="w-full h-2 bg-[var(--container-color)] rounded-full overflow-hidden">
+                      <div 
+                        className={`h-full ${timeRemaining <= 30 ? 'bg-red-500' : 'bg-[var(--primary)]'}`}
+                        style={{ width: `${calculateProgress()}%` }}
+                      ></div>
                     </div>
                   </div>
                   
                   {/* Task content */}
-                  <div className="bg-[var(--container-color)]/50 p-6 rounded-lg mb-6 min-h-[120px] flex items-center justify-center">
-                    <p className="text-xl sm:text-2xl text-center">
-                      {game.currentTaskContent || "Oczekiwanie na zadanie..."}
-                    </p>
+                  <div className="mb-8">
+                    {isMyTurn && game.currentTask ? (
+                      <motion.div
+                        key={game.currentTaskId}
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        className="p-6 bg-gradient-to-br from-[var(--primary)]/20 to-[var(--secondary)]/20 rounded-xl border border-[var(--primary)]/30"
+                      >
+                        <h3 className="text-2xl font-bold mb-3 gradient-text">Twoja kolej!</h3>
+                        <p className="text-xl">{game.currentTask.content}</p>
+                      </motion.div>
+                    ) : game.currentTask ? (
+                      <motion.div
+                        key={game.currentTaskId}
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        className="p-6 bg-[var(--container-color)] rounded-xl"
+                      >
+                        <h3 className="text-xl font-bold mb-3">Zadanie dla: {getCurrentPlayerName()}</h3>
+                        <p className="text-lg opacity-75">{game.currentTask.content}</p>
+                      </motion.div>
+                    ) : (
+                      <div className="p-6 bg-[var(--container-color)] rounded-xl text-center">
+                        <p className="text-lg opacity-75">Oczekiwanie na rozpoczęcie tury...</p>
+                      </div>
+                    )}
                   </div>
                   
-                  {/* Action buttons - only visible if it's your turn */}
-                  {isMyTurn ? (
-                    <div className="flex flex-col sm:flex-row gap-4">
+                  {/* Action buttons */}
+                  {isMyTurn && game.currentTask && (
+                    <div className="flex gap-4">
                       <button 
+                        className="flex-1 btn btn-success"
                         onClick={() => handleTaskAction('complete')}
-                        className="btn btn-primary flex-1"
                       >
-                        Wykonane
+                        Wykonano
                       </button>
                       <button 
+                        className="flex-1 btn btn-error"
                         onClick={() => handleTaskAction('skip')}
-                        className="btn btn-outline flex-1"
                       >
                         Pomiń
                       </button>
                     </div>
-                  ) : (
-                    <div className="text-center p-4 bg-[var(--container-color)]/30 rounded-lg">
-                      <p>Oczekiwanie na ruch gracza {getCurrentPlayerName()}</p>
-                    </div>
                   )}
                 </div>
                 
-                {/* Recent task history */}
-                {game.completedTasks && game.completedTasks.length > 0 && (
-                  <div className="mt-6">
-                    <h3 className="text-lg font-semibold mb-3">Ostatnie wyzwania</h3>
-                    <div className="space-y-2">
-                      {game.completedTasks.slice(0, 3).map((task) => (
+                {/* Players list */}
+                <div className="w-full lg:w-1/3 card p-6">
+                  <h2 className="text-xl font-bold mb-4">Gracze</h2>
+                  
+                  <div className="space-y-3">
+                    {game.participants
+                      .filter(p => p.isActive)
+                      .map(participant => (
                         <div 
-                          key={task.id}
-                          className={`p-3 rounded-lg border ${
-                            task.skipped 
-                              ? 'border-red-500/30 bg-red-500/10'
-                              : 'border-green-500/30 bg-green-500/10'
+                          key={participant.id}
+                          className={`flex items-center justify-between p-3 rounded-lg ${
+                            participant.id === game.currentTurn 
+                              ? 'bg-[var(--primary)]/20 border border-[var(--primary)]/50' 
+                              : 'bg-[var(--container-color)]'
                           }`}
                         >
-                          <div className="flex justify-between items-start">
-                            <p className="text-sm">{task.taskContent}</p>
-                            <span className={`text-xs px-2 py-0.5 rounded-full ${
-                              task.skipped 
-                                ? 'bg-red-500/20 text-red-400'
-                                : 'bg-green-500/20 text-green-400'
-                            }`}>
-                              {task.skipped ? 'Pominięte' : 'Wykonane'}
-                            </span>
+                          <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center text-lg font-bold">
+                              {participant.nickname.charAt(0).toUpperCase()}
+                            </div>
+                            <div>
+                              <p className="font-medium">{participant.nickname}</p>
+                              <div className="flex items-center gap-2">
+                                <span className="text-xs text-[var(--text-gray)]">
+                                  {participant.tasksCompleted} wykonanych
+                                </span>
+                                <span className="text-xs text-[var(--text-gray)]">
+                                  {participant.tasksSkipped} pominiętych
+                                </span>
+                              </div>
+                            </div>
                           </div>
+                          
+                          {participant.id === game.currentTurn && (
+                            <div className="px-3 py-1 rounded-full text-xs font-medium bg-[var(--primary)]/20 text-[var(--primary)]">
+                              Teraz gra
+                            </div>
+                          )}
                         </div>
                       ))}
-                    </div>
                   </div>
-                )}
+                </div>
               </div>
             </motion.div>
           </AnimatePresence>
         )}
-      </div>
-
-      {/* Leave session confirmation */}
-      {isLeavingSession && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black/70 z-50">
-          <div className="bg-gray-900 border border-gray-700 rounded-lg p-6 max-w-sm w-full mx-4">
-            <h3 className="text-xl font-bold mb-4">Opuścić sesję?</h3>
-            <p className="mb-6 text-gray-300">
-              Czy na pewno chcesz opuścić tę grę? Twój status zostanie zmieniony na nieaktywny.
-            </p>
-            <div className="flex justify-end gap-3">
-              <button
-                onClick={cancelLeaveSession}
-                className="px-4 py-2 rounded bg-gray-700 hover:bg-gray-600 transition-colors"
-              >
-                Anuluj
-              </button>
-              <button
-                onClick={() => handleLeaveSession(false)}
-                className="px-4 py-2 rounded bg-red-600 hover:bg-red-500 transition-colors"
-              >
-                Opuść
-              </button>
-            </div>
+        </div>
+      </main>
+    </div>
+    
+    {/* Leave session confirmation modal */}
+    {isLeavingSession && (
+      <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
+        <div className="bg-[var(--background)] rounded-xl p-6 max-w-md w-full">
+          <h3 className="text-xl font-bold mb-4">Opuścić grę?</h3>
+          <p className="mb-6">Czy na pewno chcesz opuścić tę grę? Jeśli jesteś hostem, gra będzie kontynuowana, ale nie będziesz mógł do niej wrócić.</p>
+          
+          <div className="flex gap-4">
+            <button 
+              className="flex-1 btn btn-outline"
+              onClick={cancelLeaveSession}
+            >
+              Anuluj
+            </button>
+            <button 
+              className="flex-1 btn btn-error"
+              onClick={() => handleLeaveSession(false)}
+            >
+              Opuść grę
+            </button>
           </div>
         </div>
-      )}
-    </main>
-  </div>
+      </div>
+    )}
+    </>
   );
-} 
+}

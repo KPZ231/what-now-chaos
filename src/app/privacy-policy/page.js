@@ -19,7 +19,7 @@ export default function PrivacyPolicy() {
           
           <h2 className="text-xl font-semibold mt-6 mb-3">1. Wprowadzenie</h2>
           <p>
-            Witamy w WhatNow?! – Chaos Generator. Niniejsza Polityka Prywatności wyjaśnia, w jaki sposób KPZsProductions ("my", "nas", "nasze") gromadzi, wykorzystuje i udostępnia Twoje informacje podczas korzystania z naszej aplikacji.
+            Witamy w WhatNow?! – Chaos Generator. Niniejsza Polityka Prywatności wyjaśnia, w jaki sposób KPZsProductions (&quot;my&quot;, &quot;nas&quot;, &quot;nasze&quot;) gromadzi, wykorzystuje i udostępnia Twoje informacje podczas korzystania z naszej aplikacji.
           </p>
           
           <h2 className="text-xl font-semibold mt-6 mb-3">2. Gromadzone informacje</h2>
