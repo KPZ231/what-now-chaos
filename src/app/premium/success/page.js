@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { motion } from 'framer-motion';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useAuth } from '@/lib/AuthContext';
@@ -8,7 +8,7 @@ import Link from 'next/link';
 import Navbar from "@/app/partial/navbar";
 import Footer from "@/app/partial/footer";
 
-export default function PaymentSuccessPage() {
+function PaymentSuccessContent() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const searchParams = useSearchParams();
@@ -140,5 +140,28 @@ export default function PaymentSuccessPage() {
       
       <Footer />
     </div>
+  );
+}
+
+export default function PaymentSuccessPage() {
+  return (
+    <Suspense fallback={
+      <div className="flex flex-col min-h-screen bg-gradient-to-b from-[var(--background-start)] to-[var(--background-end)]">
+        <Navbar />
+        <main className="flex flex-1 flex-col items-center justify-center p-4 sm:p-8">
+          <div className="card p-8 max-w-md w-full text-center">
+            <div className="space-y-4">
+              <h1 className="text-3xl font-bold gradient-text">Ładowanie...</h1>
+              <div className="flex justify-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[var(--primary)]"></div>
+              </div>
+            </div>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    }>
+      <PaymentSuccessContent />
+    </Suspense>
   );
 } 
