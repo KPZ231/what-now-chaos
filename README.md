@@ -22,6 +22,9 @@ A web and mobile application (PWA) that throws absurd, funny, or challenging tas
 - PDF Export: jsPDF or pdfmake
 - Audio: Sounds and animations for better UX
 
+
+The app uses Stripe for processing premium plan payments. Here's how to set it up:
+
 ## SEO Optimizations
 
 The website has been optimized for search engines with the following implementations:

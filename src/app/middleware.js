@@ -15,6 +15,8 @@ const publicPaths = [
   '/about',
   '/api/auth/login',
   '/api/auth/register',
+  '/api/auth/logout',
+  '/api/auth/me', // Add /api/auth/me to public paths
   '/api/auth/reset-password/request',
   '/api/auth/reset-password/confirm',
   '/play',
@@ -41,6 +43,8 @@ const isMultiplayerPath = (path) => {
 
 export function middleware(request) {
   const path = request.nextUrl.pathname
+  console.log('Middleware processing path:', path);
+  
   const response = NextResponse.next();
 
   // Add security headers to all responses
@@ -53,6 +57,7 @@ export function middleware(request) {
   
   // Allow public paths
   if (isPublicPath(path)) {
+    console.log('Public path detected, allowing access:', path);
     return response;
   }
   
@@ -60,24 +65,33 @@ export function middleware(request) {
   if (isMultiplayerPath(path)) {
     // For API endpoints, we'll validate in the route handlers
     if (path.startsWith('/api/')) {
+      console.log('API multiplayer path, allowing access:', path);
       return response;
     }
     
     // For page routes, check if participantId is in the URL
     const participantId = request.nextUrl.searchParams.get('participantId');
     if (participantId) {
+      console.log('Multiplayer path with participantId, allowing access:', path);
       return response;
     }
   }
 
   // Check for auth token
   const token = request.cookies.get('auth-token')?.value || ''
+  console.log('Auth token exists:', !!token);
+  
+  if (token) {
+    console.log('Token found, length:', token.length);
+  }
 
   // Validate token
   const user = token ? verifyToken(token) : null
+  console.log('Token verification result:', user ? 'Valid user token' : 'Invalid or missing token');
 
   // If not authenticated, redirect to login
   if (!user && !isPublicPath(path)) {
+    console.log('Authentication required, redirecting to login:', path);
     const url = new URL('/login', request.url)
     url.searchParams.set('callbackUrl', encodeURI(request.url))
     return NextResponse.redirect(url)
@@ -85,6 +99,7 @@ export function middleware(request) {
 
   // For certain premium paths, check if the user is premium
   if (path.startsWith('/premium') && (!user || !user.isPremium)) {
+    console.log('Premium access required, redirecting:', path);
     return NextResponse.redirect(new URL('/premium-required', request.url))
   }
 

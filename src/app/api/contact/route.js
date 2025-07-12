@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import nodemailer from 'nodemailer';
 
 export async function POST(request) {
   try {
@@ -22,61 +23,48 @@ export async function POST(request) {
       );
     }
 
-    // Prepare the payload for Brevo API
-    const payload = {
-      sender: {
-        name: "WhatNow Contact Form",
-        email: process.env.BREVO_SENDER_EMAIL,
+    // Create transporter with Gmail
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.GMAIL_USER,
+        pass: process.env.GMAIL_APP_PASSWORD,
       },
-      to: [
-        {
-          email: process.env.CONTACT_EMAIL_RECIPIENT,
-          name: "WhatNow Admin",
-        },
-      ],
-      subject: `New contact form submission from ${name}`,
-      htmlContent: `
-        <h3>New Contact Form Submission</h3>
-        <p><strong>Name:</strong> ${name}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Message:</strong></p>
-        <p>${message.replace(/\n/g, '<br>')}</p>
-      `,
-      replyTo: {
-        email: email,
-        name: name,
-      },
-    };
-
-    // Send email using Brevo API
-    const response = await fetch('https://api.brevo.com/v3/smtp/email', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'api-key': process.env.BREVO_API_KEY,
-      },
-      body: JSON.stringify(payload),
     });
 
-    const responseData = await response.json();
-
-    if (!response.ok) {
-      console.error('Brevo API error:', responseData);
-      return NextResponse.json(
-        { error: 'Failed to send email' },
-        { status: 500 }
-      );
-    }
+    // Send email with simple label for Zapier automation
+    await transporter.sendMail({
+      from: `"WhatNow - Formularz Kontaktowy" <${process.env.GMAIL_USER}>`,
+      to: process.env.GMAIL_USER,
+      subject: `[Kontakt] Nowa wiadomość od ${name}`,
+      text: `
+        Imię: ${name}
+        E-mail: ${email}
+        Wiadomość:
+        ${message}
+        
+      `,
+      html: `
+        <h3>Nowa wiadomość z formularza kontaktowego</h3>
+        <p><strong>Imię:</strong> ${name}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Wiadomość:</strong></p>
+        <p>${message.replace(/\n/g, '<br>')}</p>
+      `,
+      replyTo: email,
+      headers: {
+        'X-Label': 'Kontakt'
+      }
+    });
 
     return NextResponse.json(
-      { success: true, message: 'Email sent successfully' },
+      { success: true, message: 'Wiadomość wysłana pomyślnie' },
       { status: 200 }
     );
   } catch (error) {
     console.error('Server error:', error);
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: 'Błąd serwera podczas wysyłania wiadomości' },
       { status: 500 }
     );
   }

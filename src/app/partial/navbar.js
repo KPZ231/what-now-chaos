@@ -48,6 +48,9 @@ export default function Navbar({ isLoading, isAuthenticated, user, showUserMenu,
           <Link href="/about" className="hover:text-[var(--primary)] transition-colors">
             O Nas
           </Link>
+          <Link href="/tasks" className="hover:text-[var(--primary)] transition-colors">
+            Lista Zadań
+          </Link>
           <Link 
             href={isAuthenticated && user?.hasPremium ? "/premium-advantages" : "/premium"} 
             className="hover:text-[var(--primary)] transition-colors"

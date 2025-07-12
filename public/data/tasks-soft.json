@@ -89,6 +89,516 @@
       "content": "Wszyscy gracze niech pokażą swój ulubiony taniec z TikToka.",
       "difficulty": 2,
       "players": "all"
+    },
+    {
+      "id": "soft-16",
+      "content": "Narysuj portret osoby po prawej, używając tylko trzech linii.",
+      "difficulty": 2,
+      "players": "one"
+    },
+    {
+      "id": "soft-17",
+      "content": "Opowiedz o swoim ulubionym wspomnieniu z dzieciństwa.",
+      "difficulty": 1,
+      "players": "one"
+    },
+    {
+      "id": "soft-18",
+      "content": "Wszyscy gracze muszą zaśpiewać refren ulubionej piosenki.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "soft-19",
+      "content": "Wymień 5 rzeczy, za które jesteś wdzięczny.",
+      "difficulty": 1,
+      "players": "one"
+    },
+    {
+      "id": "soft-20",
+      "content": "Zrób komplement osobie, która siedzi naprzeciwko.",
+      "difficulty": 1,
+      "players": "two"
+    },
+    {
+      "id": "soft-21",
+      "content": "Opowiedz o swoim ulubionym filmie i dlaczego go lubisz.",
+      "difficulty": 1,
+      "players": "one"
+    },
+    {
+      "id": "soft-22",
+      "content": "Wszyscy gracze muszą naśladować zwierzę, które wylosują.",
+      "difficulty": 2,
+      "players": "all"
+    },
+    {
+      "id": "soft-23",
+      "content": "Wymień 3 rzeczy, które zabrałbyś na bezludną wyspę.",
+      "difficulty": 1,
+      "players": "one"
+    },
+    {
+      "id": "soft-24",
+      "content": "Zrób zdjęcie grupowe z zabawnymi minami.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "soft-25",
+      "content": "Opowiedz o swoim ulubionym jedzeniu.",
+      "difficulty": 1,
+      "players": "one"
+    },
+    {
+      "id": "soft-26",
+      "content": "Wszyscy gracze muszą powiedzieć, co najbardziej lubią w osobie po prawej.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "soft-27",
+      "content": "Wymień 3 rzeczy, które chciałbyś osiągnąć w tym roku.",
+      "difficulty": 1,
+      "players": "one"
+    },
+    {
+      "id": "soft-28",
+      "content": "Zrób 5 przysiadów.",
+      "difficulty": 1,
+      "players": "one"
+    },
+    {
+      "id": "soft-29",
+      "content": "Opowiedz o swoim ulubionym miejscu na świecie.",
+      "difficulty": 1,
+      "players": "one"
+    },
+    {
+      "id": "soft-30",
+      "content": "Wszyscy gracze muszą zaśpiewać piosenkę 'Sto lat'.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "soft-31",
+      "content": "Wymień 3 rzeczy, które sprawiają, że się uśmiechasz.",
+      "difficulty": 1,
+      "players": "one"
+    },
+    {
+      "id": "soft-32",
+      "content": "Zrób 10 pajacyków.",
+      "difficulty": 1,
+      "players": "one"
+    },
+    {
+      "id": "soft-33",
+      "content": "Opowiedz o swoim ulubionym zwierzęciu.",
+      "difficulty": 1,
+      "players": "one"
+    },
+    {
+      "id": "soft-34",
+      "content": "Wszyscy gracze muszą powiedzieć, co najbardziej lubią w osobie po lewej.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "soft-35",
+      "content": "Wymień 3 rzeczy, które chciałbyś zmienić na świecie.",
+      "difficulty": 1,
+      "players": "one"
+    },
+    {
+      "id": "soft-36",
+      "content": "Zrób 5 pompek.",
+      "difficulty": 1,
+      "players": "one"
+    },
+    {
+      "id": "soft-37",
+      "content": "Opowiedz o swoim ulubionym kolorze i dlaczego.",
+      "difficulty": 1,
+      "players": "one"
+    },
+    {
+      "id": "soft-38",
+      "content": "Wszyscy gracze muszą powiedzieć, co najbardziej lubią w sobie.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "soft-39",
+      "content": "Wymień 3 rzeczy, które sprawiają, że jesteś szczęśliwy.",
+      "difficulty": 1,
+      "players": "one"
+    },
+    {
+      "id": "soft-40",
+      "content": "Zrób 10 brzuszków.",
+      "difficulty": 1,
+      "players": "one"
+    },
+    {
+      "id": "soft-41",
+      "content": "Opowiedz o swoim ulubionym sporcie.",
+      "difficulty": 1,
+      "players": "one"
+    },
+    {
+      "id": "soft-42",
+      "content": "Wszyscy gracze muszą powiedzieć, co najbardziej lubią w osobie, która siedzi naprzeciwko.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "soft-43",
+      "content": "Wymień 3 rzeczy, które chciałbyś się nauczyć.",
+      "difficulty": 1,
+      "players": "one"
+    },
+    {
+      "id": "soft-44",
+      "content": "Zrób 5 przysiadów na jednej nodze.",
+      "difficulty": 2,
+      "players": "one"
+    },
+    {
+      "id": "soft-45",
+      "content": "Opowiedz o swoim ulubionym serialu.",
+      "difficulty": 1,
+      "players": "one"
+    },
+    {
+      "id": "soft-46",
+      "content": "Wszyscy gracze muszą powiedzieć, co najbardziej lubią w osobie, która siedzi po prawej.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "soft-47",
+      "content": "Wymień 3 rzeczy, które sprawiają, że jesteś dumny.",
+      "difficulty": 1,
+      "players": "one"
+    },
+    {
+      "id": "soft-48",
+      "content": "Zrób 10 pompek na kolanach.",
+      "difficulty": 1,
+      "players": "one"
+    },
+    {
+      "id": "soft-49",
+      "content": "Opowiedz o swoim ulubionym artyście muzycznym.",
+      "difficulty": 1,
+      "players": "one"
+    },
+    {
+      "id": "soft-50",
+      "content": "Wszyscy gracze muszą powiedzieć, co najbardziej lubią w osobie, która siedzi po lewej.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "soft-51",
+      "content": "Wymień 3 rzeczy, które chciałbyś mieć.",
+      "difficulty": 1,
+      "players": "one"
+    },
+    {
+      "id": "soft-52",
+      "content": "Zrób 5 brzuszków z uniesionymi nogami.",
+      "difficulty": 2,
+      "players": "one"
+    },
+    {
+      "id": "soft-53",
+      "content": "Opowiedz o swoim ulubionym gatunku muzycznym.",
+      "difficulty": 1,
+      "players": "one"
+    },
+    {
+      "id": "soft-54",
+      "content": "Wszyscy gracze muszą powiedzieć, co najbardziej lubią w osobie, która siedzi obok.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "soft-55",
+      "content": "Wymień 3 rzeczy, które sprawiają, że jesteś zrelaksowany.",
+      "difficulty": 1,
+      "players": "one"
+    },
+    {
+      "id": "soft-56",
+      "content": "Zrób 10 pajacyków z rękami w górze.",
+      "difficulty": 1,
+      "players": "one"
+    },
+    {
+      "id": "soft-57",
+      "content": "Opowiedz o swoim ulubionym napoju.",
+      "difficulty": 1,
+      "players": "one"
+    },
+    {
+      "id": "soft-58",
+      "content": "Wszyscy gracze muszą powiedzieć, co najbardziej lubią w osobie, która siedzi po przekątnej.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "soft-59",
+      "content": "Wymień 3 rzeczy, które chciałbyś zmienić w sobie.",
+      "difficulty": 1,
+      "players": "one"
+    },
+    {
+      "id": "soft-60",
+      "content": "Zrób 5 pompek na ścianie.",
+      "difficulty": 1,
+      "players": "one"
+    },
+    {
+      "id": "soft-61",
+      "content": "Opowiedz o swoim ulubionym miejscu do podróżowania.",
+      "difficulty": 1,
+      "players": "one"
+    },
+    {
+      "id": "soft-62",
+      "content": "Wszyscy gracze muszą powiedzieć, co najbardziej lubią w osobie, która siedzi najbliżej drzwi.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "soft-63",
+      "content": "Wymień 3 rzeczy, które sprawiają, że jesteś zmotywowany.",
+      "difficulty": 1,
+      "players": "one"
+    },
+    {
+      "id": "soft-64",
+      "content": "Zrób 10 przysiadów z rękami na biodrach.",
+      "difficulty": 1,
+      "players": "one"
+    },
+    {
+      "id": "soft-65",
+      "content": "Opowiedz o swoim ulubionym rodzaju książek.",
+      "difficulty": 1,
+      "players": "one"
+    },
+    {
+      "id": "soft-66",
+      "content": "Wszyscy gracze muszą powiedzieć, co najbardziej lubią w osobie, która siedzi najbliżej okna.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "soft-67",
+      "content": "Wymień 3 rzeczy, które chciałbyś zrobić przed śmiercią.",
+      "difficulty": 1,
+      "players": "one"
+    },
+    {
+      "id": "soft-68",
+      "content": "Zrób 5 brzuszków z rękami za głową.",
+      "difficulty": 2,
+      "players": "one"
+    },
+    {
+      "id": "soft-69",
+      "content": "Opowiedz o swoim ulubionym wspomnieniu z wakacji.",
+      "difficulty": 1,
+      "players": "one"
+    },
+    {
+      "id": "soft-70",
+      "content": "Wszyscy gracze muszą powiedzieć, co najbardziej lubią w osobie, która siedzi najbliżej telewizora.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "soft-71",
+      "content": "Wymień 3 rzeczy, które sprawiają, że jesteś kreatywny.",
+      "difficulty": 1,
+      "players": "one"
+    },
+    {
+      "id": "soft-72",
+      "content": "Zrób 10 pajacyków z nogami szeroko.",
+      "difficulty": 1,
+      "players": "one"
+    },
+    {
+      "id": "soft-73",
+      "content": "Opowiedz o swoim ulubionym daniu.",
+      "difficulty": 1,
+      "players": "one"
+    },
+    {
+      "id": "soft-74",
+      "content": "Wszyscy gracze muszą powiedzieć, co najbardziej lubią w osobie, która siedzi najbliżej kuchni.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "soft-75",
+      "content": "Wymień 3 rzeczy, które chciałbyś podarować światu.",
+      "difficulty": 1,
+      "players": "one"
+    },
+    {
+      "id": "soft-76",
+      "content": "Zrób 5 pompek na kolanach z szerokim rozstawem rąk.",
+      "difficulty": 1,
+      "players": "one"
+    },
+    {
+      "id": "soft-77",
+      "content": "Opowiedz o swoim ulubionym zwierzęciu domowym.",
+      "difficulty": 1,
+      "players": "one"
+    },
+    {
+      "id": "soft-78",
+      "content": "Wszyscy gracze muszą powiedzieć, co najbardziej lubią w osobie, która siedzi najbliżej łazienki.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "soft-79",
+      "content": "Wymień 3 rzeczy, które sprawiają, że jesteś szczęśliwy.",
+      "difficulty": 1,
+      "players": "one"
+    },
+    {
+      "id": "soft-80",
+      "content": "Zrób 10 brzuszków z nogami zgiętymi w kolanach.",
+      "difficulty": 1,
+      "players": "one"
+    },
+    {
+      "id": "soft-81",
+      "content": "Opowiedz o swoim ulubionym wspomnieniu z dzieciństwa.",
+      "difficulty": 1,
+      "players": "one"
+    },
+    {
+      "id": "soft-82",
+      "content": "Wszyscy gracze muszą powiedzieć, co najbardziej lubią w osobie, która siedzi najbliżej wejścia.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "soft-83",
+      "content": "Wymień 3 rzeczy, które chciałbyś zmienić w swoim życiu.",
+      "difficulty": 1,
+      "players": "one"
+    },
+    {
+      "id": "soft-84",
+      "content": "Zrób 5 przysiadów z rękami w górze.",
+      "difficulty": 1,
+      "players": "one"
+    },
+    {
+      "id": "soft-85",
+      "content": "Opowiedz o swoim ulubionym filmie.",
+      "difficulty": 1,
+      "players": "one"
+    },
+    {
+      "id": "soft-86",
+      "content": "Wszyscy gracze muszą powiedzieć, co najbardziej lubią w osobie, która siedzi najbliżej wyjścia.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "soft-87",
+      "content": "Wymień 3 rzeczy, które sprawiają, że jesteś wdzięczny.",
+      "difficulty": 1,
+      "players": "one"
+    },
+    {
+      "id": "soft-88",
+      "content": "Zrób 10 pompek z wąskim rozstawem rąk.",
+      "difficulty": 1,
+      "players": "one"
+    },
+    {
+      "id": "soft-89",
+      "content": "Opowiedz o swoim ulubionym serialu.",
+      "difficulty": 1,
+      "players": "one"
+    },
+    {
+      "id": "soft-90",
+      "content": "Wszyscy gracze muszą powiedzieć, co najbardziej lubią w osobie, która siedzi najbliżej stołu.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "soft-91",
+      "content": "Wymień 3 rzeczy, które chciałbyś osiągnąć w przyszłości.",
+      "difficulty": 1,
+      "players": "one"
+    },
+    {
+      "id": "soft-92",
+      "content": "Zrób 5 brzuszków z rękami skrzyżowanymi na klatce piersiowej.",
+      "difficulty": 2,
+      "players": "one"
+    },
+    {
+      "id": "soft-93",
+      "content": "Opowiedz o swoim ulubionym hobby.",
+      "difficulty": 1,
+      "players": "one"
+    },
+    {
+      "id": "soft-94",
+      "content": "Wszyscy gracze muszą powiedzieć, co najbardziej lubią w osobie, która siedzi najbliżej kanapy.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "soft-95",
+      "content": "Wymień 3 rzeczy, które sprawiają, że jesteś zadowolony.",
+      "difficulty": 1,
+      "players": "one"
+    },
+    {
+      "id": "soft-96",
+      "content": "Zrób 10 pajacyków z rękami na biodrach.",
+      "difficulty": 1,
+      "players": "one"
+    },
+    {
+      "id": "soft-97",
+      "content": "Opowiedz o swoim ulubionym miejscu do relaksu.",
+      "difficulty": 1,
+      "players": "one"
+    },
+    {
+      "id": "soft-98",
+      "content": "Wszyscy gracze muszą powiedzieć, co najbardziej lubią w osobie, która siedzi najbliżej okna.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "soft-99",
+      "content": "Wymień 3 rzeczy, które chciałbyś podarować sobie.",
+      "difficulty": 1,
+      "players": "one"
+    },
+    {
+      "id": "soft-100",
+      "content": "Zrób 5 pompek z rękami na szerokość barków.",
+      "difficulty": 1,
+      "players": "one"
     }
   ]
-} 
+}

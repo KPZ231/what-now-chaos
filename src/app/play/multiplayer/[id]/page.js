@@ -21,10 +21,13 @@ export default function MultiplayerGamePage() {
   const [isMyTurn, setIsMyTurn] = useState(false);
   const [pollingInterval, setPollingInterval] = useState(null);
   const [timeRemaining, setTimeRemaining] = useState(0);
+  const [isLeavingSession, setIsLeavingSession] = useState(false);
+  const [notification, setNotification] = useState({ message: '', type: '', visible: false });
   
   // Refs to track which tasks we've already played sounds for
   const lastPlayedTaskRef = useRef(null);
   const timerIntervalRef = useRef(null);
+  const notificationTimeoutRef = useRef(null);
   
   const { user } = useAuth();
   const router = useRouter();
@@ -92,7 +95,18 @@ export default function MultiplayerGamePage() {
       
       if (!response.ok) {
         const data = await response.json();
-        throw new Error(data.error || 'Failed to fetch game state');
+        
+        // These are critical errors that should redirect the user
+        const criticalErrors = [
+          'Game not found',
+          'Invalid participant',
+          'Participant ID is required'
+        ];
+        
+        const errorMessage = data.error || 'Failed to fetch game state';
+        const isCritical = criticalErrors.some(msg => errorMessage.includes(msg));
+        
+        throw new Error(errorMessage);
       }
       
       const data = await response.json();
@@ -133,7 +147,19 @@ export default function MultiplayerGamePage() {
       setIsLoading(false);
     } catch (error) {
       console.error('Error fetching game state:', error);
-      setError(error.message || 'Failed to fetch game state');
+      
+      // These are critical errors that should redirect the user
+      const criticalErrors = [
+        'Game not found',
+        'Invalid participant',
+        'Participant ID is required'
+      ];
+      
+      const isCritical = criticalErrors.some(msg => 
+        error.message && error.message.includes(msg)
+      );
+      
+      handleError(error.message || 'Failed to fetch game state', isCritical);
       setIsLoading(false);
     }
   }, [gameId, participantId, isMyTurn, game?.currentTurn]);
@@ -153,8 +179,24 @@ export default function MultiplayerGamePage() {
     // Clean up on unmount
     return () => {
       if (interval) clearInterval(interval);
+      if (timerIntervalRef.current) clearInterval(timerIntervalRef.current);
+      if (notificationTimeoutRef.current) clearTimeout(notificationTimeoutRef.current);
+      
+      // Ensure the participant is marked as inactive when leaving the page
+      if (gameId && participantId) {
+        fetch(`/api/multiplayer/game/${gameId}`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            participantId,
+            isActive: false
+          }),
+        }).catch(err => console.error('Failed to mark participant as inactive on unmount:', err));
+      }
     };
-  }, [fetchGameState]);
+  }, [fetchGameState, gameId, participantId]);
   
   // Handle ready toggle
   const handleReadyToggle = async () => {
@@ -179,7 +221,7 @@ export default function MultiplayerGamePage() {
       }
     } catch (error) {
       console.error('Error toggling ready status:', error);
-      setError(error.message || 'Failed to update ready status');
+      handleError(error.message || 'Failed to update ready status');
     }
   };
   
@@ -200,7 +242,16 @@ export default function MultiplayerGamePage() {
       const data = await response.json();
       
       if (!response.ok) {
-        throw new Error(data.error || 'Failed to start game');
+        // Non-critical errors when starting a game
+        const nonCriticalErrors = [
+          'Not all participants are ready',
+          'Need at least 2 players to start'
+        ];
+        
+        const errorMessage = data.error || 'Failed to start game';
+        const isCritical = !nonCriticalErrors.some(msg => errorMessage.includes(msg));
+        
+        throw new Error(errorMessage);
       }
       
       // Refresh game state
@@ -208,7 +259,18 @@ export default function MultiplayerGamePage() {
       
     } catch (error) {
       console.error('Error starting game:', error);
-      setError(error.message || 'Failed to start game');
+      
+      // Check if this is a non-critical error
+      const nonCriticalErrors = [
+        'Not all participants are ready',
+        'Need at least 2 players to start'
+      ];
+      
+      const isCritical = !nonCriticalErrors.some(msg => 
+        error.message && error.message.includes(msg)
+      );
+      
+      handleError(error.message || 'Failed to start game', isCritical);
     }
   };
   
@@ -235,7 +297,15 @@ export default function MultiplayerGamePage() {
       const data = await response.json();
       
       if (!response.ok) {
-        throw new Error(data.error || 'Failed to process task action');
+        // Non-critical errors when performing task actions
+        const nonCriticalErrors = [
+          'It is not your turn',
+          'Game is not active',
+          'No active task'
+        ];
+        
+        const errorMessage = data.error || 'Failed to process task action';
+        throw new Error(errorMessage);
       }
       
       // Clear timer
@@ -251,8 +321,65 @@ export default function MultiplayerGamePage() {
       
     } catch (error) {
       console.error('Error processing task action:', error);
-      setError(error.message || 'Failed to process task action');
+      
+      // Check if this is a non-critical error
+      const nonCriticalErrors = [
+        'It is not your turn',
+        'Game is not active',
+        'No active task'
+      ];
+      
+      const isCritical = !nonCriticalErrors.some(msg => 
+        error.message && error.message.includes(msg)
+      );
+      
+      handleError(error.message || 'Failed to process task action', isCritical);
     }
+  };
+  
+  // Handle leaving session
+  const handleLeaveSession = async (showConfirmation = true) => {
+    try {
+      if (showConfirmation && !isLeavingSession) {
+        setIsLeavingSession(true);
+        return;
+      }
+      
+      if (!gameId || !participantId) return;
+      
+      // Mark participant as inactive
+      const response = await fetch(`/api/multiplayer/game/${gameId}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          participantId,
+          isActive: false
+        }),
+      });
+      
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.error || 'Failed to leave session');
+      }
+      
+      // Clear any intervals
+      if (pollingInterval) clearInterval(pollingInterval);
+      if (timerIntervalRef.current) clearInterval(timerIntervalRef.current);
+      
+      // Redirect back to play page
+      router.push('/play');
+      
+    } catch (error) {
+      console.error('Error leaving session:', error);
+      setError(error.message || 'Failed to leave session');
+    }
+  };
+
+  // Close leave confirmation dialog
+  const cancelLeaveSession = () => {
+    setIsLeavingSession(false);
   };
   
   // Copy join code to clipboard
@@ -283,7 +410,7 @@ export default function MultiplayerGamePage() {
     );
   }
   
-  // Show error state
+  // Show error state - only for critical errors that prevent the game from continuing
   if (error) {
     return (
       <main className="flex min-h-screen flex-col items-center justify-center p-4 sm:p-8">
@@ -315,30 +442,78 @@ export default function MultiplayerGamePage() {
   
   // Render lobby or game based on status
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-4 sm:p-8">
-      <div className="w-full max-w-5xl">
-        {/* Game header */}
-        <div className="flex justify-between items-center w-full mb-6">
-          <div>
-            <h1 className="text-2xl font-bold gradient-text">
-              {game.status === 'lobby' ? 'Lobby Gry' : 'WhatNow?! Multiplayer'}
-            </h1>
-            <p className="text-[var(--text-gray)]">
-              Tryb: {game.mode.charAt(0).toUpperCase() + game.mode.slice(1)}
-            </p>
-          </div>
-          
-          <div className="flex items-center gap-2">
-            <div className={`w-3 h-3 rounded-full ${
-              game.status === 'lobby' ? 'bg-yellow-500' : 
-              game.status === 'active' ? 'bg-green-500' : 'bg-red-500'
-            }`}></div>
-            <span className="text-sm">
-              {game.status === 'lobby' ? 'W lobby' : 
-               game.status === 'active' ? 'Gra aktywna' : 'Zakończona'}
-            </span>
-          </div>
+    <div className="flex flex-col min-h-screen bg-gradient-to-br from-purple-900 to-indigo-950 text-white">
+      {/* Navigation Header */}
+      <header className="sticky top-0 z-10 bg-black/60 backdrop-blur-lg border-b border-white/10 py-3 px-4 flex justify-between items-center">
+        <div>
+          <Link href="/play" className="text-sm font-medium opacity-80 hover:opacity-100 transition-opacity flex items-center gap-1">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-arrow-left" viewBox="0 0 16 16">
+              <path fillRule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+            </svg>
+            Wróć
+          </Link>
         </div>
+        <div className="font-bold text-center text-lg">
+          {game?.joinCode && <span className="text-sm mr-2">Kod: {game.joinCode}</span>}
+          WhatNow?! Multiplayer
+        </div>
+        <div>
+          <button
+            onClick={() => handleLeaveSession(true)}
+            className="text-sm font-medium text-red-400 hover:text-red-300 transition-colors"
+          >
+            Opuść grę
+          </button>
+        </div>
+      </header>
+      
+      <main className="flex flex-1 flex-col items-center justify-between p-4 sm:p-8 pt-16">
+        {/* Notification toast */}
+        {notification.visible && (
+          <div className={`fixed top-20 right-4 z-50 max-w-xs w-full p-4 rounded-lg shadow-lg transition-all duration-300 transform ${
+            notification.type === 'error' ? 'bg-red-900 border border-red-700' : 
+            notification.type === 'success' ? 'bg-green-900 border border-green-700' :
+            'bg-blue-900 border border-blue-700'
+          }`}>
+            <div className="flex justify-between items-start">
+              <div className="flex-grow">
+                <p className="text-sm text-white">{notification.message}</p>
+              </div>
+              <button 
+                onClick={hideNotification}
+                className="text-white opacity-70 hover:opacity-100 transition-opacity ml-2"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        )}
+        
+        <div className="w-full max-w-5xl">
+          {/* Game header */}
+          <div className="flex justify-between items-center w-full mb-6">
+            <div>
+              <h1 className="text-2xl font-bold gradient-text">
+                {game.status === 'lobby' ? 'Lobby Gry' : 'WhatNow?! Multiplayer'}
+              </h1>
+              <p className="text-[var(--text-gray)]">
+                Tryb: {game.mode.charAt(0).toUpperCase() + game.mode.slice(1)}
+              </p>
+            </div>
+            
+            <div className="flex items-center gap-2">
+              <div className={`w-3 h-3 rounded-full ${
+                game.status === 'lobby' ? 'bg-yellow-500' : 
+                game.status === 'active' ? 'bg-green-500' : 'bg-red-500'
+              }`}></div>
+              <span className="text-sm">
+                {game.status === 'lobby' ? 'W lobby' : 
+                 game.status === 'active' ? 'Gra aktywna' : 'Zakończona'}
+              </span>
+            </div>
+          </div>
         
         {game.status === 'lobby' ? (
           <AnimatePresence mode="wait">
@@ -631,6 +806,33 @@ export default function MultiplayerGamePage() {
           </AnimatePresence>
         )}
       </div>
+
+      {/* Leave session confirmation */}
+      {isLeavingSession && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black/70 z-50">
+          <div className="bg-gray-900 border border-gray-700 rounded-lg p-6 max-w-sm w-full mx-4">
+            <h3 className="text-xl font-bold mb-4">Opuścić sesję?</h3>
+            <p className="mb-6 text-gray-300">
+              Czy na pewno chcesz opuścić tę grę? Twój status zostanie zmieniony na nieaktywny.
+            </p>
+            <div className="flex justify-end gap-3">
+              <button
+                onClick={cancelLeaveSession}
+                className="px-4 py-2 rounded bg-gray-700 hover:bg-gray-600 transition-colors"
+              >
+                Anuluj
+              </button>
+              <button
+                onClick={() => handleLeaveSession(false)}
+                className="px-4 py-2 rounded bg-red-600 hover:bg-red-500 transition-colors"
+              >
+                Opuść
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </main>
+  </div>
   );
 } 

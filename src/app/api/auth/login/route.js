@@ -160,18 +160,22 @@ export async function POST(request) {
         { status: 200 }
       );
 
-      // Set HTTP-only cookie
+      // Set cookie with fixed settings for development environment
       response.cookies.set({
         name: 'auth-token',
         value: token,
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'strict',
+        secure: process.env.NODE_ENV === 'production', // Only secure in production
+        sameSite: 'lax', // Changed from 'strict' to 'lax' to allow cookies in redirects
         maxAge: 7 * 24 * 60 * 60, // 7 days
         path: '/',
       });
       
-      console.log('Login successful for user:', userData.id);
+      // Debug cookie setting
+      console.log('Setting auth cookie with token:', token.substring(0, 20) + '...');
+      console.log('Cookie secure setting:', process.env.NODE_ENV === 'production');
+      console.log('Cookie sameSite setting:', 'lax');
+      
       return response;
     } catch (cookieError) {
       console.error('Error setting cookie:', cookieError);

@@ -24,13 +24,18 @@ export function generateToken(user) {
     throw new Error('JWT_TOKEN is not defined in environment variables')
   }
   
+  // Create a payload with essential user data
+  const payload = { 
+    id: user.id,
+    email: user.email,
+    isPremium: user.isPremium || false,
+    hasPremium: user.hasPremium || false
+  };
+  
+  console.log('Generating token with payload:', JSON.stringify(payload));
+  
   const token = jwt.sign(
-    { 
-      id: user.id,
-      email: user.email,
-      isPremium: user.isPremium,
-      hasPremium: user.hasPremium
-    },
+    payload,
     secretKey,
     { expiresIn: '7d' }
   )
@@ -46,11 +51,24 @@ export function verifyToken(token) {
     throw new Error('JWT_TOKEN is not defined in environment variables')
   }
   
+  if (!token || token.trim() === '') {
+    console.log('Empty token provided for verification');
+    return null;
+  }
+  
   try {
+    console.log('Verifying token:', token.substring(0, 20) + '...');
     const decoded = jwt.verify(token, secretKey)
+    console.log('Token verified successfully for user:', decoded.id);
     return decoded
   } catch (error) {
-    console.error('Token verification error:', error.message)
+    if (error.name === 'TokenExpiredError') {
+      console.error('Token expired');
+    } else if (error.name === 'JsonWebTokenError') {
+      console.error('Invalid token:', error.message);
+    } else {
+      console.error('Token verification error:', error.message);
+    }
     return null
   }
 } 

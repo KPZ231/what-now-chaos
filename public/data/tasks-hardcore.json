@@ -89,6 +89,516 @@
       "content": "Wymyśl i wykonaj wyzwanie dla osoby siedzącej naprzeciwko.",
       "difficulty": 4,
       "players": "two"
+    },
+    {
+      "id": "hardcore-16",
+      "content": "Zjedz łyżeczkę ostrego sosu albo wypij shota.",
+      "difficulty": 4,
+      "players": "one"
+    },
+    {
+      "id": "hardcore-17",
+      "content": "Pokaż zawartość swojej torebki/portfela albo pij 2x.",
+      "difficulty": 3,
+      "players": "one"
+    },
+    {
+      "id": "hardcore-18",
+      "content": "Opowiedz najbardziej żenującą historię ze swojego życia albo pij 3x.",
+      "difficulty": 5,
+      "players": "one"
+    },
+    {
+      "id": "hardcore-19",
+      "content": "Wypij shota z solą i cytryną.",
+      "difficulty": 3,
+      "players": "one"
+    },
+    {
+      "id": "hardcore-20",
+      "content": "Zrób 10 pompek albo pij 2x.",
+      "difficulty": 3,
+      "players": "one"
+    },
+    {
+      "id": "hardcore-21",
+      "content": "Wybierz osobę, która musi Cię pocałować w policzek albo pij.",
+      "difficulty": 4,
+      "players": "two"
+    },
+    {
+      "id": "hardcore-22",
+      "content": "Zjedz coś, co znajdziesz w lodówce, a co inni uznają za obrzydliwe.",
+      "difficulty": 4,
+      "players": "one"
+    },
+    {
+      "id": "hardcore-23",
+      "content": "Pokaż swoje ostatnie 3 wyszukiwania w przeglądarce albo pij 2x.",
+      "difficulty": 4,
+      "players": "one"
+    },
+    {
+      "id": "hardcore-24",
+      "content": "Wypij shota z zamkniętymi oczami, nie wiedząc, co to jest.",
+      "difficulty": 4,
+      "players": "one"
+    },
+    {
+      "id": "hardcore-25",
+      "content": "Zrób sobie selfie z osobą, która Ci się najbardziej podoba na imprezie, i wyślij ją do znajomego.",
+      "difficulty": 5,
+      "players": "two"
+    },
+    {
+      "id": "hardcore-26",
+      "content": "Wypij shota z najstarszym graczem.",
+      "difficulty": 3,
+      "players": "two"
+    },
+    {
+      "id": "hardcore-27",
+      "content": "Zrób 50 pajacyków albo pij 3x.",
+      "difficulty": 4,
+      "players": "one"
+    },
+    {
+      "id": "hardcore-28",
+      "content": "Pokaż swoje ulubione zdjęcie w telefonie albo pij 2x.",
+      "difficulty": 3,
+      "players": "one"
+    },
+    {
+      "id": "hardcore-29",
+      "content": "Opowiedz o swoim pierwszym pocałunku albo pij 3x.",
+      "difficulty": 4,
+      "players": "one"
+    },
+    {
+      "id": "hardcore-30",
+      "content": "Wypij shota z najmłodszym graczem.",
+      "difficulty": 3,
+      "players": "two"
+    },
+    {
+      "id": "hardcore-31",
+      "content": "Zrób 10 brzuszków albo pij 2x.",
+      "difficulty": 3,
+      "players": "one"
+    },
+    {
+      "id": "hardcore-32",
+      "content": "Pokaż ostatni film, który oglądałeś na YouTube albo pij 2x.",
+      "difficulty": 3,
+      "players": "one"
+    },
+    {
+      "id": "hardcore-33",
+      "content": "Opowiedz o swoim najgorszym randkowym doświadczeniu albo pij 3x.",
+      "difficulty": 4,
+      "players": "one"
+    },
+    {
+      "id": "hardcore-34",
+      "content": "Wypij shota z osobą, która ma na sobie najwięcej koloru czerwonego.",
+      "difficulty": 3,
+      "players": "two"
+    },
+    {
+      "id": "hardcore-35",
+      "content": "Zrób 15 przysiadów albo pij 2x.",
+      "difficulty": 3,
+      "players": "one"
+    },
+    {
+      "id": "hardcore-36",
+      "content": "Pokaż ostatnią piosenkę, której słuchałeś albo pij 2x.",
+      "difficulty": 3,
+      "players": "one"
+    },
+    {
+      "id": "hardcore-37",
+      "content": "Opowiedz o swoim największym wstydzie albo pij 3x.",
+      "difficulty": 4,
+      "players": "one"
+    },
+    {
+      "id": "hardcore-38",
+      "content": "Wypij shota z osobą, która ma najwięcej tatuaży.",
+      "difficulty": 3,
+      "players": "two"
+    },
+    {
+      "id": "hardcore-39",
+      "content": "Zrób 20 pompek albo pij 3x.",
+      "difficulty": 4,
+      "players": "one"
+    },
+    {
+      "id": "hardcore-40",
+      "content": "Pokaż ostatnie zdjęcie, które zrobiłeś albo pij 2x.",
+      "difficulty": 3,
+      "players": "one"
+    },
+    {
+      "id": "hardcore-41",
+      "content": "Opowiedz o swoim największym marzeniu albo pij 3x.",
+      "difficulty": 4,
+      "players": "one"
+    },
+    {
+      "id": "hardcore-42",
+      "content": "Wypij shota z osobą, która ma najwięcej kolczyków.",
+      "difficulty": 3,
+      "players": "two"
+    },
+    {
+      "id": "hardcore-43",
+      "content": "Zrób 25 przysiadów albo pij 3x.",
+      "difficulty": 4,
+      "players": "one"
+    },
+    {
+      "id": "hardcore-44",
+      "content": "Pokaż ostatnią aplikację, którą pobrałeś albo pij 2x.",
+      "difficulty": 3,
+      "players": "one"
+    },
+    {
+      "id": "hardcore-45",
+      "content": "Opowiedz o swoim największym lęku albo pij 3x.",
+      "difficulty": 4,
+      "players": "one"
+    },
+    {
+      "id": "hardcore-46",
+      "content": "Wypij shota z osobą, która ma najdłuższe włosy.",
+      "difficulty": 3,
+      "players": "two"
+    },
+    {
+      "id": "hardcore-47",
+      "content": "Zrób 30 pajacyków albo pij 3x.",
+      "difficulty": 4,
+      "players": "one"
+    },
+    {
+      "id": "hardcore-48",
+      "content": "Pokaż ostatni mem, który zapisałeś albo pij 2x.",
+      "difficulty": 3,
+      "players": "one"
+    },
+    {
+      "id": "hardcore-49",
+      "content": "Opowiedz o swoim największym sukcesie albo pij 3x.",
+      "difficulty": 4,
+      "players": "one"
+    },
+    {
+      "id": "hardcore-50",
+      "content": "Wypij shota z osobą, która ma najkrótsze włosy.",
+      "difficulty": 3,
+      "players": "two"
+    },
+    {
+      "id": "hardcore-51",
+      "content": "Zrób 35 przysiadów albo pij 4x.",
+      "difficulty": 4,
+      "players": "one"
+    },
+    {
+      "id": "hardcore-52",
+      "content": "Pokaż ostatni film, który polubiłeś na TikToku albo pij 2x.",
+      "difficulty": 3,
+      "players": "one"
+    },
+    {
+      "id": "hardcore-53",
+      "content": "Opowiedz o swoim największym rozczarowaniu albo pij 3x.",
+      "difficulty": 4,
+      "players": "one"
+    },
+    {
+      "id": "hardcore-54",
+      "content": "Wypij shota z osobą, która ma najwięcej rodzeństwa.",
+      "difficulty": 3,
+      "players": "two"
+    },
+    {
+      "id": "hardcore-55",
+      "content": "Zrób 40 pajacyków albo pij 4x.",
+      "difficulty": 4,
+      "players": "one"
+    },
+    {
+      "id": "hardcore-56",
+      "content": "Pokaż ostatnią wiadomość głosową, którą wysłałeś albo pij 2x.",
+      "difficulty": 3,
+      "players": "one"
+    },
+    {
+      "id": "hardcore-57",
+      "content": "Opowiedz o swoim największym osiągnięciu albo pij 3x.",
+      "difficulty": 4,
+      "players": "one"
+    },
+    {
+      "id": "hardcore-58",
+      "content": "Wypij shota z osobą, która ma najmniej rodzeństwa.",
+      "difficulty": 3,
+      "players": "two"
+    },
+    {
+      "id": "hardcore-59",
+      "content": "Zrób 45 przysiadów albo pij 4x.",
+      "difficulty": 4,
+      "players": "one"
+    },
+    {
+      "id": "hardcore-60",
+      "content": "Pokaż ostatni komentarz, który napisałeś w mediach społecznościowych albo pij 2x.",
+      "difficulty": 3,
+      "players": "one"
+    },
+    {
+      "id": "hardcore-61",
+      "content": "Opowiedz o swoim największym błędzie albo pij 3x.",
+      "difficulty": 4,
+      "players": "one"
+    },
+    {
+      "id": "hardcore-62",
+      "content": "Wypij shota z osobą, która ma najwięcej zwierząt domowych.",
+      "difficulty": 3,
+      "players": "two"
+    },
+    {
+      "id": "hardcore-63",
+      "content": "Zrób 50 pompek albo pij 5x.",
+      "difficulty": 5,
+      "players": "one"
+    },
+    {
+      "id": "hardcore-64",
+      "content": "Pokaż ostatnią rzecz, którą kupiłeś online albo pij 2x.",
+      "difficulty": 3,
+      "players": "one"
+    },
+    {
+      "id": "hardcore-65",
+      "content": "Opowiedz o swoim największym sekrecie albo pij 4x.",
+      "difficulty": 5,
+      "players": "one"
+    },
+    {
+      "id": "hardcore-66",
+      "content": "Wypij shota z osobą, która ma najmniej zwierząt domowych.",
+      "difficulty": 3,
+      "players": "two"
+    },
+    {
+      "id": "hardcore-67",
+      "content": "Zrób 55 przysiadów albo pij 5x.",
+      "difficulty": 5,
+      "players": "one"
+    },
+    {
+      "id": "hardcore-68",
+      "content": "Pokaż ostatnią wiadomość, którą wysłałeś do rodziców albo pij 2x.",
+      "difficulty": 3,
+      "players": "one"
+    },
+    {
+      "id": "hardcore-69",
+      "content": "Opowiedz o swoim największym kłamstwie albo pij 4x.",
+      "difficulty": 5,
+      "players": "one"
+    },
+    {
+      "id": "hardcore-70",
+      "content": "Wypij shota z osobą, która ma najwięcej dzieci.",
+      "difficulty": 3,
+      "players": "two"
+    },
+    {
+      "id": "hardcore-71",
+      "content": "Zrób 60 pajacyków albo pij 5x.",
+      "difficulty": 5,
+      "players": "one"
+    },
+    {
+      "id": "hardcore-72",
+      "content": "Pokaż ostatnią wiadomość, którą wysłałeś do swojego partnera/partnerki albo pij 2x.",
+      "difficulty": 3,
+      "players": "one"
+    },
+    {
+      "id": "hardcore-73",
+      "content": "Opowiedz o swoim największym żalu albo pij 4x.",
+      "difficulty": 5,
+      "players": "one"
+    },
+    {
+      "id": "hardcore-74",
+      "content": "Wypij shota z osobą, która ma najmniej dzieci.",
+      "difficulty": 3,
+      "players": "two"
+    },
+    {
+      "id": "hardcore-75",
+      "content": "Zrób 65 przysiadów albo pij 5x.",
+      "difficulty": 5,
+      "players": "one"
+    },
+    {
+      "id": "hardcore-76",
+      "content": "Pokaż ostatnią wiadomość, którą wysłałeś do swojego najlepszego przyjaciela albo pij 2x.",
+      "difficulty": 3,
+      "players": "one"
+    },
+    {
+      "id": "hardcore-77",
+      "content": "Opowiedz o swoim największym strachu albo pij 4x.",
+      "difficulty": 5,
+      "players": "one"
+    },
+    {
+      "id": "hardcore-78",
+      "content": "Wypij shota z osobą, która ma najwięcej rodzeństwa.",
+      "difficulty": 3,
+      "players": "two"
+    },
+    {
+      "id": "hardcore-79",
+      "content": "Zrób 70 pajacyków albo pij 5x.",
+      "difficulty": 5,
+      "players": "one"
+    },
+    {
+      "id": "hardcore-80",
+      "content": "Pokaż ostatnią wiadomość, którą wysłałeś do swojego szefa albo pij 2x.",
+      "difficulty": 3,
+      "players": "one"
+    },
+    {
+      "id": "hardcore-81",
+      "content": "Opowiedz o swoim największym marzeniu albo pij 4x.",
+      "difficulty": 5,
+      "players": "one"
+    },
+    {
+      "id": "hardcore-82",
+      "content": "Wypij shota z osobą, która ma najmniej rodzeństwa.",
+      "difficulty": 3,
+      "players": "two"
+    },
+    {
+      "id": "hardcore-83",
+      "content": "Zrób 75 przysiadów albo pij 5x.",
+      "difficulty": 5,
+      "players": "one"
+    },
+    {
+      "id": "hardcore-84",
+      "content": "Pokaż ostatnią wiadomość, którą wysłałeś do swojego nauczyciela albo pij 2x.",
+      "difficulty": 3,
+      "players": "one"
+    },
+    {
+      "id": "hardcore-85",
+      "content": "Opowiedz o swoim największym osiągnięciu albo pij 4x.",
+      "difficulty": 5,
+      "players": "one"
+    },
+    {
+      "id": "hardcore-86",
+      "content": "Wypij shota z osobą, która ma najwięcej zwierząt domowych.",
+      "difficulty": 3,
+      "players": "two"
+    },
+    {
+      "id": "hardcore-87",
+      "content": "Zrób 80 pajacyków albo pij 5x.",
+      "difficulty": 5,
+      "players": "one"
+    },
+    {
+      "id": "hardcore-88",
+      "content": "Pokaż ostatnią wiadomość, którą wysłałeś do swojego lekarza albo pij 2x.",
+      "difficulty": 3,
+      "players": "one"
+    },
+    {
+      "id": "hardcore-89",
+      "content": "Opowiedz o swoim największym rozczarowaniu albo pij 4x.",
+      "difficulty": 5,
+      "players": "one"
+    },
+    {
+      "id": "hardcore-90",
+      "content": "Wypij shota z osobą, która ma najmniej zwierząt domowych.",
+      "difficulty": 3,
+      "players": "two"
+    },
+    {
+      "id": "hardcore-91",
+      "content": "Zrób 85 przysiadów albo pij 5x.",
+      "difficulty": 5,
+      "players": "one"
+    },
+    {
+      "id": "hardcore-92",
+      "content": "Pokaż ostatnią wiadomość, którą wysłałeś do swojego prawnika albo pij 2x.",
+      "difficulty": 3,
+      "players": "one"
+    },
+    {
+      "id": "hardcore-93",
+      "content": "Opowiedz o swoim największym błędzie albo pij 4x.",
+      "difficulty": 5,
+      "players": "one"
+    },
+    {
+      "id": "hardcore-94",
+      "content": "Wypij shota z osobą, która ma najwięcej dzieci.",
+      "difficulty": 3,
+      "players": "two"
+    },
+    {
+      "id": "hardcore-95",
+      "content": "Zrób 90 pajacyków albo pij 5x.",
+      "difficulty": 5,
+      "players": "one"
+    },
+    {
+      "id": "hardcore-96",
+      "content": "Pokaż ostatnią wiadomość, którą wysłałeś do swojego banku albo pij 2x.",
+      "difficulty": 3,
+      "players": "one"
+    },
+    {
+      "id": "hardcore-97",
+      "content": "Opowiedz o swoim największym sekrecie albo pij 4x.",
+      "difficulty": 5,
+      "players": "one"
+    },
+    {
+      "id": "hardcore-98",
+      "content": "Wypij shota z osobą, która ma najmniej dzieci.",
+      "difficulty": 3,
+      "players": "two"
+    },
+    {
+      "id": "hardcore-99",
+      "content": "Zrób 95 przysiadów albo pij 5x.",
+      "difficulty": 5,
+      "players": "one"
+    },
+    {
+      "id": "hardcore-100",
+      "content": "Pokaż ostatnią wiadomość, którą wysłałeś do swojego ubezpieczyciela albo pij 2x.",
+      "difficulty": 3,
+      "players": "one"
     }
   ]
-} 
+}

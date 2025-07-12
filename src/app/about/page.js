@@ -64,7 +64,7 @@ export default function AboutPage() {
             const data = await response.json();
             
             if (!response.ok) {
-                throw new Error(data.error || 'Failed to send message');
+                throw new Error(data.error || 'Nie udało się wysłać wiadomości');
             }
             
             // Success
@@ -82,7 +82,7 @@ export default function AboutPage() {
             
         } catch (error) {
             console.error('Error submitting form:', error);
-            setErrorMessage(error.message || 'Something went wrong. Please try again.');
+            setErrorMessage(error.message || 'Coś poszło nie tak. Spróbuj ponownie.');
             setSubmitStatus('error');
         } finally {
             setIsSubmitting(false);
@@ -93,8 +93,8 @@ export default function AboutPage() {
     const aboutPageStructuredData = {
         "@context": "https://schema.org",
         "@type": "AboutPage",
-        "name": "About KPZsProductions - WhatNow?! Party Chaos Generator",
-        "description": "Learn about the creators of WhatNow?! Party Chaos Generator - a party game that brings fun and challenges to your gatherings.",
+        "name": "O KPZsProductions - WhatNow?! Generator Imprezowego Chaosu",
+        "description": "Poznaj twórców WhatNow?! Generator Imprezowego Chaosu — gry imprezowej, która wnosi zabawę i wyzwania na Twoje spotkania.",
         "publisher": {
             "@type": "Organization",
             "name": "KPZsProductions",
@@ -108,10 +108,10 @@ export default function AboutPage() {
     return (
         <>
             <SEO 
-                title="About Us - WhatNow?! Party Chaos Generator"
-                description="Learn about the creators of WhatNow?! Party Chaos Generator - a party game that brings fun and challenges to your gatherings."
+                title="O nas - WhatNow?! Generator Imprezowego Chaosu"
+                description="Poznaj twórców WhatNow?! Generator Imprezowego Chaosu — gry imprezowej, która wnosi zabawę i wyzwania na Twoje spotkania."
                 canonicalUrl="/about"
-                keywords={["about us", "party game developers", "game creators", "KPZsProductions"]}
+                keywords={["o nas", "twórcy gier imprezowych", "twórcy gier", "KPZsProductions"]}
                 structuredData={aboutPageStructuredData}
             />
             
@@ -125,10 +125,10 @@ export default function AboutPage() {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6 }}
                     >
-                        <h1 className="text-4xl md:text-5xl font-bold gradient-text mb-4">About KPZsProductions</h1>
+                        <h1 className="text-4xl md:text-5xl font-bold gradient-text mb-4">O KPZsProductions</h1>
                         <div className="w-32 h-1 bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] mx-auto mb-6 rounded-full"></div>
                         <p className="text-lg md:text-xl text-[var(--text-gray)] max-w-2xl mx-auto">
-                            Creating innovative games and software solutions with passion and creativity
+                            Tworzymy innowacyjne gry i rozwiązania programistyczne z pasją i kreatywnością
                         </p>
                     </motion.div>
 
@@ -144,36 +144,30 @@ export default function AboutPage() {
                             <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-bl from-[var(--accent)] to-transparent opacity-10 rounded-bl-full"></div>
                             
                             <motion.div variants={itemVariants} className="mb-8">
-                                <h2 className="text-2xl font-semibold mb-3 text-[var(--primary)]">Who We Are</h2>
+                                <h2 className="text-2xl font-semibold mb-3 text-[var(--primary)]">Kim jesteśmy</h2>
                                 <p className="text-lg">
-                                    KPZsProductions is run by a young software and game developer currently in the third year of high school,
-                                    specializing in programming. The passion for coding began at the age of 10, and since then, 
-                                    there has been continuous development in both software and game development skills.
+                                    KPZsProductions prowadzi młody programista i twórca gier, obecnie uczęszczający do trzeciej klasy liceum o profilu programistycznym. Pasja do kodowania rozpoczęła się w wieku 10 lat i od tamtej pory nieustannie rozwijają się umiejętności w zakresie tworzenia oprogramowania oraz gier.
                                 </p>
                             </motion.div>
 
                             <motion.div variants={itemVariants} className="mb-8">
-                                <h2 className="text-2xl font-semibold mb-3 text-[var(--secondary)]">Our Focus</h2>
+                                <h2 className="text-2xl font-semibold mb-3 text-[var(--secondary)]">Nasze zainteresowania</h2>
                                 <p className="text-lg">
-                                    We are particularly interested in creating video games, as they allow us to combine creativity with problem-solving 
-                                    in a highly engaging way. We also enjoy working on software projects that can make everyday tasks more 
-                                    efficient and user-friendly.
+                                    Szczególnie interesuje nas tworzenie gier wideo, ponieważ pozwalają one łączyć kreatywność z rozwiązywaniem problemów w niezwykle angażujący sposób. Lubimy również pracować nad projektami programistycznymi, które czynią codzienne zadania bardziej efektywnymi i przyjaznymi dla użytkownika.
                                 </p>
                             </motion.div>
 
                             <motion.div variants={itemVariants} className="mb-8">
-                                <h2 className="text-2xl font-semibold mb-3 text-[var(--accent)]">Technical Skills</h2>
+                                <h2 className="text-2xl font-semibold mb-3 text-[var(--accent)]">Umiejętności techniczne</h2>
                                 <p className="text-lg">
-                                    KPZsProductions is proficient in several programming languages, including HTML, CSS, JavaScript, PHP, C#, C++, and SQL,
-                                    with a foundational understanding of Python that is currently being explored further.
+                                    KPZsProductions biegle posługuje się kilkoma językami programowania, w tym HTML, CSS, JavaScript, PHP, C#, C++, oraz SQL, a także posiada podstawową znajomość Pythona, która jest obecnie rozwijana.
                                 </p>
                             </motion.div>
 
                             <motion.div variants={itemVariants}>
-                                <h2 className="text-2xl font-semibold mb-3 text-[var(--primary)]">Our Goal</h2>
+                                <h2 className="text-2xl font-semibold mb-3 text-[var(--primary)]">Nasz cel</h2>
                                 <p className="text-lg">
-                                    These skills have allowed work on various projects, from web development to more complex software and game programming.
-                                    The goal is to continue improving abilities and exploring new technologies to create innovative solutions.
+                                    Dzięki tym umiejętnościom możliwa była praca nad różnymi projektami – od tworzenia stron internetowych po bardziej złożone oprogramowanie i programowanie gier. Naszym celem jest dalsze doskonalenie kompetencji oraz eksplorowanie nowych technologii w celu tworzenia innowacyjnych rozwiązań.
                                 </p>
                             </motion.div>
                         </motion.div>
@@ -189,7 +183,7 @@ export default function AboutPage() {
                         <div className="absolute -top-20 -left-20 w-40 h-40 bg-gradient-to-br from-[var(--primary-dark)] to-transparent opacity-10 rounded-full"></div>
                         <div className="absolute -bottom-20 -right-20 w-40 h-40 bg-gradient-to-tl from-[var(--secondary-dark)] to-transparent opacity-10 rounded-full"></div>
                         
-                        <h2 className="text-3xl font-bold text-center gradient-text mb-8">Get In Touch</h2>
+                        <h2 className="text-3xl font-bold text-center gradient-text mb-8">Skontaktuj się z nami</h2>
                         
                         {submitStatus === 'success' ? (
                             <motion.div 
@@ -197,20 +191,20 @@ export default function AboutPage() {
                                 animate={{ opacity: 1, scale: 1 }}
                                 className="bg-[var(--accent-dark)] bg-opacity-20 border border-[var(--accent)] text-[var(--accent)] p-4 rounded-lg text-center"
                             >
-                                <p className="text-lg font-medium">Message sent successfully!</p>
-                                <p className="text-sm mt-1">We'll get back to you soon.</p>
+                                <p className="text-lg font-medium">Wiadomość została pomyślnie wysłana!</p>
+                                <p className="text-sm mt-1">Wkrótce się odezwiemy.</p>
                             </motion.div>
                         ) : (
                             <form onSubmit={handleSubmit} className="space-y-6">
                                 {submitStatus === 'error' && (
                                     <div className="bg-red-900 bg-opacity-20 border border-red-500 text-red-300 p-3 rounded-lg">
-                                        <p>{errorMessage || 'Failed to send message. Please try again.'}</p>
+                                        <p>{errorMessage || 'Nie udało się wysłać wiadomości. Spróbuj ponownie.'}</p>
                                     </div>
                                 )}
                                 
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div>
-                                        <label htmlFor="name" className="block text-[var(--text-gray)] mb-2">Your Name</label>
+                                        <label htmlFor="name" className="block text-[var(--text-gray)] mb-2">Twoje imię</label>
                                         <input
                                             type="text"
                                             id="name"
@@ -223,7 +217,7 @@ export default function AboutPage() {
                                         />
                                     </div>
                                     <div>
-                                        <label htmlFor="email" className="block text-[var(--text-gray)] mb-2">Your Email</label>
+                                        <label htmlFor="email" className="block text-[var(--text-gray)] mb-2">Twój email</label>
                                         <input
                                             type="email"
                                             id="email"
@@ -237,7 +231,7 @@ export default function AboutPage() {
                                     </div>
                                 </div>
                                 <div>
-                                    <label htmlFor="message" className="block text-[var(--text-gray)] mb-2">Your Message</label>
+                                    <label htmlFor="message" className="block text-[var(--text-gray)] mb-2">Twoja wiadomość</label>
                                     <textarea
                                         id="message"
                                         name="message"
@@ -262,10 +256,10 @@ export default function AboutPage() {
                                                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                                                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                                             </svg>
-                                            Sending...
+                                            Wysyłanie...
                                         </span>
                                     ) : (
-                                        "Send Message"
+                                        "Wyślij wiadomość"
                                     )}
                                 </motion.button>
                             </form>

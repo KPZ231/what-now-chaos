@@ -7,12 +7,19 @@ import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import PremiumStatus from './PremiumStatus';
-
+import Navbar from "@/app/partial/navbar";
+import NavbarWrapper from "@/app/components/NavbarWrapper";
 
 
 export default function ProfilePage() {
-  const { user, isLoading, isAuthenticated } = useAuth();
+  const [showUserMenu, setShowUserMenu] = useState(false);
+  const { user, isLoading, isAuthenticated, logout } = useAuth();
   const router = useRouter();
+
+  const handleLogout = async () => {
+    await logout();
+    setShowUserMenu(false);
+  };
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -429,12 +436,22 @@ export default function ProfilePage() {
   }
 
   return ( 
+    <NavbarWrapper>
+    <Navbar 
+        isLoading={isLoading} 
+        isAuthenticated={isAuthenticated} 
+        user={user} 
+        showUserMenu={showUserMenu} 
+        setShowUserMenu={setShowUserMenu} 
+        handleLogout={handleLogout} 
+      />
     <motion.div 
       className="container mx-auto px-4 py-16"
       initial="hidden"
       animate="visible"
       variants={containerVariants}
     >
+      <div className="mt-[80px]"></div>
       <motion.h1 
         className="text-3xl font-bold mb-8 text-center gradient-text"
         variants={itemVariants}
@@ -768,5 +785,6 @@ export default function ProfilePage() {
         )}
       </motion.div>
     </motion.div>
+    </NavbarWrapper>
   );
 } 

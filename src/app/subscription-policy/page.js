@@ -12,75 +12,75 @@ export default function SubscriptionPolicy() {
         transition={{ duration: 0.5 }}
         className="max-w-4xl mx-auto bg-[var(--container-color)] p-6 sm:p-8 rounded-xl shadow-lg"
       >
-        <h1 className="text-3xl font-bold mb-6 text-center text-[var(--text-white)]">Subscription Policy</h1>
+        <h1 className="text-3xl font-bold mb-6 text-center text-[var(--text-white)]">Polityka Subskrypcji</h1>
         
         <div className="prose prose-invert max-w-none text-[var(--text-white)]">
-          <p className="mb-4">Last Updated: {new Date().toLocaleDateString()}</p>
+          <p className="mb-4">Ostatnia aktualizacja: {new Date().toLocaleDateString()}</p>
           
-          <h2 className="text-xl font-semibold mt-6 mb-3">1. Subscription Services</h2>
+          <h2 className="text-xl font-semibold mt-6 mb-3">1. Usługi Subskrypcyjne</h2>
           <p>
-            WhatNow?! – Chaos Generator offers premium subscription services that provide access to additional content, features, and services. This policy outlines the terms and conditions for these subscriptions.
+            WhatNow?! – Chaos Generator oferuje usługi subskrypcyjne premium, które zapewniają dostęp do dodatkowej zawartości, funkcji i usług. Niniejsza polityka określa warunki korzystania z tych subskrypcji.
           </p>
           
-          <h2 className="text-xl font-semibold mt-6 mb-3">2. Subscription Plans</h2>
+          <h2 className="text-xl font-semibold mt-6 mb-3">2. Plany Subskrypcyjne</h2>
           <p>
-            We offer the following subscription options:
-          </p>
-          <ul className="list-disc pl-5 my-3 space-y-2">
-            <li><strong>Monthly Plan:</strong> Access to premium features for one month, automatically renewed each month.</li>
-            <li><strong>Annual Plan:</strong> Access to premium features for one year, automatically renewed annually at a discounted rate.</li>
-            <li><strong>One-time Purchases:</strong> Specific premium content packages available for a one-time fee with permanent access.</li>
-          </ul>
-          
-          <h2 className="text-xl font-semibold mt-6 mb-3">3. Free Trial</h2>
-          <p>
-            We may offer free trial periods for our premium services. At the end of the trial period, your subscription will automatically convert to a paid subscription unless you cancel before the trial ends.
-          </p>
-          
-          <h2 className="text-xl font-semibold mt-6 mb-3">4. Billing and Payments</h2>
-          <p>
-            By subscribing to our premium services:
+            Oferujemy następujące opcje subskrypcji:
           </p>
           <ul className="list-disc pl-5 my-3 space-y-2">
-            <li>You authorize us to charge the payment method you provide on a recurring basis for the subscription plan you select.</li>
-            <li>Payment will be charged at the beginning of your subscription period.</li>
-            <li>For recurring subscriptions, payment will automatically renew unless you cancel at least 24 hours before the end of the current period.</li>
-            <li>All fees are non-refundable except as required by law or as explicitly stated in this policy.</li>
+            <li><strong>Plan Miesięczny:</strong> Dostęp do funkcji premium na jeden miesiąc, automatycznie odnawiany co miesiąc.</li>
+            <li><strong>Plan Roczny:</strong> Dostęp do funkcji premium na jeden rok, automatycznie odnawiany co roku po obniżonej cenie.</li>
+            <li><strong>Zakupy Jednorazowe:</strong> Specyficzne pakiety treści premium dostępne za jednorazową opłatą z trwałym dostępem.</li>
           </ul>
           
-          <h2 className="text-xl font-semibold mt-6 mb-3">5. Cancellation</h2>
+          <h2 className="text-xl font-semibold mt-6 mb-3">3. Bezpłatny Okres Próbny</h2>
           <p>
-            You can cancel your subscription at any time through your account settings. Upon cancellation:
+            Możemy oferować bezpłatne okresy próbne dla naszych usług premium. Po zakończeniu okresu próbnego Twoja subskrypcja automatycznie przekształci się w płatną subskrypcję, chyba że anulujesz ją przed zakończeniem okresu próbnego.
+          </p>
+          
+          <h2 className="text-xl font-semibold mt-6 mb-3">4. Rozliczenia i Płatności</h2>
+          <p>
+            Subskrybując nasze usługi premium:
           </p>
           <ul className="list-disc pl-5 my-3 space-y-2">
-            <li>You will continue to have access to premium features until the end of your current billing period.</li>
-            <li>No partial refunds will be issued for unused subscription periods.</li>
-            <li>Your subscription will not automatically renew after the current billing period ends.</li>
+            <li>Upoważniasz nas do obciążania podanej metody płatności w sposób cykliczny za wybrany plan subskrypcji.</li>
+            <li>Płatność zostanie pobrana na początku okresu subskrypcji.</li>
+            <li>W przypadku subskrypcji cyklicznych płatność zostanie automatycznie odnowiona, chyba że anulujesz ją co najmniej 24 godziny przed końcem bieżącego okresu.</li>
+            <li>Wszystkie opłaty są bezzwrotne, z wyjątkiem przypadków wymaganych przez prawo lub wyraźnie określonych w niniejszej polityce.</li>
           </ul>
           
-          <h2 className="text-xl font-semibold mt-6 mb-3">6. Price Changes</h2>
+          <h2 className="text-xl font-semibold mt-6 mb-3">5. Anulowanie</h2>
           <p>
-            We may change our subscription fees at any time. Any price changes will apply to billing periods after the date of the change. We will notify you of any price changes before they take effect.
+            Możesz anulować subskrypcję w dowolnym momencie w ustawieniach konta. Po anulowaniu:
+          </p>
+          <ul className="list-disc pl-5 my-3 space-y-2">
+            <li>Będziesz mieć dostęp do funkcji premium do końca bieżącego okresu rozliczeniowego.</li>
+            <li>Nie zostaną zwrócone żadne częściowe zwroty za niewykorzystane okresy subskrypcji.</li>
+            <li>Twoja subskrypcja nie zostanie automatycznie odnowiona po zakończeniu bieżącego okresu rozliczeniowego.</li>
+          </ul>
+          
+          <h2 className="text-xl font-semibold mt-6 mb-3">6. Zmiany Cen</h2>
+          <p>
+            Możemy zmienić nasze opłaty subskrypcyjne w dowolnym momencie. Wszelkie zmiany cen będą miały zastosowanie do okresów rozliczeniowych po dacie zmiany. Powiadomimy Cię o wszelkich zmianach cen przed ich wejściem w życie.
           </p>
           
-          <h2 className="text-xl font-semibold mt-6 mb-3">7. Refunds</h2>
+          <h2 className="text-xl font-semibold mt-6 mb-3">7. Zwroty</h2>
           <p>
-            Generally, purchases are non-refundable. However, in exceptional circumstances, we may provide refunds at our sole discretion. If you believe you qualify for a refund, please contact our customer support.
+            Generalnie, zakupy są bezzwrotne. Jednak w wyjątkowych okolicznościach możemy zapewnić zwroty według naszego wyłącznego uznania. Jeśli uważasz, że kwalifikujesz się do zwrotu, skontaktuj się z naszym działem obsługi klienta.
           </p>
           
-          <h2 className="text-xl font-semibold mt-6 mb-3">8. Account Termination</h2>
+          <h2 className="text-xl font-semibold mt-6 mb-3">8. Zakończenie Konta</h2>
           <p>
-            If we terminate your account for violation of our Terms of Service, you will not be entitled to a refund of any subscription fees.
+            Jeśli zakończymy Twoje konto z powodu naruszenia naszych Warunków Usługi, nie będziesz uprawniony do zwrotu żadnych opłat subskrypcyjnych.
           </p>
           
-          <h2 className="text-xl font-semibold mt-6 mb-3">9. Changes to Subscription Services</h2>
+          <h2 className="text-xl font-semibold mt-6 mb-3">9. Zmiany w Usługach Subskrypcyjnych</h2>
           <p>
-            We reserve the right to modify, suspend, or discontinue any part of our subscription services at any time. If we discontinue a subscription service entirely, we may provide a pro-rata refund for the unused portion of your subscription.
+            Zastrzegamy sobie prawo do modyfikowania, zawieszania lub zaprzestania świadczenia dowolnej części naszych usług subskrypcyjnych w dowolnym momencie. Jeśli całkowicie zaprzestaniemy świadczenia usługi subskrypcyjnej, możemy zapewnić proporcjonalny zwrot za niewykorzystaną część subskrypcji.
           </p>
           
-          <h2 className="text-xl font-semibold mt-6 mb-3">10. Contact Us</h2>
+          <h2 className="text-xl font-semibold mt-6 mb-3">10. Skontaktuj się z nami</h2>
           <p>
-            If you have questions about our Subscription Policy, please contact us at:{" "}
+            Jeśli masz pytania dotyczące naszej Polityki Subskrypcji, skontaktuj się z nami pod adresem:{" "}
             <Link href="mailto:info@KPZsProductions.com" className="text-[var(--primary)] hover:underline">
               info@KPZsProductions.com
             </Link>

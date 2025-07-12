@@ -11,7 +11,7 @@ import NavbarWrapper from "@/app/components/NavbarWrapper";
 export default function ModesPage() {
   const [activeMode, setActiveMode] = useState('soft');
   const { user } = useAuth();
-  
+
   const modes = {
     soft: {
       title: "Soft",
@@ -66,7 +66,7 @@ export default function ModesPage() {
       ]
     }
   };
-  
+
   const isPremiumMode = (mode) => {
     return modes[mode].premium && (!user || !user.hasPremium);
   };
@@ -92,7 +92,7 @@ export default function ModesPage() {
 
   return (
     <NavbarWrapper>
-      <SEO 
+      <SEO
         title="Tryby Gry - WhatNow?! Generator Imprezowego Chaosu"
         description="Odkryj różne tryby gry w WhatNow?! - od łagodnego trybu Soft po dzikie wyzwania Hardcore na Twoją imprezę."
         canonicalUrl="/modes"
@@ -100,6 +100,9 @@ export default function ModesPage() {
         structuredData={modesPageStructuredData}
       />
       <main className="flex min-h-screen flex-col items-center justify-between p-4 sm:p-8 pt-20 pb-24">
+        <div className="w-full max-w-5xl flex flex-col items-center">
+        </div>
+
         <div className="w-full max-w-5xl flex flex-col items-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -118,11 +121,10 @@ export default function ModesPage() {
                   <button
                     key={mode}
                     onClick={() => setActiveMode(mode)}
-                    className={`px-6 py-3 rounded-full transition-all ${
-                      activeMode === mode
+                    className={`px-6 py-3 rounded-full transition-all ${activeMode === mode
                         ? 'bg-[var(--primary)] text-white shadow-lg shadow-[var(--primary)]/30'
                         : 'bg-[var(--container-color)] hover:bg-[var(--container-color)]/80'
-                    }`}
+                      }`}
                   >
                     <div className="flex items-center gap-2">
                       <span>{modes[mode].title}</span>
@@ -149,7 +151,7 @@ export default function ModesPage() {
                   <div className="card p-6 relative overflow-hidden" id={activeMode}>
                     {/* Background gradient */}
                     <div className={`absolute -top-24 -right-24 w-64 h-64 rounded-full blur-3xl opacity-20 bg-gradient-to-br ${modes[activeMode].color}`}></div>
-                    
+
                     {/* Premium badge if needed */}
                     {modes[activeMode].premium && (
                       <div className="absolute top-4 right-4">
@@ -158,7 +160,7 @@ export default function ModesPage() {
                         </div>
                       </div>
                     )}
-                    
+
                     <h2 className="text-2xl font-bold mb-2">{modes[activeMode].title}</h2>
                     <p className="text-[var(--text-gray)] mb-8 max-w-3xl">
                       {modes[activeMode].description}
@@ -169,7 +171,7 @@ export default function ModesPage() {
                       <h3 className="text-xl font-semibold mb-4">Przykładowe Wyzwania:</h3>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         {modes[activeMode].examples.map((example, index) => (
-                          <div 
+                          <div
                             key={index}
                             className="bg-[var(--container-color)]/50 p-4 rounded-lg border border-[var(--border-color)]"
                           >

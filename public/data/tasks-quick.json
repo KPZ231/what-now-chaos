@@ -89,6 +89,516 @@
       "content": "Ostatnia osoba, która dotknie nosa, pije dwa razy.",
       "difficulty": 1,
       "players": "all"
+    },
+    {
+      "id": "quick-16",
+      "content": "Kto pierwszy znajdzie coś niebieskiego, wybiera kto pije.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "quick-17",
+      "content": "Wszyscy mówią 'tak' na raz. Kto powie 'nie', pije.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "quick-18",
+      "content": "Wymień 3 zwierzęta na literę 'K' w 5 sekund – albo pij.",
+      "difficulty": 2,
+      "players": "one"
+    },
+    {
+      "id": "quick-19",
+      "content": "Kto ma najwięcej kluczy w pęku, pije.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "quick-20",
+      "content": "Kto pierwszy dotknie podłogi nosem, wybiera kto pije.",
+      "difficulty": 2,
+      "players": "all"
+    },
+    {
+      "id": "quick-21",
+      "content": "Wszyscy pokazują kciuk w górę. Kto pierwszy opuści, pije.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "quick-22",
+      "content": "Wymień 3 filmy z Bradem Pittem w 5 sekund – albo pij.",
+      "difficulty": 2,
+      "players": "one"
+    },
+    {
+      "id": "quick-23",
+      "content": "Kto ma najwięcej monet w kieszeni, pije.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "quick-24",
+      "content": "Kto pierwszy znajdzie coś zielonego, wybiera kto pije.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "quick-25",
+      "content": "Wszyscy mówią 'nie' na raz. Kto powie 'tak', pije.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "quick-26",
+      "content": "Wymień 3 miasta w Polsce na literę 'W' w 5 sekund – albo pij.",
+      "difficulty": 2,
+      "players": "one"
+    },
+    {
+      "id": "quick-27",
+      "content": "Kto ma najwięcej gumek do włosów, pije.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "quick-28",
+      "content": "Kto pierwszy dotknie swojego łokcia językiem, wybiera kto pije.",
+      "difficulty": 2,
+      "players": "all"
+    },
+    {
+      "id": "quick-29",
+      "content": "Wszyscy pokazują kciuk w dół. Kto pierwszy podniesie, pije.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "quick-30",
+      "content": "Wymień 3 piosenki Lady Gagi w 5 sekund – albo pij.",
+      "difficulty": 2,
+      "players": "one"
+    },
+    {
+      "id": "quick-31",
+      "content": "Kto ma najwięcej długopisów, pije.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "quick-32",
+      "content": "Kto pierwszy znajdzie coś czerwonego, wybiera kto pije.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "quick-33",
+      "content": "Wszyscy mówią 'hop' na raz. Kto powie coś innego, pije.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "quick-34",
+      "content": "Wymień 3 marki samochodów na literę 'F' w 5 sekund – albo pij.",
+      "difficulty": 2,
+      "players": "one"
+    },
+    {
+      "id": "quick-35",
+      "content": "Kto ma najwięcej piegów, pije.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "quick-36",
+      "content": "Kto pierwszy dotknie swojego kolana nosem, wybiera kto pije.",
+      "difficulty": 2,
+      "players": "all"
+    },
+    {
+      "id": "quick-37",
+      "content": "Wszyscy pokazują język. Kto pierwszy schowa, pije.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "quick-38",
+      "content": "Wymień 3 warzywa na literę 'C' w 5 sekund – albo pij.",
+      "difficulty": 2,
+      "players": "one"
+    },
+    {
+      "id": "quick-39",
+      "content": "Kto ma najwięcej pieczątek w paszporcie, pije.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "quick-40",
+      "content": "Kto pierwszy znajdzie coś żółtego, wybiera kto pije.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "quick-41",
+      "content": "Wszyscy mówią 'bum' na raz. Kto powie coś innego, pije.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "quick-42",
+      "content": "Wymień 3 owoce na literę 'J' w 5 sekund – albo pij.",
+      "difficulty": 2,
+      "players": "one"
+    },
+    {
+      "id": "quick-43",
+      "content": "Kto ma najwięcej aplikacji na pierwszej stronie telefonu, pije.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "quick-44",
+      "content": "Kto pierwszy dotknie swojego ucha stopą, wybiera kto pije.",
+      "difficulty": 2,
+      "players": "all"
+    },
+    {
+      "id": "quick-45",
+      "content": "Wszyscy pokazują zęby. Kto pierwszy schowa, pije.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "quick-46",
+      "content": "Wymień 3 kraje na literę 'P' w 5 sekund – albo pij.",
+      "difficulty": 2,
+      "players": "one"
+    },
+    {
+      "id": "quick-47",
+      "content": "Kto ma najwięcej nieprzeczytanych wiadomości, pije.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "quick-48",
+      "content": "Kto pierwszy znajdzie coś czarnego, wybiera kto pije.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "quick-49",
+      "content": "Wszyscy mówią 'pstryk' na raz. Kto powie coś innego, pije.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "quick-50",
+      "content": "Wymień 3 rzeki w Polsce na literę 'W' w 5 sekund – albo pij.",
+      "difficulty": 2,
+      "players": "one"
+    },
+    {
+      "id": "quick-51",
+      "content": "Kto ma najwięcej zdjęć w galerii, pije.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "quick-52",
+      "content": "Kto pierwszy dotknie swojego nosa łokciem, wybiera kto pije.",
+      "difficulty": 2,
+      "players": "all"
+    },
+    {
+      "id": "quick-53",
+      "content": "Wszyscy pokazują dłonie. Kto pierwszy schowa, pije.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "quick-54",
+      "content": "Wymień 3 stolice Afryki w 5 sekund – albo pij.",
+      "difficulty": 2,
+      "players": "one"
+    },
+    {
+      "id": "quick-55",
+      "content": "Kto ma najwięcej nieodebranych połączeń, pije.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "quick-56",
+      "content": "Kto pierwszy znajdzie coś białego, wybiera kto pije.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "quick-57",
+      "content": "Wszyscy mówią 'raz' na raz. Kto powie coś innego, pije.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "quick-58",
+      "content": "Wymień 3 gatunki ptaków na literę 'W' w 5 sekund – albo pij.",
+      "difficulty": 2,
+      "players": "one"
+    },
+    {
+      "id": "quick-59",
+      "content": "Kto ma najwięcej nieprzeczytanych e-maili, pije.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "quick-60",
+      "content": "Kto pierwszy dotknie swojego pępka palcem u stopy, wybiera kto pije.",
+      "difficulty": 2,
+      "players": "all"
+    },
+    {
+      "id": "quick-61",
+      "content": "Wszyscy pokazują stopy. Kto pierwszy schowa, pije.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "quick-62",
+      "content": "Wymień 3 marki napojów gazowanych w 5 sekund – albo pij.",
+      "difficulty": 2,
+      "players": "one"
+    },
+    {
+      "id": "quick-63",
+      "content": "Kto ma najwięcej nieodebranych wiadomości na Messengerze, pije.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "quick-64",
+      "content": "Kto pierwszy znajdzie coś fioletowego, wybiera kto pije.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "quick-65",
+      "content": "Wszyscy mówią 'dwa' na raz. Kto powie coś innego, pije.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "quick-66",
+      "content": "Wymień 3 marki czekolady w 5 sekund – albo pij.",
+      "difficulty": 2,
+      "players": "one"
+    },
+    {
+      "id": "quick-67",
+      "content": "Kto ma najwięcej nieprzeczytanych powiadomień na Facebooku, pije.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "quick-68",
+      "content": "Kto pierwszy dotknie swojego czoła piętą, wybiera kto pije.",
+      "difficulty": 2,
+      "players": "all"
+    },
+    {
+      "id": "quick-69",
+      "content": "Wszyscy pokazują uszy. Kto pierwszy schowa, pije.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "quick-70",
+      "content": "Wymień 3 marki lodów w 5 sekund – albo pij.",
+      "difficulty": 2,
+      "players": "one"
+    },
+    {
+      "id": "quick-71",
+      "content": "Kto ma najwięcej nieprzeczytanych wiadomości na Instagramie, pije.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "quick-72",
+      "content": "Kto pierwszy znajdzie coś pomarańczowego, wybiera kto pije.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "quick-73",
+      "content": "Wszyscy mówią 'trzy' na raz. Kto powie coś innego, pije.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "quick-74",
+      "content": "Wymień 3 marki chipsów w 5 sekund – albo pij.",
+      "difficulty": 2,
+      "players": "one"
+    },
+    {
+      "id": "quick-75",
+      "content": "Kto ma najwięcej nieprzeczytanych wiadomości na WhatsAppie, pije.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "quick-76",
+      "content": "Kto pierwszy dotknie swojego nosa kolanem, wybiera kto pije.",
+      "difficulty": 2,
+      "players": "all"
+    },
+    {
+      "id": "quick-77",
+      "content": "Wszyscy pokazują nosy. Kto pierwszy schowa, pije.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "quick-78",
+      "content": "Wymień 3 marki samochodów na literę 'M' w 5 sekund – albo pij.",
+      "difficulty": 2,
+      "players": "one"
+    },
+    {
+      "id": "quick-79",
+      "content": "Kto ma najwięcej nieprzeczytanych wiadomości na Snapchacie, pije.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "quick-80",
+      "content": "Kto pierwszy znajdzie coś brązowego, wybiera kto pije.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "quick-81",
+      "content": "Wszyscy mówią 'cztery' na raz. Kto powie coś innego, pije.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "quick-82",
+      "content": "Wymień 3 marki telefonów w 5 sekund – albo pij.",
+      "difficulty": 2,
+      "players": "one"
+    },
+    {
+      "id": "quick-83",
+      "content": "Kto ma najwięcej nieprzeczytanych wiadomości na Twitterze, pije.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "quick-84",
+      "content": "Kto pierwszy dotknie swojego ramienia stopą, wybiera kto pije.",
+      "difficulty": 2,
+      "players": "all"
+    },
+    {
+      "id": "quick-85",
+      "content": "Wszyscy pokazują brody. Kto pierwszy schowa, pije.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "quick-86",
+      "content": "Wymień 3 marki butów sportowych w 5 sekund – albo pij.",
+      "difficulty": 2,
+      "players": "one"
+    },
+    {
+      "id": "quick-87",
+      "content": "Kto ma najwięcej nieprzeczytanych wiadomości na LinkedInie, pije.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "quick-88",
+      "content": "Kto pierwszy znajdzie coś szarego, wybiera kto pije.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "quick-89",
+      "content": "Wszyscy mówią 'pięć' na raz. Kto powie coś innego, pije.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "quick-90",
+      "content": "Wymień 3 marki zegarków w 5 sekund – albo pij.",
+      "difficulty": 2,
+      "players": "one"
+    },
+    {
+      "id": "quick-91",
+      "content": "Kto ma najwięcej nieprzeczytanych wiadomości na Pintereście, pije.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "quick-92",
+      "content": "Kto pierwszy dotknie swojego ucha ramieniem, wybiera kto pije.",
+      "difficulty": 2,
+      "players": "all"
+    },
+    {
+      "id": "quick-93",
+      "content": "Wszyscy pokazują czoła. Kto pierwszy schowa, pije.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "quick-94",
+      "content": "Wymień 3 marki perfum w 5 sekund – albo pij.",
+      "difficulty": 2,
+      "players": "one"
+    },
+    {
+      "id": "quick-95",
+      "content": "Kto ma najwięcej nieprzeczytanych wiadomości na Reddicie, pije.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "quick-96",
+      "content": "Kto pierwszy znajdzie coś różowego, wybiera kto pije.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "quick-97",
+      "content": "Wszyscy mówią 'sześć' na raz. Kto powie coś innego, pije.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "quick-98",
+      "content": "Wymień 3 marki kawy w 5 sekund – albo pij.",
+      "difficulty": 2,
+      "players": "one"
+    },
+    {
+      "id": "quick-99",
+      "content": "Kto ma najwięcej nieprzeczytanych wiadomości na Discordzie, pije.",
+      "difficulty": 1,
+      "players": "all"
+    },
+    {
+      "id": "quick-100",
+      "content": "Kto pierwszy dotknie swojego nosa palcem u nogi, wybiera kto pije.",
+      "difficulty": 2,
+      "players": "all"
     }
   ]
-} 
+}

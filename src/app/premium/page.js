@@ -6,6 +6,11 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/AuthContext';
 import Link from 'next/link';
 import Footer from "@/app/partial/footer";
+import Navbar from "@/app/partial/navbar";
+import { loadStripe } from '@stripe/stripe-js';
+
+// Initialize Stripe
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || 'pk_test_your_test_key');
 
 export default function PremiumPage() {
   const [selectedPlan, setSelectedPlan] = useState('monthly');
@@ -13,8 +18,14 @@ export default function PremiumPage() {
   const [isRedirecting, setIsRedirecting] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
-  const { user, isLoading, setUser } = useAuth();
+  const [showUserMenu, setShowUserMenu] = useState(false);
+  const { user, isLoading, setUser, isAuthenticated, logout } = useAuth();
   const router = useRouter();
+  
+  const handleLogout = async () => {
+    await logout();
+    setShowUserMenu(false);
+  };
   
   // Redirect authenticated users if they already have premium
   useEffect(() => {
@@ -45,53 +56,34 @@ export default function PremiumPage() {
     setIsProcessing(true);
     
     try {
-      // First simulate a payment gateway API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      // Now update the user's premium status in the database
-      const response = await fetch('/api/user/premium', {
+      // Create checkout session
+      const response = await fetch('/api/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ plan: selectedPlan }),
         credentials: 'include',
       });
       
-      // Clone the response before reading it as JSON
-      const clonedResponse = response.clone();
-      let data;
+      const data = await response.json();
       
-      try {
-        data = await response.json();
-        console.log('Premium API response:', data);
-      } catch (jsonError) {
-        console.error('Error parsing JSON response:', jsonError);
-        throw new Error('Błąd podczas przetwarzania odpowiedzi z serwera');
-      }
-        
       if (!response.ok) {
-        console.error('Premium API error:', data);
-        throw new Error(data.error || 'Wystąpił błąd podczas aktualizacji statusu premium');
+        throw new Error(data.error || 'Wystąpił błąd podczas przygotowania płatności');
       }
       
-      // Update the user context with new premium status
-      setUser({
-        ...user,
-        hasPremium: true,
-        premiumPlan: selectedPlan,
-        premiumExpiry: data.user?.premiumExpiry
+      // Redirect to Stripe Checkout
+      const stripe = await stripePromise;
+      const { error } = await stripe.redirectToCheckout({
+        sessionId: data.sessionId,
       });
       
-      setSuccess(true);
-      
-      // Redirect to premium advantages page after showing success message
-      setTimeout(() => {
-        router.push('/premium-advantages');
-      }, 2000);
+      if (error) {
+        console.error('Stripe redirect error:', error);
+        throw new Error(error.message);
+      }
       
     } catch (err) {
       console.error('Purchase error:', err);
       setError(err.message || 'Wystąpił błąd podczas przetwarzania płatności');
-    } finally {
       setIsProcessing(false);
     }
   };
@@ -109,7 +101,16 @@ export default function PremiumPage() {
   
   return (
     <>
+    <Navbar 
+        isLoading={isLoading} 
+        isAuthenticated={isAuthenticated} 
+        user={user} 
+        showUserMenu={showUserMenu} 
+        setShowUserMenu={setShowUserMenu} 
+        handleLogout={handleLogout} 
+      />
     <main className="flex min-h-screen flex-col items-center justify-between p-4 sm:p-8">
+    <div className="mt-[80px]"></div>
       <div className="w-full max-w-5xl flex flex-col items-center">
         <motion.div
           className="w-full"
@@ -234,50 +235,38 @@ export default function PremiumPage() {
                 )}
                 
                 <button 
-                  className={`btn btn-primary w-full ${isProcessing || isRedirecting || success ? 'opacity-70 cursor-not-allowed' : ''}`}
+                  className={`btn btn-primary w-full ${isProcessing || isRedirecting ? 'opacity-70 cursor-not-allowed' : ''}`}
                   onClick={handlePurchase}
-                  disabled={isProcessing || isRedirecting || success}
+                  disabled={isProcessing || isRedirecting}
                 >
                   {isProcessing ? (
-                    <>
-                      <span className="animate-spin inline-block mr-2">⟳</span>
+                    <div className="flex items-center justify-center">
+                      <div className="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full mr-2"></div>
                       Przetwarzanie...
-                    </>
+                    </div>
                   ) : isRedirecting ? (
-                    <>
-                      <span className="animate-spin inline-block mr-2">⟳</span>
-                      Przekierowywanie do logowania...
-                    </>
-                  ) : success ? (
-                    <>
-                      <span className="inline-block mr-2">✓</span>
-                      Zakupiono Premium!
-                    </>
+                    <div className="flex items-center justify-center">
+                      <div className="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full mr-2"></div>
+                      Przekierowanie do logowania...
+                    </div>
                   ) : (
-                    'Kup Teraz'
+                    'Przejdź do płatności'
                   )}
                 </button>
+                
+                <div className="mt-6 flex items-center justify-center text-sm text-[var(--text-gray)]">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
+                  </svg>
+                  Bezpieczna płatność przez Stripe
+                </div>
               </div>
-              
-              <p className="text-sm text-center mt-4 text-[var(--text-gray)]">
-                Bezpieczne płatności kartą, BLIK lub PayPal.<br />
-                Możesz anulować subskrypcję w dowolnym momencie.
-              </p>
-              
-              {user && (
-                <p className="text-sm text-center mt-4">
-                  <Link href="/play" className="text-[var(--primary)] hover:underline">
-                    Powrót do gry
-                  </Link>
-                </p>
-              )}
             </div>
           </div>
         </motion.div>
       </div>
-      
     </main>
     <Footer />
-  </>
+    </>
   );
 } 

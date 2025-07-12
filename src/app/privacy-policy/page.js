@@ -12,71 +12,71 @@ export default function PrivacyPolicy() {
         transition={{ duration: 0.5 }}
         className="max-w-4xl mx-auto bg-[var(--container-color)] p-6 sm:p-8 rounded-xl shadow-lg"
       >
-        <h1 className="text-3xl font-bold mb-6 text-center text-[var(--text-white)]">Privacy Policy</h1>
+        <h1 className="text-3xl font-bold mb-6 text-center text-[var(--text-white)]">Polityka Prywatności</h1>
         
         <div className="prose prose-invert max-w-none text-[var(--text-white)]">
-          <p className="mb-4">Last Updated: {new Date().toLocaleDateString()}</p>
+          <p className="mb-4">Ostatnia aktualizacja: {new Date().toLocaleDateString()}</p>
           
-          <h2 className="text-xl font-semibold mt-6 mb-3">1. Introduction</h2>
+          <h2 className="text-xl font-semibold mt-6 mb-3">1. Wprowadzenie</h2>
           <p>
-            Welcome to WhatNow?! – Chaos Generator. This Privacy Policy explains how KPZsProductions ("we", "us", "our") collects, uses, and shares your information when you use our app.
+            Witamy w WhatNow?! – Chaos Generator. Niniejsza Polityka Prywatności wyjaśnia, w jaki sposób KPZsProductions ("my", "nas", "nasze") gromadzi, wykorzystuje i udostępnia Twoje informacje podczas korzystania z naszej aplikacji.
           </p>
           
-          <h2 className="text-xl font-semibold mt-6 mb-3">2. Information We Collect</h2>
-          <p>We collect the following types of information:</p>
+          <h2 className="text-xl font-semibold mt-6 mb-3">2. Gromadzone informacje</h2>
+          <p>Gromadzimy następujące rodzaje informacji:</p>
           <ul className="list-disc pl-5 my-3 space-y-2">
-            <li><strong>Account Information:</strong> When you register, we collect your email and a password.</li>
-            <li><strong>Profile Information:</strong> Optional information like your username and profile picture.</li>
-            <li><strong>Game Data:</strong> Information about your game sessions, including tasks completed and settings chosen.</li>
-            <li><strong>Payment Information:</strong> If you make purchases, payment details are processed by our payment processors.</li>
-            <li><strong>Technical Information:</strong> Information about your device and how you interact with our app.</li>
+            <li><strong>Informacje o koncie:</strong> Podczas rejestracji zbieramy Twój adres e-mail i hasło.</li>
+            <li><strong>Informacje profilowe:</strong> Opcjonalne informacje, takie jak nazwa użytkownika i zdjęcie profilowe.</li>
+            <li><strong>Dane gry:</strong> Informacje o Twoich sesjach gry, w tym ukończone zadania i wybrane ustawienia.</li>
+            <li><strong>Informacje o płatnościach:</strong> Jeśli dokonujesz zakupów, dane płatności są przetwarzane przez naszych dostawców płatności.</li>
+            <li><strong>Informacje techniczne:</strong> Informacje o Twoim urządzeniu i sposobie interakcji z naszą aplikacją.</li>
           </ul>
           
-          <h2 className="text-xl font-semibold mt-6 mb-3">3. How We Use Your Information</h2>
-          <p>We use your information to:</p>
+          <h2 className="text-xl font-semibold mt-6 mb-3">3. Jak wykorzystujemy Twoje informacje</h2>
+          <p>Wykorzystujemy Twoje informacje do:</p>
           <ul className="list-disc pl-5 my-3 space-y-2">
-            <li>Provide, maintain, and improve our app</li>
-            <li>Process transactions and send related information</li>
-            <li>Send updates, security alerts, and support messages</li>
-            <li>Respond to your comments and questions</li>
-            <li>Develop new products and services</li>
-            <li>Generate anonymous, aggregate statistics about app usage</li>
+            <li>Dostarczania, utrzymywania i ulepszania naszej aplikacji</li>
+            <li>Przetwarzania transakcji i wysyłania powiązanych informacji</li>
+            <li>Wysyłania aktualizacji, alertów bezpieczeństwa i wiadomości wsparcia</li>
+            <li>Odpowiadania na Twoje komentarze i pytania</li>
+            <li>Tworzenia nowych produktów i usług</li>
+            <li>Generowania anonimowych, zbiorczych statystyk dotyczących użytkowania aplikacji</li>
           </ul>
           
-          <h2 className="text-xl font-semibold mt-6 mb-3">4. Information Sharing and Disclosure</h2>
-          <p>We may share your information with:</p>
+          <h2 className="text-xl font-semibold mt-6 mb-3">4. Udostępnianie i ujawnianie informacji</h2>
+          <p>Możemy udostępniać Twoje informacje:</p>
           <ul className="list-disc pl-5 my-3 space-y-2">
-            <li><strong>Service Providers:</strong> Companies that perform services for us</li>
-            <li><strong>Legal Requirements:</strong> When required by law or to protect our rights</li>
-            <li><strong>Business Transfers:</strong> If we're involved in a merger, acquisition, or sale of assets</li>
+            <li><strong>Dostawcom usług:</strong> Firmom, które świadczą dla nas usługi</li>
+            <li><strong>Wymogom prawnym:</strong> Gdy jest to wymagane przez prawo lub w celu ochrony naszych praw</li>
+            <li><strong>Przeniesieniom biznesowym:</strong> Jeśli jesteśmy zaangażowani w fuzję, przejęcie lub sprzedaż aktywów</li>
           </ul>
           
-          <h2 className="text-xl font-semibold mt-6 mb-3">5. Your Choices</h2>
-          <p>You can:</p>
+          <h2 className="text-xl font-semibold mt-6 mb-3">5. Twoje wybory</h2>
+          <p>Możesz:</p>
           <ul className="list-disc pl-5 my-3 space-y-2">
-            <li>Update your account information in your profile settings</li>
-            <li>Opt out of marketing communications</li>
-            <li>Request deletion of your account by contacting us</li>
+            <li>Zaktualizować informacje o koncie w ustawieniach profilu</li>
+            <li>Zrezygnować z komunikacji marketingowej</li>
+            <li>Poprosić o usunięcie konta, kontaktując się z nami</li>
           </ul>
           
-          <h2 className="text-xl font-semibold mt-6 mb-3">6. Data Security</h2>
+          <h2 className="text-xl font-semibold mt-6 mb-3">6. Bezpieczeństwo danych</h2>
           <p>
-            We implement appropriate security measures to protect your information. However, no method of transmission over the internet is 100% secure.
+            Wdrażamy odpowiednie środki bezpieczeństwa w celu ochrony Twoich informacji. Jednak żadna metoda transmisji przez Internet nie jest w 100% bezpieczna.
           </p>
           
-          <h2 className="text-xl font-semibold mt-6 mb-3">7. Children's Privacy</h2>
+          <h2 className="text-xl font-semibold mt-6 mb-3">7. Prywatność dzieci</h2>
           <p>
-            Our app is not intended for children under 13, and we do not knowingly collect information from children under 13.
+            Nasza aplikacja nie jest przeznaczona dla dzieci poniżej 13 roku życia i świadomie nie zbieramy informacji od dzieci poniżej 13 roku życia.
           </p>
           
-          <h2 className="text-xl font-semibold mt-6 mb-3">8. Changes to This Policy</h2>
+          <h2 className="text-xl font-semibold mt-6 mb-3">8. Zmiany w niniejszej Polityce</h2>
           <p>
-            We may update this policy from time to time. We will notify you of any changes by posting the new policy on this page.
+            Możemy od czasu do czasu aktualizować niniejszą politykę. O wszelkich zmianach powiadomimy Cię, publikując nową politykę na tej stronie.
           </p>
           
-          <h2 className="text-xl font-semibold mt-6 mb-3">9. Contact Us</h2>
+          <h2 className="text-xl font-semibold mt-6 mb-3">9. Skontaktuj się z nami</h2>
           <p>
-            If you have questions about this Privacy Policy, please contact us at:{" "}
+            Jeśli masz pytania dotyczące niniejszej Polityki Prywatności, skontaktuj się z nami pod adresem:{" "}
             <Link href="mailto:info@KPZsProductions.com" className="text-[var(--primary)] hover:underline">
               info@KPZsProductions.com
             </Link>

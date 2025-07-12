@@ -89,6 +89,516 @@
       "content": "Każdy gracz musi dodać składnik do 'koktajlu chaosu', który jedna osoba będzie musiała wypić.",
       "difficulty": 4,
       "players": "all"
+    },
+    {
+      "id": "chaos-16",
+      "content": "Wszyscy muszą mówić rymowankami przez 2 minuty.",
+      "difficulty": 2,
+      "players": "all"
+    },
+    {
+      "id": "chaos-17",
+      "content": "Zrób 10 pompek, śpiewając piosenkę.",
+      "difficulty": 3,
+      "players": "one"
+    },
+    {
+      "id": "chaos-18",
+      "content": "Wymień 5 rzeczy, które są w tym pokoju, zaczynających się na literę 'P'.",
+      "difficulty": 1,
+      "players": "one"
+    },
+    {
+      "id": "chaos-19",
+      "content": "Zatańcz do piosenki, którą wybierze osoba po prawej.",
+      "difficulty": 2,
+      "players": "one"
+    },
+    {
+      "id": "chaos-20",
+      "content": "Wszyscy muszą udawać, że są robotami przez 1 minutę.",
+      "difficulty": 2,
+      "players": "all"
+    },
+    {
+      "id": "chaos-21",
+      "content": "Opowiedz dowcip, który rozśmieszy wszystkich. Jeśli się nie uda, wykonaj dodatkowe zadanie.",
+      "difficulty": 2,
+      "players": "one"
+    },
+    {
+      "id": "chaos-22",
+      "content": "Zrób 30-sekundową reklamę dla dowolnego przedmiotu w pokoju.",
+      "difficulty": 2,
+      "players": "one"
+    },
+    {
+      "id": "chaos-23",
+      "content": "Wszyscy muszą zamienić się butami na 5 minut.",
+      "difficulty": 3,
+      "players": "all"
+    },
+    {
+      "id": "chaos-24",
+      "content": "Zrób minę, która najlepiej oddaje Twoje uczucia w tej chwili.",
+      "difficulty": 1,
+      "players": "one"
+    },
+    {
+      "id": "chaos-25",
+      "content": "Wszyscy muszą mówić szeptem przez 2 minuty.",
+      "difficulty": 2,
+      "players": "all"
+    },
+    {
+      "id": "chaos-26",
+      "content": "Zrób 5 przysiadów, udając, że jesteś żabą.",
+      "difficulty": 2,
+      "players": "one"
+    },
+    {
+      "id": "chaos-27",
+      "content": "Wymień 5 krajów, które zaczynają się na literę 'A'.",
+      "difficulty": 1,
+      "players": "one"
+    },
+    {
+      "id": "chaos-28",
+      "content": "Zatańcz do piosenki, którą wybierze osoba po lewej.",
+      "difficulty": 2,
+      "players": "one"
+    },
+    {
+      "id": "chaos-29",
+      "content": "Wszyscy muszą udawać, że są zombie przez 1 minutę.",
+      "difficulty": 2,
+      "players": "all"
+    },
+    {
+      "id": "chaos-30",
+      "content": "Opowiedz historię, która zaczyna się od słów 'Pewnego razu w odległej galaktyce...'.",
+      "difficulty": 2,
+      "players": "one"
+    },
+    {
+      "id": "chaos-31",
+      "content": "Zrób 30-sekundową prognozę pogody dla jutra.",
+      "difficulty": 2,
+      "players": "one"
+    },
+    {
+      "id": "chaos-32",
+      "content": "Wszyscy muszą zamienić się skarpetkami na 5 minut.",
+      "difficulty": 3,
+      "players": "all"
+    },
+    {
+      "id": "chaos-33",
+      "content": "Zrób minę, która najlepiej oddaje Twoje ulubione jedzenie.",
+      "difficulty": 1,
+      "players": "one"
+    },
+    {
+      "id": "chaos-34",
+      "content": "Wszyscy muszą mówić śpiewająco przez 2 minuty.",
+      "difficulty": 2,
+      "players": "all"
+    },
+    {
+      "id": "chaos-35",
+      "content": "Zrób 5 przysiadów, udając, że jesteś gorylem.",
+      "difficulty": 2,
+      "players": "one"
+    },
+    {
+      "id": "chaos-36",
+      "content": "Wymień 5 owoców, które zaczynają się na literę 'J'.",
+      "difficulty": 1,
+      "players": "one"
+    },
+    {
+      "id": "chaos-37",
+      "content": "Zatańcz do piosenki, którą wybierze osoba z najdłuższymi włosami.",
+      "difficulty": 2,
+      "players": "one"
+    },
+    {
+      "id": "chaos-38",
+      "content": "Wszyscy muszą udawać, że są w kosmosie przez 1 minutę.",
+      "difficulty": 2,
+      "players": "all"
+    },
+    {
+      "id": "chaos-39",
+      "content": "Opowiedz historię, która zaczyna się od słów 'Był sobie raz smok...'.",
+      "difficulty": 2,
+      "players": "one"
+    },
+    {
+      "id": "chaos-40",
+      "content": "Zrób 30-sekundową relację sportową z dowolnego wydarzenia.",
+      "difficulty": 2,
+      "players": "one"
+    },
+    {
+      "id": "chaos-41",
+      "content": "Wszyscy muszą zamienić się okularami na 5 minut.",
+      "difficulty": 3,
+      "players": "all"
+    },
+    {
+      "id": "chaos-42",
+      "content": "Zrób minę, która najlepiej oddaje Twoje ulubione zwierzę.",
+      "difficulty": 1,
+      "players": "one"
+    },
+    {
+      "id": "chaos-43",
+      "content": "Wszyscy muszą mówić z akcentem brytyjskim przez 2 minuty.",
+      "difficulty": 2,
+      "players": "all"
+    },
+    {
+      "id": "chaos-44",
+      "content": "Zrób 5 przysiadów, udając, że jesteś pingwinem.",
+      "difficulty": 2,
+      "players": "one"
+    },
+    {
+      "id": "chaos-45",
+      "content": "Wymień 5 warzyw, które zaczynają się na literę 'C'.",
+      "difficulty": 1,
+      "players": "one"
+    },
+    {
+      "id": "chaos-46",
+      "content": "Zatańcz do piosenki, którą wybierze osoba z najkrótszymi włosami.",
+      "difficulty": 2,
+      "players": "one"
+    },
+    {
+      "id": "chaos-47",
+      "content": "Wszyscy muszą udawać, że są na statku kosmicznym przez 1 minutę.",
+      "difficulty": 2,
+      "players": "all"
+    },
+    {
+      "id": "chaos-48",
+      "content": "Opowiedz historię, która zaczyna się od słów 'W ciemnym lesie...'.",
+      "difficulty": 2,
+      "players": "one"
+    },
+    {
+      "id": "chaos-49",
+      "content": "Zrób 30-sekundową recenzję dowolnego filmu.",
+      "difficulty": 2,
+      "players": "one"
+    },
+    {
+      "id": "chaos-50",
+      "content": "Wszyscy muszą zamienić się zegarkami na 5 minut.",
+      "difficulty": 3,
+      "players": "all"
+    },
+    {
+      "id": "chaos-51",
+      "content": "Zrób minę, która najlepiej oddaje Twoje ulubione hobby.",
+      "difficulty": 1,
+      "players": "one"
+    },
+    {
+      "id": "chaos-52",
+      "content": "Wszyscy muszą mówić z akcentem francuskim przez 2 minuty.",
+      "difficulty": 2,
+      "players": "all"
+    },
+    {
+      "id": "chaos-53",
+      "content": "Zrób 5 przysiadów, udając, że jesteś kangurem.",
+      "difficulty": 2,
+      "players": "one"
+    },
+    {
+      "id": "chaos-54",
+      "content": "Wymień 5 miast, które zaczynają się na literę 'W'.",
+      "difficulty": 1,
+      "players": "one"
+    },
+    {
+      "id": "chaos-55",
+      "content": "Zatańcz do piosenki, którą wybierze osoba z najstarszym telefonem.",
+      "difficulty": 2,
+      "players": "one"
+    },
+    {
+      "id": "chaos-56",
+      "content": "Wszyscy muszą udawać, że są na dnie oceanu przez 1 minutę.",
+      "difficulty": 2,
+      "players": "all"
+    },
+    {
+      "id": "chaos-57",
+      "content": "Opowiedz historię, która zaczyna się od słów 'W pewnym zamku...'.",
+      "difficulty": 2,
+      "players": "one"
+    },
+    {
+      "id": "chaos-58",
+      "content": "Zrób 30-sekundową recenzję dowolnej książki.",
+      "difficulty": 2,
+      "players": "one"
+    },
+    {
+      "id": "chaos-59",
+      "content": "Wszyscy muszą zamienić się pierścionkami na 5 minut.",
+      "difficulty": 3,
+      "players": "all"
+    },
+    {
+      "id": "chaos-60",
+      "content": "Zrób minę, która najlepiej oddaje Twoje ulubione wspomnienie.",
+      "difficulty": 1,
+      "players": "one"
+    },
+    {
+      "id": "chaos-61",
+      "content": "Wszyscy muszą mówić z akcentem niemieckim przez 2 minuty.",
+      "difficulty": 2,
+      "players": "all"
+    },
+    {
+      "id": "chaos-62",
+      "content": "Zrób 5 przysiadów, udając, że jesteś niedźwiedziem.",
+      "difficulty": 2,
+      "players": "one"
+    },
+    {
+      "id": "chaos-63",
+      "content": "Wymień 5 marek samochodów, które zaczynają się na literę 'B'.",
+      "difficulty": 1,
+      "players": "one"
+    },
+    {
+      "id": "chaos-64",
+      "content": "Zatańcz do piosenki, którą wybierze osoba z najmłodszym telefonem.",
+      "difficulty": 2,
+      "players": "one"
+    },
+    {
+      "id": "chaos-65",
+      "content": "Wszyscy muszą udawać, że są w dżungli przez 1 minutę.",
+      "difficulty": 2,
+      "players": "all"
+    },
+    {
+      "id": "chaos-66",
+      "content": "Opowiedz historię, która zaczyna się od słów 'W krainie baśni...'.",
+      "difficulty": 2,
+      "players": "one"
+    },
+    {
+      "id": "chaos-67",
+      "content": "Zrób 30-sekundową recenzję dowolnej gry.",
+      "difficulty": 2,
+      "players": "one"
+    },
+    {
+      "id": "chaos-68",
+      "content": "Wszyscy muszą zamienić się naszyjnikami na 5 minut.",
+      "difficulty": 3,
+      "players": "all"
+    },
+    {
+      "id": "chaos-69",
+      "content": "Zrób minę, która najlepiej oddaje Twoje ulubione miejsce.",
+      "difficulty": 1,
+      "players": "one"
+    },
+    {
+      "id": "chaos-70",
+      "content": "Wszyscy muszą mówić z akcentem hiszpańskim przez 2 minuty.",
+      "difficulty": 2,
+      "players": "all"
+    },
+    {
+      "id": "chaos-71",
+      "content": "Zrób 5 przysiadów, udając, że jesteś słoniem.",
+      "difficulty": 2,
+      "players": "one"
+    },
+    {
+      "id": "chaos-72",
+      "content": "Wymień 5 rzek w Polsce, które zaczynają się na literę 'W'.",
+      "difficulty": 1,
+      "players": "one"
+    },
+    {
+      "id": "chaos-73",
+      "content": "Zatańcz do piosenki, którą wybierze osoba z najładniejszym uśmiechem.",
+      "difficulty": 2,
+      "players": "one"
+    },
+    {
+      "id": "chaos-74",
+      "content": "Wszyscy muszą udawać, że są w cyrku przez 1 minutę.",
+      "difficulty": 2,
+      "players": "all"
+    },
+    {
+      "id": "chaos-75",
+      "content": "Opowiedz historię, która zaczyna się od słów 'W pewnym królestwie...'.",
+      "difficulty": 2,
+      "players": "one"
+    },
+    {
+      "id": "chaos-76",
+      "content": "Zrób 30-sekundową recenzję dowolnego jedzenia.",
+      "difficulty": 2,
+      "players": "one"
+    },
+    {
+      "id": "chaos-77",
+      "content": "Wszyscy muszą zamienić się butami na 5 minut.",
+      "difficulty": 3,
+      "players": "all"
+    },
+    {
+      "id": "chaos-78",
+      "content": "Zrób minę, która najlepiej oddaje Twoje ulubione święto.",
+      "difficulty": 1,
+      "players": "one"
+    },
+    {
+      "id": "chaos-79",
+      "content": "Wszyscy muszą mówić z akcentem rosyjskim przez 2 minuty.",
+      "difficulty": 2,
+      "players": "all"
+    },
+    {
+      "id": "chaos-80",
+      "content": "Zrób 5 przysiadów, udając, że jesteś żyrafą.",
+      "difficulty": 2,
+      "players": "one"
+    },
+    {
+      "id": "chaos-81",
+      "content": "Wymień 5 stolic Europy, które zaczynają się na literę 'L'.",
+      "difficulty": 1,
+      "players": "one"
+    },
+    {
+      "id": "chaos-82",
+      "content": "Zatańcz do piosenki, którą wybierze osoba z najładniejszymi oczami.",
+      "difficulty": 2,
+      "players": "one"
+    },
+    {
+      "id": "chaos-83",
+      "content": "Wszyscy muszą udawać, że są w zoo przez 1 minutę.",
+      "difficulty": 2,
+      "players": "all"
+    },
+    {
+      "id": "chaos-84",
+      "content": "Opowiedz historię, która zaczyna się od słów 'W odległej przyszłości...'.",
+      "difficulty": 2,
+      "players": "one"
+    },
+    {
+      "id": "chaos-85",
+      "content": "Zrób 30-sekundową recenzję dowolnego napoju.",
+      "difficulty": 2,
+      "players": "one"
+    },
+    {
+      "id": "chaos-86",
+      "content": "Wszyscy muszą zamienić się czapkami na 5 minut.",
+      "difficulty": 3,
+      "players": "all"
+    },
+    {
+      "id": "chaos-87",
+      "content": "Zrób minę, która najlepiej oddaje Twoje ulubione zwierzę.",
+      "difficulty": 1,
+      "players": "one"
+    },
+    {
+      "id": "chaos-88",
+      "content": "Wszyscy muszą mówić z akcentem chińskim przez 2 minuty.",
+      "difficulty": 2,
+      "players": "all"
+    },
+    {
+      "id": "chaos-89",
+      "content": "Zrób 5 przysiadów, udając, że jesteś tygrysem.",
+      "difficulty": 2,
+      "players": "one"
+    },
+    {
+      "id": "chaos-90",
+      "content": "Wymień 5 marek telefonów, które zaczynają się na literę 'S'.",
+      "difficulty": 1,
+      "players": "one"
+    },
+    {
+      "id": "chaos-91",
+      "content": "Zatańcz do piosenki, którą wybierze osoba z najładniejszymi włosami.",
+      "difficulty": 2,
+      "players": "one"
+    },
+    {
+      "id": "chaos-92",
+      "content": "Wszyscy muszą udawać, że są na pustyni przez 1 minutę.",
+      "difficulty": 2,
+      "players": "all"
+    },
+    {
+      "id": "chaos-93",
+      "content": "Opowiedz historię, która zaczyna się od słów 'W krainie lodu...'.",
+      "difficulty": 2,
+      "players": "one"
+    },
+    {
+      "id": "chaos-94",
+      "content": "Zrób 30-sekundową recenzję dowolnego miejsca.",
+      "difficulty": 2,
+      "players": "one"
+    },
+    {
+      "id": "chaos-95",
+      "content": "Wszyscy muszą zamienić się rękawiczkami na 5 minut.",
+      "difficulty": 3,
+      "players": "all"
+    },
+    {
+      "id": "chaos-96",
+      "content": "Zrób minę, która najlepiej oddaje Twoje ulubione jedzenie.",
+      "difficulty": 1,
+      "players": "one"
+    },
+    {
+      "id": "chaos-97",
+      "content": "Wszyscy muszą mówić z akcentem japońskim przez 2 minuty.",
+      "difficulty": 2,
+      "players": "all"
+    },
+    {
+      "id": "chaos-98",
+      "content": "Zrób 5 przysiadów, udając, że jesteś lwem.",
+      "difficulty": 2,
+      "players": "one"
+    },
+    {
+      "id": "chaos-99",
+      "content": "Wymień 5 marek butów, które zaczynają się na literę 'N'.",
+      "difficulty": 1,
+      "players": "one"
+    },
+    {
+      "id": "chaos-100",
+      "content": "Zatańcz do piosenki, którą wybierze osoba z najładniejszymi oczami.",
+      "difficulty": 2,
+      "players": "one"
     }
   ]
-} 
+}

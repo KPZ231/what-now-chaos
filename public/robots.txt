@@ -18,7 +18,6 @@ Disallow: /profile/
 
 # Sitemap locations
 Sitemap: https://what-now-chaos.vercel.app/sitemap.xml
-Sitemap: https://what-now-chaos.vercel.app/api/sitemap
 
 # Crawl delay to prevent overloading server
 User-agent: *

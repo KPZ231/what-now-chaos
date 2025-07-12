@@ -14,6 +14,44 @@ export default function PlayPage() {
   const [gameConfig, setGameConfig] = useState(null);
   const { user, isLoading } = useAuth();
   const router = useRouter();
+  const [activeMultiplayerSession, setActiveMultiplayerSession] = useState(null);
+  const [isCheckingSession, setIsCheckingSession] = useState(true);
+
+  // Check for active multiplayer sessions
+  useEffect(() => {
+    const checkActiveMultiplayerSessions = async () => {
+      if (user && user.id) {
+        setIsCheckingSession(true);
+        try {
+          const response = await fetch('/api/multiplayer/active-sessions');
+          if (response.ok) {
+            const data = await response.json();
+            setActiveMultiplayerSession(data.activeSession);
+          } else {
+            // Clear active session if there's an error
+            setActiveMultiplayerSession(null);
+          }
+        } catch (error) {
+          console.error('Error checking active sessions:', error);
+          setActiveMultiplayerSession(null);
+        } finally {
+          setIsCheckingSession(false);
+        }
+      } else {
+        setActiveMultiplayerSession(null);
+        setIsCheckingSession(false);
+      }
+    };
+    
+    // Check initially
+    checkActiveMultiplayerSessions();
+    
+    // Set up periodic check every 15 seconds
+    const interval = setInterval(checkActiveMultiplayerSessions, 15000);
+    
+    // Clean up
+    return () => clearInterval(interval);
+  }, [user]);
 
   const handleStartGame = (config) => {
     setGameConfig(config);
@@ -41,12 +79,37 @@ export default function PlayPage() {
     setGameState('setup');
   };
 
+  const handleRejoinMultiplayer = () => {
+    if (activeMultiplayerSession) {
+      router.push(`/play/multiplayer/${activeMultiplayerSession.gameId}?participantId=${activeMultiplayerSession.participantId}`);
+    }
+  };
+
   // Render content based on game state
   const renderContent = () => {
     switch (gameState) {
       case 'setup':
         return (
           <div className="w-full">
+            {!isCheckingSession && activeMultiplayerSession && (
+              <div className="mb-6 p-4 rounded-lg bg-gradient-to-r from-purple-900 to-indigo-900 border border-purple-700 shadow-lg">
+                <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+                  <div>
+                    <h3 className="text-xl font-bold mb-1">Aktywna sesja multiplayer</h3>
+                    <p className="text-sm opacity-80">
+                      Masz aktywną grę multiplayer w trybie {activeMultiplayerSession.mode}
+                    </p>
+                  </div>
+                  <button 
+                    onClick={handleRejoinMultiplayer}
+                    className="btn btn-primary whitespace-nowrap"
+                  >
+                    Dołącz ponownie
+                  </button>
+                </div>
+              </div>
+            )}
+            
             <GameCreator onStartGame={handleStartGame} user={user} />
             <div className="flex justify-center mt-8">
               <button 
@@ -121,6 +184,7 @@ export default function PlayPage() {
   return (
     <NavbarWrapper>
       <main className="flex min-h-screen flex-col items-center justify-between p-4 sm:p-8 pt-20 pb-24">
+        <div className="mt-[80px]"></div>
         <div className="w-full max-w-5xl">
           {renderContent()}
         </div>

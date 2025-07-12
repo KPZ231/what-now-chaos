@@ -31,13 +31,28 @@ export function AuthProvider({ children }) {
   // Check if user is logged in on component mount
   useEffect(() => {
     async function loadUserFromCookies() {
+      console.log('Attempting to load user from cookies...');
       try {
+        // Debug: Check if auth-token cookie exists
+        const cookies = document.cookie.split(';').map(cookie => cookie.trim());
+        const authCookie = cookies.find(cookie => cookie.startsWith('auth-token='));
+        console.log('Auth cookie exists:', !!authCookie);
+        
+        // Add a timeout to the fetch request
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
+        
         const res = await fetch('/api/auth/me', {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' },
-          // Using credentials to ensure cookies are sent
-          credentials: 'include',
+          credentials: 'include', // Important: include cookies in the request
+          signal: controller.signal,
+          cache: 'no-store' // Prevent caching issues
         });
+        
+        clearTimeout(timeoutId);
+        
+        console.log('Auth check response status:', res.status);
         
         if (res.ok) {
           // Check if response is JSON
@@ -45,10 +60,29 @@ export function AuthProvider({ children }) {
           if (contentType && contentType.includes("application/json")) {
             const userData = await res.json();
             setUser(userData.user);
+            console.log('User loaded successfully:', userData.user);
+          } else {
+            console.warn('Received non-JSON response for /api/auth/me');
+            setUser(null);
           }
+        } else if (res.status === 401) {
+          // Handle unauthorized specifically - user is not logged in
+          console.log('User is not authenticated (401)');
+          setUser(null);
+          
+          // Debug: Try to read the error message
+          try {
+            const errorData = await res.json();
+            console.log('Auth error details:', errorData);
+          } catch (e) {
+            console.log('No error details available');
+          }
+        } else {
+          console.error('Failed to load user: Server responded with status', res.status);
+          setUser(null);
         }
       } catch (error) {
-        console.error('Error loading user:', error);
+        console.error('Error during fetch for /api/auth/me:', error);
         // In case of error, we assume user is not authenticated
         setUser(null);
       } finally {
@@ -57,6 +91,14 @@ export function AuthProvider({ children }) {
     }
 
     loadUserFromCookies();
+    
+    // Add a fallback in case the fetch never resolves
+    const fallbackTimer = setTimeout(() => {
+      setIsLoading(false);
+      console.warn('Auth check timed out, assuming not logged in');
+    }, 6000); // 6 second fallback
+    
+    return () => clearTimeout(fallbackTimer);
   }, []);
 
   // Login function
@@ -100,6 +142,13 @@ export function AuthProvider({ children }) {
       if (!res.ok) {
         throw new Error(data.error || 'Błąd logowania');
       }
+
+      // Debug: Check if cookie was set after login
+      setTimeout(() => {
+        const cookies = document.cookie.split(';').map(cookie => cookie.trim());
+        const authCookie = cookies.find(cookie => cookie.startsWith('auth-token='));
+        console.log('Auth cookie set after login:', !!authCookie);
+      }, 100);
 
       setUser(data.user);
       return { success: true };

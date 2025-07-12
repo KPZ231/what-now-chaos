@@ -1,41 +1,29 @@
 /** @type {import('next').NextConfig} */
+
 const nextConfig = {
-  serverExternalPackages: ['bcryptjs', 'jsonwebtoken'],
-  eslint: {
-    // Disable ESLint during production builds for better performance
-    ignoreDuringBuilds: true,
+  // Define environment variables that will be publicly available
+  env: {
+    NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
   },
-  // Enable gzip compression
-  compress: true,
-  // Optimize images
-  images: {
-    domains: ['what-now-chaos.vercel.app'],
-    formats: ['image/avif', 'image/webp'],
-    minimumCacheTTL: 60,
-    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
-  },
-  // Add trailing slashes for better SEO consistency
-  trailingSlash: true,
-  // PWA settings
-  pwa: {
-    dest: 'public',
-    disable: process.env.NODE_ENV === 'development',
-    register: true,
-    skipWaiting: true,
-  },
-  // Headers for SEO and security
+  
+  // Other Next.js configuration
+  reactStrictMode: true,
+  swcMinify: true,
+  output: 'standalone',
+  
+  // Security Headers
   async headers() {
     return [
       {
         source: '/(.*)',
         headers: [
           {
-            key: 'X-Content-Type-Options',
-            value: 'nosniff',
+            key: 'Strict-Transport-Security',
+            value: 'max-age=63072000; includeSubDomains; preload',
           },
           {
-            key: 'X-Frame-Options',
-            value: 'DENY',
+            key: 'X-Content-Type-Options',
+            value: 'nosniff',
           },
           {
             key: 'X-XSS-Protection',
@@ -46,57 +34,12 @@ const nextConfig = {
             value: 'strict-origin-when-cross-origin',
           },
           {
-            key: 'Permissions-Policy',
-            value: 'camera=(), microphone=(), geolocation=()',
-          },
-        ],
-      },
-      {
-        source: '/sitemap.xml',
-        headers: [
-          {
-            key: 'Content-Type',
-            value: 'application/xml',
-          },
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=86400, stale-while-revalidate=604800', // 1 day cache, 7 days stale
-          },
-        ],
-      },
-      {
-        source: '/robots.txt',
-        headers: [
-          {
-            key: 'Content-Type',
-            value: 'text/plain',
-          },
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=86400, stale-while-revalidate=604800', // 1 day cache, 7 days stale
-          },
+            key: 'Content-Security-Policy',
+            value: "default-src 'self'; connect-src 'self' https://whatnow-kapieksperimental-2f90.c.aivencloud.com:15657 https://api.stripe.com; img-src 'self' data:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://js.stripe.com; style-src 'self' 'unsafe-inline'; frame-src 'self' https://js.stripe.com https://hooks.stripe.com;",
+          }
         ],
       },
     ];
-  },
-  // Redirects for SEO
-  async redirects() {
-    return [
-      {
-        source: '/index',
-        destination: '/',
-        permanent: true,
-      },
-      {
-        source: '/home',
-        destination: '/',
-        permanent: true,
-      },
-    ];
-  },
-  // Runtime config
-  publicRuntimeConfig: {
-    siteUrl: process.env.SITE_URL || 'https://what-now-chaos.vercel.app',
   },
 };
 

@@ -61,7 +61,7 @@ async function selectRandomTask(gameId, mode) {
 // Start a multiplayer game
 export async function POST(request, { params }) {
   try {
-    const { id } = params;
+    const id = params.id;
     const data = await request.json();
     
     // Validate input

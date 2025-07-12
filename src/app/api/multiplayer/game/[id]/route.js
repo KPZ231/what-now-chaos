@@ -17,7 +17,7 @@ async function validateParticipant(gameId, participantId) {
 // Get game details
 export async function GET(request, { params }) {
   try {
-    const { id } = params;
+    const id = params.id;
     
     // Validate input
     if (!id) {
@@ -84,7 +84,7 @@ export async function GET(request, { params }) {
 // Update participant status (ready, not ready)
 export async function PATCH(request, { params }) {
   try {
-    const { id } = params;
+    const id = params.id;
     const data = await request.json();
     
     // Validate input
@@ -99,14 +99,25 @@ export async function PATCH(request, { params }) {
     }
     
     // Update participant status
+    const updateData = {
+      lastActive: new Date()
+    };
+
+    // Handle isReady status update
+    if (data.isReady !== undefined) {
+      updateData.isReady = data.isReady === true;
+    }
+    
+    // Handle session leaving (marking participant as inactive)
+    if (data.isActive !== undefined) {
+      updateData.isActive = data.isActive === true;
+    }
+    
     const participant = await prisma.multiplayerParticipant.update({
       where: {
         id: data.participantId
       },
-      data: {
-        isReady: data.isReady === true,
-        lastActive: new Date()
-      }
+      data: updateData
     });
     
     return NextResponse.json({
