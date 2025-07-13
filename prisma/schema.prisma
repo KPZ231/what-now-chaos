@@ -28,6 +28,7 @@ model User {
   hasPremium         Boolean                  @default(false)  // Flag for premium access
   premiumPlan        String?                  // monthly, yearly, lifetime
   premiumExpiry      DateTime?                // When premium access expires
+  freeTrialGamesLeft Int                      @default(5)      // Number of free premium games left after registration
   createdAt          DateTime                 @default(now())
   updatedAt          DateTime                 @updatedAt
   sessions           GameSession[]

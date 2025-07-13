@@ -18,6 +18,7 @@ export default function Game({ config, onEndGame }) {
     totalTime: 0,
   });
   const [taskHistory, setTaskHistory] = useState([]);
+  const [decrementedFreeTrial, setDecrementedFreeTrial] = useState(false);
   
   // Refs to track timer warning sound
   const hasPlayedWarningRef = useRef(false);
@@ -28,68 +29,6 @@ export default function Game({ config, onEndGame }) {
     setSoundMuted(isSoundMuted());
     preloadSounds();
   }, []);
-  
-  // Load tasks on component mount
-  useEffect(() => {
-    const loadTasks = async () => {
-      try {
-        const response = await fetch(`/data/tasks-${config.mode}.json`);
-        const data = await response.json();
-        setTasks(data.tasks);
-        
-        // Select first random task
-        if (data.tasks && data.tasks.length > 0) {
-          selectRandomTask(data.tasks);
-          // Play task appear sound after a brief delay
-          setTimeout(() => playSound('taskAppear'), 300);
-        }
-        setIsLoading(false);
-      } catch (error) {
-        console.error("Error loading tasks:", error);
-        setIsLoading(false);
-      }
-    };
-    
-    loadTasks();
-  }, [config.mode, selectRandomTask]);
-  
-  // Set up timer
-  useEffect(() => {
-    if (isLoading || isGameOver) return;
-    
-    const timerInterval = setInterval(() => {
-      setTimeRemaining((prev) => {
-        // Play warning sound at 30 seconds remaining if not already played
-        if (prev <= 30 && !hasPlayedWarningRef.current) {
-          playSound('timerWarning');
-          hasPlayedWarningRef.current = true;
-        }
-        
-        if (prev <= 1) {
-          // Time's up - play expire sound and show next task
-          playSound('timerExpire');
-          handleNextTask();
-          // Reset warning flag
-          hasPlayedWarningRef.current = false;
-          return config.timerMinutes * 60;
-        }
-        return prev - 1;
-      });
-    }, 1000);
-    
-    // Update total time every minute
-    const statsInterval = setInterval(() => {
-      setStats(prev => ({
-        ...prev,
-        totalTime: prev.totalTime + 1
-      }));
-    }, 60000);
-    
-    return () => {
-      clearInterval(timerInterval);
-      clearInterval(statsInterval);
-    };
-  }, [isLoading, isGameOver, config.timerMinutes, handleNextTask]);
   
   // Select a random task
   const selectRandomTask = useCallback((taskList) => {
@@ -113,14 +52,109 @@ export default function Game({ config, onEndGame }) {
     const randomIndex = Math.floor(Math.random() * availableTasks.length);
     setCurrentTask(availableTasks[randomIndex]);
   }, [taskHistory]);
-  
-  // Handle completing the current task
-  const handleCompleteTask = () => {
-    // Play sound effect
-    playSound('taskComplete');
+
+  // Load tasks based on selected game mode
+  useEffect(() => {
+    const fetchTasks = async () => {
+      try {
+        // Check if we're using premium mode
+        const isPremiumMode = ['hardcore', 'quick'].includes(config.mode);
+
+        // If using premium mode with free trial, check access
+        if (isPremiumMode && config.useFreeTrial) {
+          // This is a premium mode with free trial usage
+          console.log('Using free trial for premium mode:', config.mode);
+        }
+        
+        // Load task data from JSON file
+        const response = await fetch(`/data/tasks-${config.mode}.json`);
+        if (!response.ok) throw new Error(`Failed to load tasks for mode: ${config.mode}`);
+        
+        const data = await response.json();
+        
+        // Process tasks
+        const processedTasks = data.tasks.map((task, index) => ({
+          ...task,
+          id: `${config.mode}-${index}` // Generate deterministic ID
+        }));
+        
+        setTasks(processedTasks);
+        
+        // Select first task
+        if (processedTasks.length > 0) {
+          selectRandomTask(processedTasks);
+        }
+        
+        setIsLoading(false);
+      } catch (error) {
+        console.error('Error loading tasks:', error);
+        // Set default tasks in case of error
+        const fallbackTasks = [
+          { id: 'fallback-1', content: 'Wszyscy gracze klaszczą 3 razy', type: 'all' },
+          { id: 'fallback-2', content: 'Opowiedz krótką historię', type: 'one' },
+        ];
+        setTasks(fallbackTasks);
+        setCurrentTask(fallbackTasks[0]);
+        setIsLoading(false);
+      }
+    };
+    
+    fetchTasks();
+  }, [config.mode, selectRandomTask, config.useFreeTrial]);
+
+  // Timer effect
+  useEffect(() => {
+    // Skip timer setup if game is over or still loading
+    if (isGameOver || isLoading || !currentTask) return;
+    
+    const timerInterval = setInterval(() => {
+      setTimeRemaining((prevTime) => {
+        // Play warning sound at 30 seconds
+        if (prevTime === 30 && !soundMuted) {
+          if (!hasPlayedWarningRef.current) {
+            playSound('timer-warning');
+            hasPlayedWarningRef.current = true;
+          }
+        }
+        
+        // Time's up
+        if (prevTime <= 1) {
+          clearInterval(timerInterval);
+          if (!soundMuted) {
+            playSound('timer-expire');
+          }
+          
+          // Reset warning flag
+          hasPlayedWarningRef.current = false;
+          
+          // Get next task
+          const nextTask = getNextTask();
+          
+          // Reset timer
+          return config.timerMinutes * 60;
+        }
+        
+        return prevTime - 1;
+      });
+    }, 1000);
+    
+    return () => clearInterval(timerInterval);
+  }, [currentTask, isGameOver, isLoading, soundMuted, config.timerMinutes]);
+
+  // Handle task completion
+  const completeTask = () => {
+    if (!currentTask || isGameOver) return;
+    
+    // Play sound
+    if (!soundMuted) {
+      playSound('task-complete');
+    }
     
     // Add to history
-    setTaskHistory(prev => [...prev, {...currentTask, completed: true, timestamp: Date.now()}]);
+    setTaskHistory(prev => [
+      ...prev, 
+      { ...currentTask, completed: true, timestamp: Date.now() }
+    ]);
     
     // Update stats
     setStats(prev => ({
@@ -128,21 +162,30 @@ export default function Game({ config, onEndGame }) {
       completedTasks: prev.completedTasks + 1
     }));
     
-    // Pick a new random task
-    selectRandomTask(tasks);
+    // Get next task
+    getNextTask();
     
     // Reset timer
     setTimeRemaining(config.timerMinutes * 60);
+    
+    // Reset warning flag
     hasPlayedWarningRef.current = false;
   };
-  
-  // Handle skipping the current task
-  const handleSkipTask = () => {
-    // Play sound effect
-    playSound('taskSkip');
+
+  // Handle task skip
+  const skipTask = () => {
+    if (!currentTask || isGameOver) return;
+    
+    // Play sound
+    if (!soundMuted) {
+      playSound('task-skip');
+    }
     
     // Add to history
-    setTaskHistory(prev => [...prev, {...currentTask, completed: false, timestamp: Date.now()}]);
+    setTaskHistory(prev => [
+      ...prev, 
+      { ...currentTask, skipped: true, timestamp: Date.now() }
+    ]);
     
     // Update stats
     setStats(prev => ({
@@ -150,37 +193,19 @@ export default function Game({ config, onEndGame }) {
       skippedTasks: prev.skippedTasks + 1
     }));
     
-    // Pick a new random task
-    selectRandomTask(tasks);
+    // Get next task
+    getNextTask();
     
     // Reset timer
     setTimeRemaining(config.timerMinutes * 60);
-    hasPlayedWarningRef.current = false;
-  };
-  
-  // Handle showing the next task (when timer expires)
-  const handleNextTask = useCallback(() => {
-    // Consider current task as skipped
-    if (currentTask) {
-      setTaskHistory(prev => [...prev, {...currentTask, completed: false, timestamp: Date.now(), expired: true}]);
-      setStats(prev => ({
-        ...prev,
-        skippedTasks: prev.skippedTasks + 1
-      }));
-    }
-    
-    // Pick a new random task
-    selectRandomTask(tasks);
     
     // Reset warning flag
     hasPlayedWarningRef.current = false;
-  }, [currentTask, tasks, selectRandomTask]);
-  
-  // Format time as MM:SS
-  const formatTime = (seconds) => {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+  };
+
+  // Get next task
+  const getNextTask = () => {
+    selectRandomTask(tasks);
   };
   
   // Handle toggling sound mute
@@ -190,8 +215,28 @@ export default function Game({ config, onEndGame }) {
   };
   
   // Handle ending the game and saving to localStorage
-  const handleEndGame = () => {
+  const handleEndGame = async () => {
     setIsGameOver(true);
+    
+    // Check if we need to decrement free trial count
+    if (config.useFreeTrial && !decrementedFreeTrial) {
+      try {
+        const response = await fetch('/api/user/premium/decrement-trial', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          credentials: 'include',
+        });
+        
+        if (response.ok) {
+          setDecrementedFreeTrial(true);
+          console.log('Decremented free trial count');
+        }
+      } catch (error) {
+        console.error('Error decrementing free trial count:', error);
+      }
+    }
     
     // Prepare game session data to save
     const gameSessionData = {
@@ -247,196 +292,120 @@ export default function Game({ config, onEndGame }) {
   }
   
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-      className="flex flex-col items-center justify-center space-y-6 p-2 sm:p-6"
+      exit={{ opacity: 0 }}
+      className="w-full max-w-2xl mx-auto"
     >
-      <div className="flex justify-between items-center w-full">
-        <div className="flex items-center gap-2">
-          <div className={`w-3 h-3 rounded-full ${isGameOver ? 'bg-red-500' : 'bg-green-500'}`}></div>
-          <span className="text-sm">{isGameOver ? 'Gra zakończona' : 'Gra aktywna'}</span>
+      <div className="flex flex-col items-center">
+        {/* Game Header */}
+        <div className="w-full flex justify-between items-center mb-6">
+          <div>
+            <span className="font-medium text-sm capitalize">{config.mode}</span>
+            <div className="text-sm text-[var(--text-gray)]">{config.playerCount} graczy</div>
+          </div>
+          
+          <div className="flex items-center space-x-3">
+            <button 
+              onClick={handleToggleSound} 
+              className="btn btn-sm btn-outline"
+            >
+              {soundMuted ? 'Dźwięk Wyłączony' : 'Dźwięk Włączony'}
+            </button>
+            
+            <button 
+              onClick={handleEndGame} 
+              className="btn btn-sm btn-error"
+            >
+              Zakończ
+            </button>
+          </div>
         </div>
         
-        <div className="flex items-center gap-4">
-          <button 
-            onClick={handleToggleSound}
-            className="text-2xl hover:text-[var(--primary)] transition-colors"
-            aria-label={soundMuted ? "Włącz dźwięk" : "Wycisz dźwięk"}
-          >
-            {soundMuted ? '🔇' : '🔊'}
-          </button>
-          
-          <button 
-            onClick={handleEndGame}
-            className="px-4 py-1 rounded-full border border-red-500 text-red-500 hover:bg-red-500/20 transition-colors"
-          >
-            Zakończ grę
-          </button>
-        </div>
-      </div>
-      
-      <div className="flex flex-col md:flex-row gap-6 w-full">
-        {/* Game info sidebar */}
-        <div className="w-full md:w-1/3">
-          <div className="card h-full">
-            <h2 className="text-xl font-bold mb-4">Informacje o grze</h2>
-            
-            <div className="space-y-4">
-              <div>
-                <h3 className="text-sm text-[var(--text-gray)]">Tryb</h3>
-                <p className="font-medium">{config.mode.charAt(0).toUpperCase() + config.mode.slice(1)}</p>
-              </div>
-              
-              <div>
-                <h3 className="text-sm text-[var(--text-gray)]">Liczba graczy</h3>
-                <p className="font-medium">{config.playerCount}</p>
-              </div>
-              
-              <div>
-                <h3 className="text-sm text-[var(--text-gray)]">Czas na zadanie</h3>
-                <p className="font-medium">{config.timerMinutes} min</p>
-              </div>
-              
-              <div className="border-t border-[var(--border-color)] pt-4">
-                <h3 className="text-sm text-[var(--text-gray)] mb-2">Statystyki</h3>
-                
-                <div className="grid grid-cols-2 gap-2">
-                  <div className="bg-[var(--container-color)]/50 p-3 rounded-lg">
-                    <div className="text-sm text-[var(--text-gray)]">Wykonane</div>
-                    <div className="text-xl font-bold text-[var(--primary)]">{stats.completedTasks}</div>
-                  </div>
-                  
-                  <div className="bg-[var(--container-color)]/50 p-3 rounded-lg">
-                    <div className="text-sm text-[var(--text-gray)]">Pominięte</div>
-                    <div className="text-xl font-bold text-[var(--accent)]">{stats.skippedTasks}</div>
-                  </div>
-                  
-                  <div className="bg-[var(--container-color)]/50 p-3 rounded-lg col-span-2">
-                    <div className="text-sm text-[var(--text-gray)]">Całkowity czas</div>
-                    <div className="text-xl font-bold">{stats.totalTime} min</div>
-                  </div>
-                </div>
-              </div>
+        {/* Timer */}
+        <div className="w-full flex flex-col items-center mb-8">
+          <div className="relative w-32 h-32">
+            <svg className="w-32 h-32 transform -rotate-90">
+              <circle 
+                cx="64" 
+                cy="64" 
+                r="60"
+                fill="transparent"
+                stroke="var(--border-color)"
+                strokeWidth="8"
+              />
+              <circle 
+                cx="64" 
+                cy="64" 
+                r="60"
+                fill="transparent"
+                stroke="var(--primary)"
+                strokeWidth="8"
+                strokeDasharray={`${2 * Math.PI * 60}`}
+                strokeDashoffset={`${2 * Math.PI * 60 * (1 - calculateProgress() / 100)}`}
+                strokeLinecap="round"
+              />
+            </svg>
+            <div className="absolute inset-0 flex items-center justify-center text-2xl font-bold">
+              {Math.floor(timeRemaining / 60)}:{(timeRemaining % 60).toString().padStart(2, '0')}
             </div>
           </div>
         </div>
         
-        {/* Main task area */}
-        <div className="w-full md:w-2/3">
-          <AnimatePresence mode="wait">
+        {/* Current Task */}
+        <AnimatePresence mode="wait">
+          {currentTask && (
             <motion.div
-              key={currentTask ? currentTask.id : 'loading'}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
+              key={currentTask.id}
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
               transition={{ duration: 0.3 }}
-              className="card relative"
+              className="card p-6 w-full mb-8"
             >
-              {/* Timer */}
-              <div className="absolute -top-5 right-6">
-                <div className="w-20 h-20 rounded-full bg-[var(--container-color)] border-4 border-[var(--border-color)] flex items-center justify-center shadow-lg">
-                  <div className="relative w-full h-full flex items-center justify-center">
-                    <svg className="w-full h-full -rotate-90 absolute">
-                      <circle
-                        cx="40"
-                        cy="40"
-                        r="36"
-                        strokeWidth="4"
-                        stroke="var(--primary)"
-                        fill="transparent"
-                        strokeDasharray={`${2 * Math.PI * 36}`}
-                        strokeDashoffset={`${2 * Math.PI * 36 * (1 - calculateProgress() / 100)}`}
-                        className="transition-all duration-1000"
-                      />
-                    </svg>
-                    <span className={`text-xl font-bold ${timeRemaining <= 30 ? 'text-red-500 animate-pulse' : ''}`}>
-                      {formatTime(timeRemaining)}
-                    </span>
-                  </div>
-                </div>
+              <div className="mb-4 text-sm">
+                <span className="inline-block py-1 px-3 rounded-full bg-[var(--primary-light)] text-[var(--primary)]">
+                  {getTaskTarget(currentTask.type)}
+                </span>
               </div>
               
-              {/* Task content */}
-              <div className="pt-10">
-                <div className="flex justify-between items-start mb-6">
-                  <div>
-                    <span className="text-xs text-[var(--text-gray)]">Wyzwanie #{taskHistory.length + 1}</span>
-                    <h2 className="text-2xl font-bold gradient-text">Losowe Wyzwanie</h2>
-                  </div>
-                  
-                  {currentTask && currentTask.target && (
-                    <div className="bg-[var(--primary)]/10 px-3 py-1 rounded-full">
-                      <span className="text-sm font-medium text-[var(--primary)]">
-                        {getTaskTarget(currentTask.target)}
-                      </span>
-                    </div>
-                  )}
-                </div>
+              <h2 className="text-2xl font-bold mb-6">
+                {currentTask.content}
+              </h2>
+              
+              <div className="flex justify-between">
+                <button 
+                  onClick={skipTask}
+                  className="btn btn-outline"
+                >
+                  Pomiń
+                </button>
                 
-                <div className="bg-[var(--container-color)]/50 p-6 rounded-lg mb-6 min-h-[120px] flex items-center justify-center">
-                  <p className="text-xl sm:text-2xl text-center">
-                    {currentTask ? currentTask.content : "Ładowanie zadania..."}
-                  </p>
-                </div>
-                
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <button 
-                    onClick={handleCompleteTask}
-                    className="btn btn-primary flex-1"
-                  >
-                    Wykonane
-                  </button>
-                  <button 
-                    onClick={handleSkipTask}
-                    className="btn btn-outline flex-1"
-                  >
-                    Pomiń
-                  </button>
-                </div>
+                <button 
+                  onClick={completeTask}
+                  className="btn btn-primary"
+                >
+                  Wykonane
+                </button>
               </div>
             </motion.div>
-          </AnimatePresence>
-          
-          {/* Recent history */}
-          {taskHistory.length > 0 && (
-            <div className="mt-6">
-              <h3 className="text-lg font-semibold mb-3">Ostatnie wyzwania</h3>
-              <div className="space-y-2">
-                {taskHistory.slice(-3).reverse().map((task, index) => (
-                  <div 
-                    key={`${task.id}-${index}`}
-                    className={`p-3 rounded-lg border ${
-                      task.completed 
-                        ? 'border-green-500/30 bg-green-500/10' 
-                        : task.expired
-                          ? 'border-amber-500/30 bg-amber-500/10'
-                          : 'border-red-500/30 bg-red-500/10'
-                    }`}
-                  >
-                    <div className="flex justify-between items-start">
-                      <p className="text-sm">{task.content}</p>
-                      <span className={`text-xs px-2 py-0.5 rounded-full ${
-                        task.completed 
-                          ? 'bg-green-500/20 text-green-400' 
-                          : task.expired
-                            ? 'bg-amber-500/20 text-amber-400'
-                            : 'bg-red-500/20 text-red-400'
-                      }`}>
-                        {task.completed 
-                          ? 'Wykonane' 
-                          : task.expired
-                            ? 'Czas minął'
-                            : 'Pominięte'
-                        }
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
           )}
+        </AnimatePresence>
+        
+        {/* Stats */}
+        <div className="w-full card p-6">
+          <h3 className="text-lg font-bold mb-4">Statystyki</h3>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <div className="text-sm text-[var(--text-gray)]">Ukończone zadania</div>
+              <div className="text-xl font-bold">{stats.completedTasks}</div>
+            </div>
+            <div>
+              <div className="text-sm text-[var(--text-gray)]">Pominięte zadania</div>
+              <div className="text-xl font-bold">{stats.skippedTasks}</div>
+            </div>
+          </div>
         </div>
       </div>
     </motion.div>

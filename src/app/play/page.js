@@ -8,6 +8,7 @@ import GameCreator from './GameCreator';
 import Game from './Game';
 import GameHistory from './GameHistory';
 import NavbarWrapper from '@/app/components/NavbarWrapper';
+import AdComponent from '@/app/components/AdComponent';
 
 export default function PlayPage() {
   const [gameState, setGameState] = useState('setup'); // setup, play, summary, history
@@ -23,11 +24,24 @@ export default function PlayPage() {
       if (user && user.id) {
         setIsCheckingSession(true);
         try {
-          const response = await fetch('/api/multiplayer/active-sessions');
+          // Add timeout to the fetch request
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 5000);
+
+          const response = await fetch('/api/multiplayer/active-sessions', {
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            signal: controller.signal,
+            cache: 'no-store'
+          });
+          
+          clearTimeout(timeoutId);
+          
           if (response.ok) {
             const data = await response.json();
             setActiveMultiplayerSession(data.activeSession);
           } else {
+            console.warn('Failed to check active sessions, status:', response.status);
             // Clear active session if there's an error
             setActiveMultiplayerSession(null);
           }
@@ -43,14 +57,17 @@ export default function PlayPage() {
       }
     };
     
-    // Check initially
-    checkActiveMultiplayerSessions();
+    // Check initially with a slight delay to ensure auth is loaded
+    const initialCheckTimeout = setTimeout(checkActiveMultiplayerSessions, 500);
     
     // Set up periodic check every 15 seconds
     const interval = setInterval(checkActiveMultiplayerSessions, 15000);
     
     // Clean up
-    return () => clearInterval(interval);
+    return () => {
+      clearTimeout(initialCheckTimeout);
+      clearInterval(interval);
+    };
   }, [user]);
 
   const handleStartGame = (config) => {
@@ -111,6 +128,12 @@ export default function PlayPage() {
             )}
             
             <GameCreator onStartGame={handleStartGame} user={user} />
+            
+            {/* Ad component */}
+            <div className="mt-8">
+              <AdComponent adSlot="3456789012" />
+            </div>
+            
             <div className="flex justify-center mt-8">
               <button 
                 className="btn btn-outline"
@@ -140,6 +163,12 @@ export default function PlayPage() {
               <p>Pominięte zadania: {gameConfig?.stats?.skippedTasks}</p>
               <p>Całkowity czas: {gameConfig?.stats?.totalTime} min</p>
             </div>
+            
+            {/* Ad component */}
+            <div className="w-full max-w-md mt-4">
+              <AdComponent adSlot="5678901234" adFormat="rectangle" />
+            </div>
+            
             <div className="flex flex-col sm:flex-row gap-4 mt-6">
               <button 
                 className="btn btn-primary"
@@ -173,6 +202,11 @@ export default function PlayPage() {
               transition={{ duration: 0.3 }}
             >
               <GameHistory onBack={handleBackToSetup} user={user} />
+              
+              {/* Ad component */}
+              <div className="mt-8">
+                <AdComponent adSlot="7890123456" />
+              </div>
             </motion.div>
           </AnimatePresence>
         );

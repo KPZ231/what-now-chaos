@@ -15,15 +15,21 @@ import { usePathname } from "next/navigation";
  * @param {string[]} props.keywords - Keywords for SEO
  * @param {Object} props.structuredData - Optional JSON-LD structured data
  * @param {boolean} props.noIndex - Whether to prevent search engines from indexing this page
+ * @param {Object[]} props.breadcrumbs - Optional breadcrumbs data for structured data
+ * @param {Object[]} props.faq - Optional FAQ data for structured data
+ * @param {string} props.language - Page language (defaults to 'pl')
  */
 export default function SEO({
-  title = "WhatNow?! - Party Chaos Generator",
-  description = "Boost any party with absurd, funny, and challenging tasks for groups of friends. Different game modes, timer, and session history export!",
+  title = "WhatNow?! - Generator Imprezowego Chaosu",
+  description = "Ożyw każdą imprezę absurdalnymi, zabawnymi i wyzywającymi zadaniami dla grup znajomych. Różne tryby gry, licznik czasu i eksport historii sesji!",
   canonicalUrl,
   ogImage = "/logo.png",
   keywords = [],
   structuredData = null,
   noIndex = false,
+  breadcrumbs = null,
+  faq = null,
+  language = "pl",
 }) {
   // Construct canonical URL
   const baseUrl = "https://what-now-chaos.vercel.app";
@@ -32,14 +38,14 @@ export default function SEO({
   
   // Default keywords if none provided
   const defaultKeywords = [
-    "party game",
-    "drinking game", 
-    "challenges", 
-    "fun activities", 
-    "party tasks", 
-    "random challenges", 
-    "group games", 
-    "party entertainment"
+    "gra imprezowa",
+    "gra alkoholowa", 
+    "wyzwania imprezowe", 
+    "zadania na imprezę", 
+    "generator zadań", 
+    "losowe wyzwania", 
+    "gry grupowe", 
+    "rozrywka na imprezę"
   ];
   
   const allKeywords = [...new Set([...defaultKeywords, ...keywords])].join(", ");
@@ -53,10 +59,11 @@ export default function SEO({
     "description": description,
     "applicationCategory": "Entertainment",
     "operatingSystem": "Web, Android, iOS",
+    "inLanguage": language,
     "offers": {
       "@type": "Offer",
       "price": "0",
-      "priceCurrency": "USD",
+      "priceCurrency": "PLN",
       "availability": "https://schema.org/InStock"
     },
     "aggregateRating": {
@@ -66,13 +73,45 @@ export default function SEO({
     },
     "author": {
       "@type": "Organization",
-      "name": "KPZsProductions",
+      "name": "WhatNow?!",
       "url": baseUrl
     }
   };
   
   // Use provided structured data or default
   const finalStructuredData = structuredData || defaultStructuredData;
+  
+  // Create breadcrumbs structured data if provided
+  let breadcrumbsStructuredData = null;
+  if (breadcrumbs) {
+    breadcrumbsStructuredData = {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": breadcrumbs.map((item, index) => ({
+        "@type": "ListItem",
+        "position": index + 1,
+        "name": item.name,
+        "item": `${baseUrl}${item.url}`
+      }))
+    };
+  }
+  
+  // Create FAQ structured data if provided
+  let faqStructuredData = null;
+  if (faq && faq.length > 0) {
+    faqStructuredData = {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": faq.map(item => ({
+        "@type": "Question",
+        "name": item.question,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": item.answer
+        }
+      }))
+    };
+  }
   
   // Update document meta tags
   useEffect(() => {
@@ -83,6 +122,9 @@ export default function SEO({
     updateMetaTag("description", description);
     updateMetaTag("keywords", allKeywords);
     
+    // Language tag
+    updateMetaTag("content-language", language);
+    
     // Open Graph tags
     updateMetaTag("og:title", title, "property");
     updateMetaTag("og:description", description, "property");
@@ -90,6 +132,7 @@ export default function SEO({
     updateMetaTag("og:url", fullCanonicalUrl, "property");
     updateMetaTag("og:image", `${baseUrl}${ogImage}`, "property");
     updateMetaTag("og:site_name", "WhatNow?!", "property");
+    updateMetaTag("og:locale", language === "pl" ? "pl_PL" : "en_US", "property");
     
     // Twitter tags
     updateMetaTag("twitter:card", "summary_large_image", "name");
@@ -101,7 +144,7 @@ export default function SEO({
     if (noIndex) {
       updateMetaTag("robots", "noindex, nofollow");
     } else {
-      updateMetaTag("robots", "index, follow");
+      updateMetaTag("robots", "index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1");
     }
     
     // Update canonical link
@@ -119,7 +162,7 @@ export default function SEO({
     return () => {
       // Optional: remove tags when component unmounts
     };
-  }, [title, description, fullCanonicalUrl, ogImage, allKeywords, noIndex]);
+  }, [title, description, fullCanonicalUrl, ogImage, allKeywords, noIndex, language]);
   
   // Helper function to update meta tags
   const updateMetaTag = (name, content, attributeName = "name") => {
@@ -140,6 +183,20 @@ export default function SEO({
       <Script id={`json-ld-${pathname}`} type="application/ld+json" strategy="afterInteractive">
         {JSON.stringify(finalStructuredData)}
       </Script>
+      
+      {/* Breadcrumbs Structured Data */}
+      {breadcrumbsStructuredData && (
+        <Script id={`json-ld-breadcrumbs-${pathname}`} type="application/ld+json" strategy="afterInteractive">
+          {JSON.stringify(breadcrumbsStructuredData)}
+        </Script>
+      )}
+      
+      {/* FAQ Structured Data */}
+      {faqStructuredData && (
+        <Script id={`json-ld-faq-${pathname}`} type="application/ld+json" strategy="afterInteractive">
+          {JSON.stringify(faqStructuredData)}
+        </Script>
+      )}
     </>
   );
 } 

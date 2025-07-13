@@ -1,794 +1,301 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from 'react';
-import { useAuth } from '../../lib/AuthContext';
-import { useRouter } from 'next/navigation';
-import { motion } from 'framer-motion';
-import Image from 'next/image';
-import Link from 'next/link';
-import PremiumStatus from './PremiumStatus';
-import Navbar from "@/app/partial/navbar";
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { useAuth } from "@/lib/AuthContext";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import PremiumStatus from "./PremiumStatus";
+import Footer from "@/app/partial/footer";
 import NavbarWrapper from "@/app/components/NavbarWrapper";
 
-
 export default function ProfilePage() {
-  const [showUserMenu, setShowUserMenu] = useState(false);
-  const { user, isLoading, isAuthenticated, logout } = useAuth();
+  const { user, isLoading, logout } = useAuth();
+  const [isUpdating, setIsUpdating] = useState(false);
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [profileImage, setProfileImage] = useState(null);
+  const [previewUrl, setPreviewUrl] = useState("");
+  const [uploadProgress, setUploadProgress] = useState(0);
+  
   const router = useRouter();
-
-  const handleLogout = async () => {
-    await logout();
-    setShowUserMenu(false);
-  };
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    description: '',
-    profilePicture: '',
-    newPassword: '',
-    confirmPassword: '',
-    currentPassword: '',
-  });
   
-  // Stan dla pliku zdjęcia
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [previewUrl, setPreviewUrl] = useState('');
-  const fileInputRef = useRef(null);
-  
-  // Form validation states
-  const [errors, setErrors] = useState({
-    name: '',
-    description: '',
-    profilePicture: '',
-    currentPassword: '',
-    newPassword: '',
-    confirmPassword: '',
-    file: '',
-  });
-  
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [message, setMessage] = useState({ type: '', text: '' });
-  const [activeTab, setActiveTab] = useState('profile');
-  const [isProfileFormValid, setIsProfileFormValid] = useState(false);
-  const [isPasswordFormValid, setIsPasswordFormValid] = useState(false);
-  const [isPictureFormValid, setIsPictureFormValid] = useState(false);
-
-  // Maksymalny rozmiar pliku (8MB)
-  const MAX_FILE_SIZE = 8 * 1024 * 1024;
-  
-  // Dozwolone typy plików
-  const ALLOWED_FILE_TYPES = [
-    'image/jpeg',
-    'image/png',
-    'image/gif',
-    'image/webp',
-    'image/svg+xml'
-  ];
-
-  // Animation variants
-  const containerVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { 
-      opacity: 1, 
-      y: 0,
-      transition: {
-        duration: 0.5,
-        when: "beforeChildren",
-        staggerChildren: 0.1
-      }
-    }
-  };
-  
-  const itemVariants = {
-    hidden: { opacity: 0, y: 10 },
-    visible: { 
-      opacity: 1, 
-      y: 0,
-      transition: { duration: 0.3 }
-    }
-  };
-
+  // Redirect to login if not authenticated
   useEffect(() => {
-    if (!isLoading && !isAuthenticated) {
-      router.push('/login');
+    if (!isLoading && !user) {
+      router.push("/login?redirect=profile");
     }
-    
+  }, [user, isLoading, router]);
+  
+  // Set initial values from user data
+  useEffect(() => {
     if (user) {
-      setFormData(prev => ({
-        ...prev,
-        name: user.name || '',
-        email: user.email || '',
-        description: user.description || '',
-        profilePicture: user.profilePicture || '',
-      }));
-      
-      // Jeśli użytkownik ma już zdjęcie profilowe, ustaw je jako podgląd
-      if (user.profilePicture) {
-        setPreviewUrl(user.profilePicture);
-      }
+      setName(user.name || "");
+      setDescription(user.description || "");
+      setPreviewUrl(user.profilePicture || "");
     }
-  }, [user, isLoading, isAuthenticated, router]);
+  }, [user]);
   
-  // Czyszczenie URL podglądu przy odmontowaniu komponentu
-  useEffect(() => {
-    return () => {
-      if (previewUrl && previewUrl.startsWith('blob:')) {
-        URL.revokeObjectURL(previewUrl);
-      }
-    };
-  }, [previewUrl]);
-
-  // Validate inputs
-  const validateName = (name) => {
-    if (name && name.length > 50) {
-      return 'Nazwa użytkownika nie może przekraczać 50 znaków';
-    }
-    return '';
-  };
-
-  const validateDescription = (description) => {
-    if (description && description.length > 500) {
-      return 'Opis nie może przekraczać 500 znaków';
-    }
-    return '';
-  };
-
-  const validateProfilePicture = (url) => {
-    if (!url) return '';
-    try {
-      new URL(url);
-      return '';
-    } catch (e) {
-      return 'Podaj poprawny adres URL';
-    }
-  };
-  
-  // Walidacja pliku
-  const validateFile = useCallback((file) => {
-    if (!file) return 'Wybierz plik ze zdjęciem';
-    
-    // Sprawdź typ pliku
-    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
-    if (!allowedTypes.includes(file.type)) {
-      return 'Dozwolone typy plików: JPG, PNG, GIF, WEBP';
-    }
-    
-    // Sprawdź rozmiar pliku (max 5MB)
-    if (file.size > 5 * 1024 * 1024) {
-      return 'Maksymalny rozmiar pliku to 5MB';
-    }
-    
-    return '';
-  }, []);
-
-  const validatePassword = (password, field) => {
-    if (!password) {
-      return field === 'currentPassword' 
-        ? 'Aktualne hasło jest wymagane' 
-        : 'Nowe hasło jest wymagane';
-    }
-    if (password.length < 6) {
-      return 'Hasło musi mieć co najmniej 6 znaków';
-    }
-    return '';
-  };
-
-  const validateConfirmPassword = (confirmPassword, password) => {
-    if (!confirmPassword) {
-      return 'Potwierdź nowe hasło';
-    }
-    if (confirmPassword !== password) {
-      return 'Hasła nie są identyczne';
-    }
-    return '';
-  };
-
-  // Update form validity
-  useEffect(() => {
-    // Profile form validation
-    const nameError = validateName(formData.name);
-    const descriptionError = validateDescription(formData.description);
-    setIsProfileFormValid(!nameError && !descriptionError);
-
-    // Password form validation
-    const currentPasswordError = validatePassword(formData.currentPassword, 'currentPassword');
-    const newPasswordError = validatePassword(formData.newPassword, 'newPassword');
-    const confirmPasswordError = validateConfirmPassword(formData.confirmPassword, formData.newPassword);
-    setIsPasswordFormValid(!currentPasswordError && !newPasswordError && !confirmPasswordError);
-
-    const fileError = selectedFile ? validateFile(selectedFile) : '';
-    setIsPictureFormValid(selectedFile && !fileError);
-  }, [formData, selectedFile, validateFile]);
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-
-    // Real-time validation
-    switch (name) {
-      case 'name':
-        setErrors(prev => ({ ...prev, name: validateName(value) }));
-        break;
-      case 'description':
-        setErrors(prev => ({ ...prev, description: validateDescription(value) }));
-        break;
-      case 'profilePicture':
-        setErrors(prev => ({ ...prev, profilePicture: validateProfilePicture(value) }));
-        break;
-      case 'currentPassword':
-        setErrors(prev => ({ ...prev, currentPassword: validatePassword(value, 'currentPassword') }));
-        break;
-      case 'newPassword':
-        setErrors(prev => ({ 
-          ...prev, 
-          newPassword: validatePassword(value, 'newPassword'),
-          confirmPassword: validateConfirmPassword(formData.confirmPassword, value)
-        }));
-        break;
-      case 'confirmPassword':
-        setErrors(prev => ({ ...prev, confirmPassword: validateConfirmPassword(value, formData.newPassword) }));
-        break;
-      default:
-        break;
-    }
-  };
-  
-  // Obsługa wyboru pliku
-  const handleFileChange = (e) => {
+  const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      // Walidacja pliku
-      const fileError = validateFile(file);
-      setErrors(prev => ({ ...prev, file: fileError }));
-      
-      if (!fileError) {
-        setSelectedFile(file);
-        
-        // Tworzenie URL podglądu
-        if (previewUrl && previewUrl.startsWith('blob:')) {
-          URL.revokeObjectURL(previewUrl);
-        }
-        
-        const objectUrl = URL.createObjectURL(file);
-        setPreviewUrl(objectUrl);
-      } else {
-        setSelectedFile(null);
-        if (previewUrl && previewUrl.startsWith('blob:')) {
-          URL.revokeObjectURL(previewUrl);
-          setPreviewUrl('');
-        }
-      }
+      setProfileImage(file);
+      setPreviewUrl(URL.createObjectURL(file));
     }
   };
   
-  // Obsługa przycisku "wybierz plik"
-  const handleSelectFile = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.click();
-    }
-  };
-
-  const handleProfileSubmit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsUpdating(true);
+    setMessage("");
+    setError("");
     
-    // Final validation
-    const nameError = validateName(formData.name);
-    const descriptionError = validateDescription(formData.description);
-    
-    if (nameError || descriptionError) {
-      setErrors(prev => ({ 
-        ...prev, 
-        name: nameError, 
-        description: descriptionError 
-      }));
-      return;
-    }
-    
-    setIsSubmitting(true);
-    setMessage({ type: '', text: '' });
-
     try {
-      // Sanityzacja danych przed wysłaniem
-      const sanitizedData = {
-        name: formData.name.trim(),
-        description: formData.description.trim(),
-      };
-
-      const response = await fetch('/api/user/profile', {
-        method: 'PUT',
+      // First update profile text fields
+      const profileResponse = await fetch('/api/user/profile', {
+        method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(sanitizedData),
-        credentials: 'include',
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        setMessage({ type: 'success', text: 'Profil został zaktualizowany' });
-      } else {
-        setMessage({ type: 'error', text: data.error || 'Coś poszło nie tak' });
-      }
-    } catch (error) {
-      setMessage({ type: 'error', text: 'Wystąpił błąd podczas aktualizacji profilu' });
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  const handlePasswordSubmit = async (e) => {
-    e.preventDefault();
-    
-    // Final validation
-    const currentPasswordError = validatePassword(formData.currentPassword, 'currentPassword');
-    const newPasswordError = validatePassword(formData.newPassword, 'newPassword');
-    const confirmPasswordError = validateConfirmPassword(formData.confirmPassword, formData.newPassword);
-    
-    if (currentPasswordError || newPasswordError || confirmPasswordError) {
-      setErrors(prev => ({ 
-        ...prev, 
-        currentPassword: currentPasswordError, 
-        newPassword: newPasswordError,
-        confirmPassword: confirmPasswordError
-      }));
-      return;
-    }
-    
-    setIsSubmitting(true);
-    setMessage({ type: '', text: '' });
-
-    try {
-      const response = await fetch('/api/user/password', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          currentPassword: formData.currentPassword,
-          newPassword: formData.newPassword,
-        }),
-        credentials: 'include',
+          name,
+          description
+        })
       });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        setMessage({ type: 'success', text: 'Hasło zostało zmienione' });
-        setFormData(prev => ({
-          ...prev,
-          newPassword: '',
-          confirmPassword: '',
-          currentPassword: '',
-        }));
-      } else {
-        setMessage({ type: 'error', text: data.error || 'Coś poszło nie tak' });
+      
+      if (!profileResponse.ok) {
+        throw new Error('Failed to update profile information');
       }
-    } catch (error) {
-      setMessage({ type: 'error', text: 'Wystąpił błąd podczas zmiany hasła' });
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  const handleProfilePictureSubmit = async (e) => {
-    e.preventDefault();
-    
-    if (!selectedFile) {
-      setErrors(prev => ({ ...prev, file: 'Wybierz plik ze zdjęciem' }));
-      return;
-    }
-    
-    // Final validation
-    const fileError = validateFile(selectedFile);
-    
-    if (fileError) {
-      setErrors(prev => ({ ...prev, file: fileError }));
-      return;
-    }
-    
-    setIsSubmitting(true);
-    setMessage({ type: '', text: '' });
-
-    try {
-      // Utworzenie obiektu FormData i dodanie pliku
-      const formData = new FormData();
-      formData.append('file', selectedFile);
-
-      // Wysłanie żądania
-      const response = await fetch('/api/user/profile-picture', {
-        method: 'POST',
-        body: formData,
-        credentials: 'include',
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        setMessage({ type: 'success', text: 'Zdjęcie profilowe zostało zaktualizowane' });
-        // Zaktualizuj dane użytkownika
-        if (data.user && data.user.profilePicture) {
-          setFormData(prev => ({
-            ...prev,
-            profilePicture: data.user.profilePicture
-          }));
+      
+      // Then handle image upload if present
+      if (profileImage) {
+        const formData = new FormData();
+        formData.append('profilePicture', profileImage);
+        
+        const imageResponse = await fetch('/api/user/profile-picture', {
+          method: 'POST',
+          body: formData
+        });
+        
+        if (!imageResponse.ok) {
+          throw new Error('Failed to upload profile picture');
         }
-      } else {
-        setMessage({ type: 'error', text: data.error || 'Coś poszło nie tak' });
+        
+        const imageData = await imageResponse.json();
+        setPreviewUrl(imageData.imageUrl);
       }
-    } catch (error) {
-      setMessage({ type: 'error', text: 'Wystąpił błąd podczas aktualizacji zdjęcia profilowego' });
+      
+      setMessage('Profil zaktualizowany pomyślnie');
+    } catch (err) {
+      console.error('Error updating profile:', err);
+      setError('Wystąpił błąd podczas aktualizacji profilu');
     } finally {
-      setIsSubmitting(false);
+      setIsUpdating(false);
     }
   };
-
-  const handleTabChange = (tab) => {
-    setActiveTab(tab);
-    setMessage({ type: '', text: '' }); // Clear messages when switching tabs
+  
+  const handleLogout = async () => {
+    await logout();
+    router.push('/');
   };
-
-  if (isLoading || !user) {
+  
+  if (isLoading) {
     return (
-      <div className="flex justify-center items-center min-h-screen">
-        <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-[var(--primary)]"></div>
-      </div>
+      <NavbarWrapper>
+        <div className="container mx-auto py-8">
+          <div className="flex items-center justify-center min-h-[50vh]">
+            <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-[var(--primary)]"></div>
+          </div>
+        </div>
+        <Footer />
+      </NavbarWrapper>
     );
   }
-
-  return ( 
+  
+  if (!user) {
+    return null; // Will be redirected by the useEffect
+  }
+  
+  return (
     <NavbarWrapper>
-    <Navbar 
-        isLoading={isLoading} 
-        isAuthenticated={isAuthenticated} 
-        user={user} 
-        showUserMenu={showUserMenu} 
-        setShowUserMenu={setShowUserMenu} 
-        handleLogout={handleLogout} 
-      />
-    <motion.div 
-      className="container mx-auto px-4 py-16"
-      initial="hidden"
-      animate="visible"
-      variants={containerVariants}
-    >
-      <div className="mt-[80px]"></div>
-      <motion.h1 
-        className="text-3xl font-bold mb-8 text-center gradient-text"
-        variants={itemVariants}
-      >
-        Twój profil
-      </motion.h1>
-      
-      {message.text && (
-        <motion.div 
-          className={`mb-6 p-4 rounded-md ${
-            message.type === 'success' 
-              ? 'bg-green-500/20 text-green-500 border border-green-500' 
-              : 'bg-red-500/20 text-red-500 border border-red-500'
-          }`}
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3 }}
-        >
-          {message.text}
-        </motion.div>
-      )}
       <motion.div 
-        className="flex flex-wrap mb-6 border-b border-[var(--border-color)]"
-        variants={itemVariants}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="container mx-auto py-8 px-4"
       >
-        <button
-          className={`mr-2 px-4 py-2 rounded-t-md ${
-            activeTab === 'profile' 
-              ? 'bg-[var(--primary)] text-white' 
-              : 'bg-[var(--container-color)] text-[var(--text-color)]'
-          }`}
-          onClick={() => handleTabChange('profile')}
-        >
-          Profil
-        </button>
-        <button
-          className={`mr-2 px-4 py-2 rounded-t-md ${
-            activeTab === 'password' 
-              ? 'bg-[var(--primary)] text-white' 
-              : 'bg-[var(--container-color)] text-[var(--text-color)]'
-          }`}
-          onClick={() => handleTabChange('password')}
-        >
-          Zmień hasło
-        </button>
-        <button
-          className={`px-4 py-2 rounded-t-md ${
-            activeTab === 'picture' 
-              ? 'bg-[var(--primary)] text-white' 
-              : 'bg-[var(--container-color)] text-[var(--text-color)]'
-          }`}
-          onClick={() => handleTabChange('picture')}
-        >
-          Zdjęcie profilowe
-        </button>
-        <button
-          className={`px-4 py-2 rounded-t-md ${
-            activeTab === 'premium' 
-              ? 'bg-[var(--primary)] text-white' 
-              : 'bg-[var(--container-color)] text-[var(--text-color)]'
-          }`}
-          onClick={() => handleTabChange('premium')}
-        >
-          Premium
-        </button>
-      </motion.div>
-
-      <motion.div 
-        className="card"
-        variants={itemVariants}
-      >
-        {activeTab === 'profile' && (
-          <motion.form 
-            onSubmit={handleProfileSubmit}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-          >
-            <div className="mb-4">
-              <label className="block text-[var(--text-gray)] text-sm font-medium mb-2" htmlFor="email">
-                Email
-              </label>
-              <input
-                className="w-full bg-[var(--body-color)] border border-[var(--border-color)] rounded-lg p-3 text-[var(--text-color)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)] transition-all"
-                id="email"
-                type="email"
-                value={formData.email}
-                disabled
-              />
-              <p className="text-xs text-[var(--text-gray)] mt-1">Adresu email nie można zmienić</p>
-            </div>
-            <div className="mb-4">
-              <label className="block text-[var(--text-gray)] text-sm font-medium mb-2" htmlFor="name">
-                Nazwa użytkownika
-              </label>
-              <input
-                className={`w-full bg-[var(--body-color)] border ${
-                  errors.name ? 'border-red-500' : 'border-[var(--border-color)]'
-                } rounded-lg p-3 text-[var(--text-color)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)] transition-all`}
-                id="name"
-                name="name"
-                type="text"
-                value={formData.name}
-                onChange={handleChange}
-              />
-              {errors.name && (
-                <p className="text-red-400 text-sm mt-1">{errors.name}</p>
-              )}
-            </div>
-            <div className="mb-6">
-              <label className="block text-[var(--text-gray)] text-sm font-medium mb-2" htmlFor="description">
-                Opis
-              </label>
-              <textarea
-                className={`w-full bg-[var(--body-color)] border ${
-                  errors.description ? 'border-red-500' : 'border-[var(--border-color)]'
-                } rounded-lg p-3 text-[var(--text-color)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)] transition-all`}
-                id="description"
-                name="description"
-                rows="4"
-                value={formData.description}
-                onChange={handleChange}
-              ></textarea>
-              {errors.description && (
-                <p className="text-red-400 text-sm mt-1">{errors.description}</p>
-              )}
-              <p className="text-xs text-[var(--text-gray)] mt-1">
-                {formData.description ? `${formData.description.length}/500 znaków` : '0/500 znaków'}
-              </p>
-            </div>
-            <div className="flex items-center justify-end">
-              <motion.button
-                className={`btn ${isProfileFormValid ? 'btn-primary' : 'btn-disabled'}`}
-                type="submit"
-                disabled={isSubmitting || !isProfileFormValid}
-                whileHover={isProfileFormValid ? { scale: 1.02 } : {}}
-                whileTap={isProfileFormValid ? { scale: 0.98 } : {}}
-              >
-                {isSubmitting ? 'Zapisywanie...' : 'Zapisz zmiany'}
-              </motion.button>
-            </div>
-          </motion.form>
-        )}
-        
-        {activeTab === 'password' && (
-          <motion.form 
-            onSubmit={handlePasswordSubmit}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-          >
-            <div className="mb-4">
-              <label className="block text-[var(--text-gray)] text-sm font-medium mb-2" htmlFor="currentPassword">
-                Aktualne hasło
-              </label>
-              <input
-                className={`w-full bg-[var(--body-color)] border ${
-                  errors.currentPassword ? 'border-red-500' : 'border-[var(--border-color)]'
-                } rounded-lg p-3 text-[var(--text-color)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)] transition-all`}
-                id="currentPassword"
-                name="currentPassword"
-                type="password"
-                value={formData.currentPassword}
-                onChange={handleChange}
-                required
-              />
-              {errors.currentPassword && (
-                <p className="text-red-400 text-sm mt-1">{errors.currentPassword}</p>
-              )}
-            </div>
-            <div className="mb-4">
-              <label className="block text-[var(--text-gray)] text-sm font-medium mb-2" htmlFor="newPassword">
-                Nowe hasło
-              </label>
-              <input
-                className={`w-full bg-[var(--body-color)] border ${
-                  errors.newPassword ? 'border-red-500' : 'border-[var(--border-color)]'
-                } rounded-lg p-3 text-[var(--text-color)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)] transition-all`}
-                id="newPassword"
-                name="newPassword"
-                type="password"
-                value={formData.newPassword}
-                onChange={handleChange}
-                minLength="6"
-                required
-              />
-              {errors.newPassword && (
-                <p className="text-red-400 text-sm mt-1">{errors.newPassword}</p>
-              )}
-            </div>
-            <div className="mb-6">
-              <label className="block text-[var(--text-gray)] text-sm font-medium mb-2" htmlFor="confirmPassword">
-                Potwierdź nowe hasło
-              </label>
-              <input
-                className={`w-full bg-[var(--body-color)] border ${
-                  errors.confirmPassword ? 'border-red-500' : 'border-[var(--border-color)]'
-                } rounded-lg p-3 text-[var(--text-color)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)] transition-all`}
-                id="confirmPassword"
-                name="confirmPassword"
-                type="password"
-                value={formData.confirmPassword}
-                onChange={handleChange}
-                minLength="6"
-                required
-              />
-              {errors.confirmPassword && (
-                <p className="text-red-400 text-sm mt-1">{errors.confirmPassword}</p>
-              )}
-            </div>
-            <div className="flex items-center justify-between">
-              <motion.button
-                className={`btn ${isPasswordFormValid ? 'btn-primary' : 'btn-disabled'}`}
-                type="submit"
-                disabled={isSubmitting || !isPasswordFormValid}
-                whileHover={isPasswordFormValid ? { scale: 1.02 } : {}}
-                whileTap={isPasswordFormValid ? { scale: 0.98 } : {}}
-              >
-                {isSubmitting ? 'Zmienianie...' : 'Zmień hasło'}
-              </motion.button>
-              <Link
-                className="font-medium text-[var(--primary)] hover:text-[var(--primary-light)] transition-colors"
-                href="/reset-password"
-              >
-                Zapomniałeś hasła?
-              </Link>
-            </div>
-          </motion.form>
-        )}
-        
-        {activeTab === 'picture' && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-          >
-            <div className="mb-6 flex flex-col items-center">
-              {/* Podgląd zdjęcia */}
-              <motion.div 
-                className="w-48 h-48 rounded-full overflow-hidden mb-4 bg-[var(--container-color)] flex items-center justify-center border-2 border-[var(--primary)]"
-                whileHover={{ scale: 1.05, rotate: 5 }}
-                transition={{ type: "spring", stiffness: 300 }}
-              >
-                {previewUrl ? (
-                  <Image 
-                    src={previewUrl} 
-                    alt="Podgląd zdjęcia profilowego" 
-                    width={192} 
-                    height={192} 
-                    className="object-cover w-full h-full"
-                  />
-                ) : (
-                  <span className="text-[var(--text-gray)] text-6xl">👤</span>
-                )}
-              </motion.div>
+        <div className="max-w-4xl mx-auto">
+          <h1 className="text-3xl font-bold mb-8">Twój profil</h1>
+          
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* Left column - User info */}
+            <div className="lg:col-span-2">
+              <div className="card p-6 mb-6">
+                <h2 className="text-xl font-bold mb-6">Twoje dane</h2>
+                
+                <form onSubmit={handleSubmit}>
+                  <div className="flex flex-col sm:flex-row gap-6 mb-6">
+                    <div className="sm:w-1/3 flex flex-col items-center">
+                      <div className="relative mb-4 w-32 h-32">
+                        <div className="w-32 h-32 rounded-full bg-[var(--bg-light)] overflow-hidden">
+                          {previewUrl ? (
+                            <img 
+                              src={previewUrl} 
+                              alt="Profile" 
+                              className="w-full h-full object-cover" 
+                            />
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center">
+                              <span className="text-4xl">👤</span>
+                            </div>
+                          )}
+                        </div>
+                        <div className="absolute bottom-0 right-0">
+                          <label htmlFor="profilePicture" className="cursor-pointer">
+                            <div className="w-8 h-8 bg-[var(--primary)] rounded-full flex items-center justify-center">
+                              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-white" viewBox="0 0 20 20" fill="currentColor">
+                                <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                              </svg>
+                            </div>
+                          </label>
+                          <input 
+                            id="profilePicture" 
+                            type="file" 
+                            className="hidden" 
+                            accept="image/*"
+                            onChange={handleImageChange}
+                          />
+                        </div>
+                      </div>
+                      <div className="text-sm text-[var(--text-gray)]">
+                        Kliknij zdjęcie, aby zmienić
+                      </div>
+                    </div>
+                    
+                    <div className="sm:w-2/3">
+                      <div className="mb-4">
+                        <label className="block text-sm font-medium mb-2">Email</label>
+                        <input 
+                          type="text" 
+                          value={user.email} 
+                          className="input bg-[var(--bg-light)]" 
+                          disabled 
+                        />
+                      </div>
+                      
+                      <div className="mb-4">
+                        <label className="block text-sm font-medium mb-2">Imię / Pseudonim</label>
+                        <input 
+                          type="text" 
+                          value={name} 
+                          onChange={(e) => setName(e.target.value)}
+                          className="input" 
+                          placeholder="Jak mamy do Ciebie mówić?" 
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="mb-6">
+                    <label className="block text-sm font-medium mb-2">O mnie</label>
+                    <textarea 
+                      value={description} 
+                      onChange={(e) => setDescription(e.target.value)}
+                      className="input min-h-[120px]" 
+                      placeholder="Napisz coś o sobie..."
+                    />
+                  </div>
+                  
+                  {message && (
+                    <div className="alert alert-success mb-6">
+                      {message}
+                    </div>
+                  )}
+                  
+                  {error && (
+                    <div className="alert alert-error mb-6">
+                      {error}
+                    </div>
+                  )}
+                  
+                  <div className="flex justify-between">
+                    <Link href="/reset-password" className="text-[var(--primary)] hover:underline">
+                      Zmień hasło
+                    </Link>
+                    <button 
+                      type="submit" 
+                      className="btn btn-primary"
+                      disabled={isUpdating}
+                    >
+                      {isUpdating ? 'Aktualizacja...' : 'Zapisz zmiany'}
+                    </button>
+                  </div>
+                </form>
+              </div>
               
-              {/* Formularz do przesyłania zdjęcia */}
-              <form onSubmit={handleProfilePictureSubmit} className="w-full max-w-md">
-                {/* Ukryte pole input dla pliku */}
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  id="profileImage"
-                  accept="image/jpeg,image/png,image/gif,image/webp,image/svg+xml"
-                  className="hidden"
-                  onChange={handleFileChange}
-                />
-                
-                {/* Przycisk do wyboru pliku */}
-                <div className="mb-4 flex flex-col items-center">
-                  <motion.button
-                    type="button"
-                    onClick={handleSelectFile}
-                    className="btn btn-outline mb-2"
-                    whileHover={{ scale: 1.03 }}
-                    whileTap={{ scale: 0.97 }}
-                  >
-                    Wybierz zdjęcie
-                  </motion.button>
-                  
-                  {selectedFile && (
-                    <p className="text-xs text-[var(--text-gray)]">
-                      Wybrany plik: {selectedFile.name} ({(selectedFile.size / 1024 / 1024).toFixed(2)} MB)
-                    </p>
-                  )}
-                  
-                  {errors.file && (
-                    <p className="text-red-400 text-sm mt-1">{errors.file}</p>
-                  )}
-                  
-                  <p className="text-xs text-[var(--text-gray)] mt-2">
-                    Dozwolone formaty: JPEG, PNG, GIF, WebP, SVG (max. 8MB)
-                  </p>
-                </div>
-                
-                {/* Przycisk do przesłania pliku */}
-                <div className="flex items-center justify-center mt-4">
-                  <motion.button
-                    className={`btn ${isPictureFormValid ? 'btn-primary' : 'btn-disabled'}`}
-                    type="submit"
-                    disabled={isSubmitting || !isPictureFormValid}
-                    whileHover={isPictureFormValid ? { scale: 1.02 } : {}}
-                    whileTap={isPictureFormValid ? { scale: 0.98 } : {}}
-                  >
-                    {isSubmitting ? 'Przesyłanie...' : 'Prześlij zdjęcie'}
-                  </motion.button>
-                </div>
-              </form>
-            </div>
-          </motion.div>
-        )}
-        {activeTab === 'premium' && (
-          <motion.div
-            variants={itemVariants}
-            initial="hidden"
-            animate="visible"
-            exit="hidden"
-          >
-            <div className="mb-6">
-              <h2 className="text-2xl font-bold mb-4">Status Premium</h2>
-              <p className="text-[var(--text-gray)] mb-6">
-                Sprawdź status swojego konta premium i dostępne funkcje.
-              </p>
+              {/* Game Stats would go here */}
             </div>
             
-            <PremiumStatus user={user} />
-          </motion.div>
-        )}
+            {/* Right column - Membership info */}
+            <div>
+              <PremiumStatus user={user} />
+              
+              {!user.hasPremium && user.freeTrialGamesLeft > 0 && (
+                <motion.div 
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.2 }}
+                  className="card p-6 mb-6 bg-gradient-to-r from-yellow-100 to-amber-100 border-yellow-300"
+                >
+                  <h2 className="text-xl font-bold mb-4 text-yellow-800">Darmowe próby premium</h2>
+                  
+                  <div className="mb-4">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="font-medium text-yellow-800">Pozostałe gry:</span>
+                      <span className="text-2xl font-bold text-yellow-800">{user.freeTrialGamesLeft}</span>
+                    </div>
+                    
+                    <div className="w-full bg-yellow-200 rounded-full h-2.5">
+                      <div 
+                        className="bg-yellow-500 h-2.5 rounded-full" 
+                        style={{ width: `${(user.freeTrialGamesLeft / 5) * 100}%` }}
+                      ></div>
+                    </div>
+                  </div>
+                  
+                  <p className="text-sm text-yellow-700 mb-4">
+                    Wykorzystaj swoje darmowe gry w trybach Hardcore i Quick, aby przekonać się o korzyściach wersji premium!
+                  </p>
+                  
+                  <Link href="/premium" className="btn btn-sm bg-yellow-500 hover:bg-yellow-600 border-yellow-600 text-yellow-900 w-full">
+                    Kup Premium
+                  </Link>
+                </motion.div>
+              )}
+              
+              <div className="card p-6">
+                <h2 className="text-xl font-bold mb-4">Konto</h2>
+                <div className="mb-4">
+                  <div className="text-sm text-[var(--text-gray)]">Data utworzenia</div>
+                  <div className="font-medium">
+                    {user.createdAt ? new Date(user.createdAt).toLocaleDateString('pl-PL') : 'N/A'}
+                  </div>
+                </div>
+                
+                <button 
+                  onClick={handleLogout}
+                  className="btn btn-outline btn-error w-full"
+                >
+                  Wyloguj
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       </motion.div>
-    </motion.div>
+      <Footer />
     </NavbarWrapper>
   );
 } 

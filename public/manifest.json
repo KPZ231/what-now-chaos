@@ -1,18 +1,24 @@
 {
-  "name": "WhatNow?! - Party Chaos Generator",
+  "name": "WhatNow?! - Generator Imprezowego Chaosu",
   "short_name": "WhatNow?!",
-  "description": "Boost any party with absurd, funny, and challenging tasks for groups of friends. Different game modes, timer, and session history export!",
+  "description": "Ożyw każdą imprezę absurdalnymi, zabawnymi i wyzywającymi zadaniami dla grup znajomych. Różne tryby gry: Soft, Chaos, Hardcore i Quick.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#120e29",
   "theme_color": "#ff4dbc",
   "orientation": "portrait-primary",
-  "id": "whatnow-party-chaos-generator",
-  "categories": ["entertainment", "games", "social"],
-  "lang": "en",
+  "id": "whatnow-generator-imprezowego-chaosu",
+  "categories": ["entertainment", "games", "social", "lifestyle"],
+  "lang": "pl",
   "dir": "ltr",
   "prefer_related_applications": false,
   "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
     {
       "src": "/icons/icon-72x72.png",
       "sizes": "72x72",
@@ -28,12 +34,6 @@
     {
       "src": "/icons/icon-128x128.png",
       "sizes": "128x128",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "/icons/icon-144x144.png",
-      "sizes": "144x144",
       "type": "image/png",
       "purpose": "any maskable"
     },
@@ -64,18 +64,25 @@
   ],
   "shortcuts": [
     {
-      "name": "Start Game",
-      "short_name": "Play",
-      "description": "Start a new game session",
+      "name": "Rozpocznij Grę",
+      "short_name": "Graj",
+      "description": "Rozpocznij nową sesję gry",
       "url": "/play",
       "icons": [{ "src": "/icons/play-shortcut.png", "sizes": "192x192" }]
     },
     {
-      "name": "Game Modes",
-      "short_name": "Modes",
-      "description": "Browse different game modes",
+      "name": "Tryby Gry",
+      "short_name": "Tryby",
+      "description": "Przeglądaj różne tryby gry",
       "url": "/modes",
       "icons": [{ "src": "/icons/modes-shortcut.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Dołącz do Gry",
+      "short_name": "Dołącz",
+      "description": "Dołącz do istniejącej sesji multiplayer",
+      "url": "/play/multiplayer/join",
+      "icons": [{ "src": "/icons/join-shortcut.png", "sizes": "192x192" }]
     }
   ],
   "screenshots": [
@@ -83,13 +90,31 @@
       "src": "/screenshots/screen1.png",
       "sizes": "1280x720",
       "type": "image/png",
-      "label": "Home screen of WhatNow?! app"
+      "label": "Ekran główny aplikacji WhatNow?!"
     },
     {
       "src": "/screenshots/screen2.png", 
       "sizes": "1280x720",
       "type": "image/png",
-      "label": "Challenge screen during gameplay"
+      "label": "Ekran wyzwania podczas rozgrywki"
     }
-  ]
+  ],
+  "related_applications": [],
+  "iarc_rating_id": "",
+  "scope": "/",
+  "serviceworker": {
+    "src": "/service-worker.js",
+    "scope": "/",
+    "update_via_cache": "none"
+  },
+  "display_override": ["standalone", "fullscreen", "minimal-ui", "browser"],
+  "handle_links": "preferred",
+  "launch_handler": {
+    "client_mode": ["navigate-existing", "auto"]
+  },
+  "edge_side_panel": {
+    "preferred_width": 400
+  },
+  "file_handlers": [],
+  "protocol_handlers": []
 } 

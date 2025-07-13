@@ -14,23 +14,31 @@ export default function GameCreator({ onStartGame, user }) {
   const [nickname, setNickname] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [freeTrialGamesLeft, setFreeTrialGamesLeft] = useState(0);
+  const [usingFreeTrial, setUsingFreeTrial] = useState(false);
   
   const router = useRouter();
   
   // Check if mode requires premium
   const requiresPremium = (mode) => {
-    return ['hardcore', 'quick'].includes(mode) && !isPremium;
+    return ['hardcore', 'quick'].includes(mode) && !isPremium && freeTrialGamesLeft <= 0;
   };
 
   // Check if user has premium access
   useEffect(() => {
-    if (user && user.hasPremium) {
-      setIsPremium(true);
-    }
-    
-    // Set nickname from user data if available
-    if (user && user.name) {
-      setNickname(user.name);
+    if (user) {
+      if (user.hasPremium) {
+        setIsPremium(true);
+      }
+      
+      if (user.freeTrialGamesLeft && user.freeTrialGamesLeft > 0) {
+        setFreeTrialGamesLeft(user.freeTrialGamesLeft);
+      }
+      
+      // Set nickname from user data if available
+      if (user.name) {
+        setNickname(user.name);
+      }
     }
   }, [user]);
 
@@ -44,6 +52,9 @@ export default function GameCreator({ onStartGame, user }) {
       setIsLoading(false);
       return;
     }
+    
+    // Check if we're using a free trial game
+    const useFreeTrial = !isPremium && ['hardcore', 'quick'].includes(mode) && freeTrialGamesLeft > 0;
     
     // For multiplayer games, create a game session through the API
     if (isMultiplayer) {
@@ -59,7 +70,8 @@ export default function GameCreator({ onStartGame, user }) {
           mode,
           timerMinutes,
           maxPlayers: playerCount,
-          nickname
+          nickname,
+          useFreeTrial
         });
         
         const response = await fetch('/api/multiplayer/create', {
@@ -71,7 +83,8 @@ export default function GameCreator({ onStartGame, user }) {
             mode,
             timerMinutes,
             maxPlayers: playerCount,
-            nickname
+            nickname,
+            useFreeTrial
           }),
         });
         
@@ -96,209 +109,234 @@ export default function GameCreator({ onStartGame, user }) {
       return;
     }
     
-    // For single player games, use the existing flow
-    setIsLoading(false);
+    // For single player games, use the existing flow but set the useFreeTrial flag
+    if (useFreeTrial) {
+      setUsingFreeTrial(true);
+    }
+    
     onStartGame({
       mode,
       playerCount,
       timerMinutes,
-      startTime: Date.now(),
+      useFreeTrial
     });
+    
+    setIsLoading(false);
+  };
+
+  // Disabled state for premium modes when user doesn't have access
+  const isDisabled = (selectedMode) => {
+    if (!['hardcore', 'quick'].includes(selectedMode)) return false;
+    return !isPremium && freeTrialGamesLeft <= 0;
   };
 
   return (
-    <motion.div 
-      className="w-full"
+    <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
+      transition={{ duration: 0.3 }}
     >
-      <div className="flex flex-col items-center justify-center space-y-6 p-2 sm:p-6">
-        <h1 className="text-3xl sm:text-4xl font-bold gradient-text text-center">
-          Stwórz Nową Grę
-        </h1>
-        
-        {error && (
-          <div className="bg-red-500/20 border border-red-500 text-red-100 p-3 rounded-lg w-full max-w-lg">
-            {error}
-          </div>
-        )}
-        
-        <form onSubmit={handleSubmit} className="w-full max-w-lg space-y-8">
-          {/* Game Type Selection */}
-          <div className="space-y-4">
-            <h2 className="text-xl font-semibold">Rodzaj Gry</h2>
-            <div className="grid grid-cols-2 gap-4">
-              <button
-                type="button"
-                onClick={() => setIsMultiplayer(false)}
-                className={`card p-4 flex flex-col items-center transition-all ${!isMultiplayer ? 'ring-2 ring-[var(--primary)]' : 'opacity-80 hover:opacity-100'}`}
+      <form onSubmit={handleSubmit}>
+        <div className="card mb-6 p-6">
+          <h2 className="text-xl font-bold mb-4">Wybierz tryb gry</h2>
+          
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div>
+              <input 
+                type="radio" 
+                id="soft" 
+                name="mode" 
+                value="soft" 
+                className="hidden peer"
+                onChange={() => setMode('soft')}
+                checked={mode === 'soft'} 
+              />
+              <label 
+                htmlFor="soft" 
+                className={`block p-4 border-2 rounded-lg text-center cursor-pointer ${mode === 'soft' ? 'border-[var(--primary)] bg-[var(--primary-light)]' : 'border-[var(--border-color)] hover:bg-[var(--bg-hover)]'} transition duration-200`}
               >
-                <h3 className="text-lg font-medium">Lokalna</h3>
-                <p className="text-sm text-center text-[var(--text-gray)]">Jeden telefon, jeden timer</p>
-              </button>
-              
-              <button
-                type="button"
-                onClick={() => setIsMultiplayer(true)}
-                className={`card p-4 flex flex-col items-center transition-all ${isMultiplayer ? 'ring-2 ring-[var(--primary)]' : 'opacity-80 hover:opacity-100'}`}
+                <div className="text-xl font-bold mb-1">Soft</div>
+                <div className="text-sm text-[var(--text-gray)]">Łagodne zadania</div>
+              </label>
+            </div>
+            
+            <div>
+              <input 
+                type="radio" 
+                id="chaos" 
+                name="mode" 
+                value="chaos" 
+                className="hidden peer"
+                onChange={() => setMode('chaos')}
+                checked={mode === 'chaos'} 
+              />
+              <label 
+                htmlFor="chaos" 
+                className={`block p-4 border-2 rounded-lg text-center cursor-pointer ${mode === 'chaos' ? 'border-[var(--primary)] bg-[var(--primary-light)]' : 'border-[var(--border-color)] hover:bg-[var(--bg-hover)]'} transition duration-200`}
               >
-                <h3 className="text-lg font-medium">Multiplayer</h3>
-                <p className="text-sm text-center text-[var(--text-gray)]">Gracze używają swoich telefonów</p>
-              </button>
+                <div className="text-xl font-bold mb-1">Chaos</div>
+                <div className="text-sm text-[var(--text-gray)]">Średni poziom</div>
+              </label>
+            </div>
+            
+            <div>
+              <input 
+                type="radio" 
+                id="hardcore" 
+                name="mode" 
+                value="hardcore" 
+                className="hidden peer"
+                onChange={() => setMode('hardcore')}
+                checked={mode === 'hardcore'}
+                disabled={isDisabled('hardcore')}
+              />
+              <label 
+                htmlFor="hardcore" 
+                className={`block p-4 border-2 rounded-lg text-center cursor-pointer ${isDisabled('hardcore') ? 'opacity-50 cursor-not-allowed' : ''} ${mode === 'hardcore' ? 'border-[var(--primary)] bg-[var(--primary-light)]' : 'border-[var(--border-color)] hover:bg-[var(--bg-hover)]'} transition duration-200`}
+              >
+                <div className="text-xl font-bold mb-1">
+                  Hardcore
+                  {!isPremium && freeTrialGamesLeft <= 0 && (
+                    <span className="bg-yellow-500 text-black text-xs px-1 py-0.5 rounded ml-2">PRO</span>
+                  )}
+                </div>
+                <div className="text-sm text-[var(--text-gray)]">Impreza hardcore</div>
+              </label>
+            </div>
+            
+            <div>
+              <input 
+                type="radio" 
+                id="quick" 
+                name="mode" 
+                value="quick" 
+                className="hidden peer"
+                onChange={() => setMode('quick')}
+                checked={mode === 'quick'}
+                disabled={isDisabled('quick')}
+              />
+              <label 
+                htmlFor="quick" 
+                className={`block p-4 border-2 rounded-lg text-center cursor-pointer ${isDisabled('quick') ? 'opacity-50 cursor-not-allowed' : ''} ${mode === 'quick' ? 'border-[var(--primary)] bg-[var(--primary-light)]' : 'border-[var(--border-color)] hover:bg-[var(--bg-hover)]'} transition duration-200`}
+              >
+                <div className="text-xl font-bold mb-1">
+                  Szybki
+                  {!isPremium && freeTrialGamesLeft <= 0 && (
+                    <span className="bg-yellow-500 text-black text-xs px-1 py-0.5 rounded ml-2">PRO</span>
+                  )}
+                </div>
+                <div className="text-sm text-[var(--text-gray)]">Krótkie wyzwania</div>
+              </label>
             </div>
           </div>
           
-          {/* Nickname for multiplayer (if not logged in) */}
-          {isMultiplayer && !user && (
-            <div className="space-y-4">
-              <h2 className="text-xl font-semibold">Twój Nick</h2>
-              <div className="flex items-center">
-                <input
-                  type="text"
-                  placeholder="Wprowadź swój nick..."
-                  value={nickname}
-                  onChange={(e) => setNickname(e.target.value)}
-                  className="w-full p-3 rounded-lg bg-[var(--container-color)] border border-[var(--border-color)]"
-                  required
-                  minLength={2}
-                />
-              </div>
-              <p className="text-sm text-[var(--text-gray)]">
-                Stwórz konto aby zapamiętać swoją statystykę gier
-              </p>
+          {freeTrialGamesLeft > 0 && ['hardcore', 'quick'].includes(mode) && !isPremium && (
+            <div className="mt-4 p-3 bg-yellow-100 text-yellow-800 rounded-lg">
+              <p className="font-medium">Dostępne darmowe próby: {freeTrialGamesLeft}</p>
+              <p className="text-sm">Po rejestracji masz {freeTrialGamesLeft} darmowych gier premium! Wykorzystaj je mądrze.</p>
             </div>
           )}
           
-          {/* Game Modes Selection */}
-          <div className="space-y-4">
-            <h2 className="text-xl font-semibold">Wybierz Tryb Gry</h2>
-            <div className="grid grid-cols-2 gap-4">
-              <button
-                type="button"
-                onClick={() => setMode('soft')}
-                className={`card p-4 flex flex-col items-center transition-all ${mode === 'soft' ? 'ring-2 ring-[var(--primary)]' : 'opacity-80 hover:opacity-100'}`}
-              >
-                <h3 className="text-lg font-medium">Soft</h3>
-                <p className="text-sm text-center text-[var(--text-gray)]">Łagodne zadania towarzyskie</p>
-              </button>
-              
-              <button
-                type="button"
-                onClick={() => setMode('chaos')}
-                className={`card p-4 flex flex-col items-center transition-all ${mode === 'chaos' ? 'ring-2 ring-[var(--primary)]' : 'opacity-80 hover:opacity-100'}`}
-              >
-                <h3 className="text-lg font-medium">Chaos</h3>
-                <p className="text-sm text-center text-[var(--text-gray)]">Szalone i zabawne wyzwania</p>
-              </button>
-              
-              <button
-                type="button"
-                onClick={() => setMode('hardcore')}
-                className={`card p-4 flex flex-col items-center transition-all ${
-                  mode === 'hardcore' ? 'ring-2 ring-[var(--primary)]' : 'opacity-80 hover:opacity-100'
-                } ${requiresPremium('hardcore') ? 'relative' : ''}`}
-              >
-                <h3 className="text-lg font-medium">Hardcore</h3>
-                <p className="text-sm text-center text-[var(--text-gray)]">Odważne zadania dla dorosłych</p>
-                {requiresPremium('hardcore') && (
-                  <div className="absolute inset-0 bg-black/70 flex items-center justify-center rounded-xl">
-                    <span className="bg-[var(--primary)] px-2 py-1 rounded text-sm font-bold">PREMIUM</span>
-                  </div>
-                )}
-              </button>
-              
-              <button
-                type="button"
-                onClick={() => setMode('quick')}
-                className={`card p-4 flex flex-col items-center transition-all ${
-                  mode === 'quick' ? 'ring-2 ring-[var(--primary)]' : 'opacity-80 hover:opacity-100'
-                } ${requiresPremium('quick') ? 'relative' : ''}`}
-              >
-                <h3 className="text-lg font-medium">Quick</h3>
-                <p className="text-sm text-center text-[var(--text-gray)]">Szybkie zadania refleksowe</p>
-                {requiresPremium('quick') && (
-                  <div className="absolute inset-0 bg-black/70 flex items-center justify-center rounded-xl">
-                    <span className="bg-[var(--primary)] px-2 py-1 rounded text-sm font-bold">PREMIUM</span>
-                  </div>
-                )}
-              </button>
+          {requiresPremium(mode) && (
+            <div className="mt-4 p-3 bg-[var(--bg-light)] rounded-lg">
+              <p className="font-medium">Ten tryb wymaga wersji Premium</p>
+              <p className="text-sm">
+                <Link href="/premium" className="text-[var(--primary)] hover:underline">
+                  Odkryj korzyści Premium
+                </Link>
+              </p>
+            </div>
+          )}
+        </div>
+        
+        <div className="card mb-6 p-6">
+          <h2 className="text-xl font-bold mb-4">Ustawienia gry</h2>
+          
+          <div className="mb-6">
+            <label className="block text-sm font-medium mb-2">Liczba graczy</label>
+            <div className="flex items-center">
+              <input 
+                type="range" 
+                min="1" 
+                max="20"
+                value={playerCount}
+                onChange={(e) => setPlayerCount(parseInt(e.target.value))}
+                className="w-full mr-4" 
+              />
+              <span className="font-bold text-lg w-8 text-center">{playerCount}</span>
             </div>
           </div>
           
-          {/* Player Count */}
-          <div className="space-y-4">
-            <h2 className="text-xl font-semibold">{isMultiplayer ? 'Maksymalna Liczba Graczy' : 'Liczba Graczy'}</h2>
-            <div className="flex items-center justify-center space-x-4">
-              <button 
-                type="button"
-                onClick={() => playerCount > 2 && setPlayerCount(playerCount - 1)}
-                className="btn btn-outline p-2 px-4"
-              >
-                -
-              </button>
-              <span className="text-2xl font-bold w-12 text-center">{playerCount}</span>
-              <button 
-                type="button"
-                onClick={() => playerCount < 16 && setPlayerCount(playerCount + 1)}
-                className="btn btn-outline p-2 px-4"
-              >
-                +
-              </button>
-            </div>
-          </div>
-          
-          {/* Timer Setting */}
-          <div className="space-y-4">
-            <h2 className="text-xl font-semibold">
-              {isMultiplayer ? 'Limit Czasu na Turę' : 'Czas Między Zadaniami'}
-            </h2>
-            <div className="flex flex-col items-center space-y-2">
-              <input
-                type="range"
-                min="1"
+          <div className="mb-4">
+            <label className="block text-sm font-medium mb-2">Czas między zadaniami (minuty)</label>
+            <div className="flex items-center">
+              <input 
+                type="range" 
+                min="1" 
                 max="15"
                 value={timerMinutes}
                 onChange={(e) => setTimerMinutes(parseInt(e.target.value))}
-                className="w-full"
+                className="w-full mr-4" 
               />
-              <span className="text-lg">{timerMinutes} minut</span>
+              <span className="font-bold text-lg w-8 text-center">{timerMinutes}</span>
             </div>
           </div>
           
-          {/* Submit Button */}
-          <div className="flex flex-col space-y-4">
-            <button
-              type="submit"
-              className={`btn btn-primary w-full ${requiresPremium(mode) ? 'opacity-50 cursor-not-allowed' : ''}`}
-              disabled={requiresPremium(mode) || isLoading}
-            >
-              {isLoading ? (
-                <>
-                  <span className="animate-spin mr-2">⭮</span>
-                  {isMultiplayer ? 'Tworzenie gry...' : 'Rozpoczynanie...'}
-                </>
-              ) : (
-                requiresPremium(mode) ? 'Wymagane Premium' : isMultiplayer ? 'Stwórz Grę Multiplayer' : 'Rozpocznij Grę'
+          <div className="mt-6">
+            <label className="inline-flex items-center cursor-pointer">
+              <input 
+                type="checkbox" 
+                className="sr-only peer"
+                checked={isMultiplayer}
+                onChange={(e) => setIsMultiplayer(e.target.checked)}
+              />
+              <div className="relative w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[var(--primary)]"></div>
+              <span className="ms-3 font-medium text-sm">Tryb multiplayer</span>
+              {isMultiplayer && !user && (
+                <span className="text-xs text-[var(--text-gray)] ml-2">(Bez logowania)</span>
               )}
-            </button>
-            
-            {requiresPremium(mode) && (
-              <Link href="/premium" className="text-center text-[var(--primary)] hover:underline">
-                Odblokuj tryb premium
-              </Link>
-            )}
-            
-            {isMultiplayer && (
-              <div className="mt-2 text-center">
-                <p className="text-sm text-[var(--text-gray)]">
-                  Możesz również <Link href="/play/multiplayer/join" className="text-[var(--primary)] hover:underline">dołączyć do gry</Link> używając kodu
-                </p>
-              </div>
-            )}
+            </label>
           </div>
-        </form>
-      </div>
+          
+          {/* Show nickname field for multiplayer mode */}
+          {isMultiplayer && !user && (
+            <div className="mt-4">
+              <label className="block text-sm font-medium mb-2">Twój nick w grze</label>
+              <input 
+                type="text"
+                value={nickname}
+                onChange={(e) => setNickname(e.target.value)}
+                className="input"
+                placeholder="Wprowadź swój nick"
+                required
+              />
+            </div>
+          )}
+        </div>
+        
+        {error && (
+          <div className="alert alert-error mb-6">
+            <p>{error}</p>
+          </div>
+        )}
+        
+        <div className="flex justify-end">
+          <button 
+            type="submit" 
+            className="btn btn-primary"
+            disabled={isLoading || requiresPremium(mode)}
+          >
+            {isLoading ? (
+              <span className="flex items-center">
+                <span className="animate-spin h-5 w-5 mr-2 border-t-2 border-white rounded-full"></span>
+                Tworzenie gry...
+              </span>
+            ) : (
+              'Rozpocznij grę'
+            )}
+          </button>
+        </div>
+      </form>
     </motion.div>
   );
 } 

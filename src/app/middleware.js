@@ -23,8 +23,16 @@ const publicPaths = [
   '/play/multiplayer/join',
   '/api/multiplayer/join',
   '/api/multiplayer/create',
+  '/api/multiplayer/active-sessions', // Added this path
   '/premium',
-  '/modes'
+  '/modes',
+  '/offline.html',
+  '/manifest.json',
+  '/service-worker.js',
+  '/service-worker-register.js',
+  '/favicon.png',
+  '/robots.txt',
+  '/sitemap.xml'
 ]
 
 // Check if the path matches a public path
@@ -33,6 +41,19 @@ const isPublicPath = (path) => {
     return path === publicPath || path.startsWith(`${publicPath}/`) ||
       (publicPath.includes('*') && path.startsWith(publicPath.replace('*', '')))
   })
+}
+
+// Check if the path is a PWA asset (should be public)
+const isPWAAsset = (path) => {
+  return path.startsWith('/icons/') || 
+         path.startsWith('/screenshots/') ||
+         path.startsWith('/sounds/') ||
+         path.startsWith('/data/') || 
+         path.includes('.svg') ||
+         path.includes('.png') ||
+         path.includes('.jpg') ||
+         path.includes('.jpeg') ||
+         path.includes('.mp3');
 }
 
 // Check if the path is a multiplayer path that requires participant validation
@@ -47,16 +68,27 @@ export function middleware(request) {
   
   const response = NextResponse.next();
 
-  // Add security headers to all responses
-  response.headers.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload'); // Enforce HTTPS
-  response.headers.set('X-Content-Type-Options', 'nosniff'); // Prevent MIME type sniffing
-  response.headers.set('X-Frame-Options', 'DENY'); // Prevent clickjacking
-  response.headers.set('X-XSS-Protection', '1; mode=block'); // Basic XSS protection
-  response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin'); // Control referrer info
-  response.headers.set('Content-Security-Policy', "default-src 'self'; connect-src 'self' https://whatnow-kapieksperimental-2f90.c.aivencloud.com:15657; img-src 'self' data:; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline';");
+  // Add security headers to all responses (synchronized with next.config.mjs)
+  const securityHeaders = {
+    'Strict-Transport-Security': 'max-age=63072000; includeSubDomains; preload', // 2 years
+    'X-Content-Type-Options': 'nosniff',
+    'X-Frame-Options': 'DENY',
+    'X-XSS-Protection': '1; mode=block',
+    'Referrer-Policy': 'strict-origin-when-cross-origin',
+    'Content-Security-Policy': "default-src 'self'; connect-src 'self' https://whatnow-kapieksperimental-2f90.c.aivencloud.com:15657 https://api.stripe.com; img-src 'self' data: https://pagead2.googlesyndication.com; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://js.stripe.com https://pagead2.googlesyndication.com https://partner.googleadservices.com https://www.googletagservices.com https://adservice.google.com https://tpc.googlesyndication.com; style-src 'self' 'unsafe-inline'; frame-src 'self' https://js.stripe.com https://hooks.stripe.com https://googleads.g.doubleclick.net; worker-src 'self' blob:; manifest-src 'self';",
+    'Permissions-Policy': 'camera=(), microphone=(), geolocation=(), interest-cohort=()',
+    'Cross-Origin-Embedder-Policy': 'require-corp',
+    'Cross-Origin-Opener-Policy': 'same-origin',
+    'Cross-Origin-Resource-Policy': 'same-site'
+  };
   
-  // Allow public paths
-  if (isPublicPath(path)) {
+  // Apply all security headers
+  Object.keys(securityHeaders).forEach(key => {
+    response.headers.set(key, securityHeaders[key]);
+  });
+  
+  // Allow public paths and PWA assets
+  if (isPublicPath(path) || isPWAAsset(path)) {
     console.log('Public path detected, allowing access:', path);
     return response;
   }
@@ -109,6 +141,6 @@ export function middleware(request) {
 // Configure which paths the middleware applies to
 export const config = {
   matcher: [
-    '/((?!_next/static|_next/image|favicon.ico|.*\\.svg).*)',
+    '/((?!_next/static|_next/image|favicon.png|.*\\.svg).*)',
   ],
 } 

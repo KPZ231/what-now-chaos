@@ -124,19 +124,11 @@ export default function PremiumAdvantagesPage() {
                     </div>
                     <span>Eksport sesji jako PDF</span>
                   </li>
-                  <li className="flex items-start">
-                    <div className="bg-[var(--primary)] rounded-full p-1 mr-3 mt-1">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-white" viewBox="0 0 20 20" fill="currentColor">
-                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                      </svg>
-                    </div>
-                    <span>Tryb AI generujący unikalne zadania</span>
-                  </li>
                 </ul>
               </div>
 
-              {/* Feature Links */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-md">
+              {/* Premium Feature Links */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-xl">
                 <Link href="/play" className="card p-4 hover:bg-[var(--container-color)]/80 transition-all">
                   <div className="flex items-center">
                     <div className="bg-[var(--primary)]/20 p-3 rounded-full mr-4">
@@ -162,6 +154,48 @@ export default function PremiumAdvantagesPage() {
                     <div>
                       <h3 className="font-medium">Profil</h3>
                       <p className="text-sm text-[var(--text-gray)]">Zarządzaj kontem</p>
+                    </div>
+                  </div>
+                </Link>
+
+                <Link href="/premium-advantages/custom-tasks" className="card p-4 hover:bg-[var(--container-color)]/80 transition-all">
+                  <div className="flex items-center">
+                    <div className="bg-[var(--primary)]/20 p-3 rounded-full mr-4">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-[var(--primary)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                      </svg>
+                    </div>
+                    <div>
+                      <h3 className="font-medium">Własne Zadania</h3>
+                      <p className="text-sm text-[var(--text-gray)]">Twórz i zarządzaj zadaniami</p>
+                    </div>
+                  </div>
+                </Link>
+
+                <Link href="/premium-advantages/personalize" className="card p-4 hover:bg-[var(--container-color)]/80 transition-all">
+                  <div className="flex items-center">
+                    <div className="bg-[var(--primary)]/20 p-3 rounded-full mr-4">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-[var(--primary)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
+                      </svg>
+                    </div>
+                    <div>
+                      <h3 className="font-medium">Personalizacja</h3>
+                      <p className="text-sm text-[var(--text-gray)]">Dostosuj wygląd aplikacji</p>
+                    </div>
+                  </div>
+                </Link>
+
+                <Link href="/play?premiumPackages=true" className="card p-4 hover:bg-[var(--container-color)]/80 transition-all col-span-1 sm:col-span-2">
+                  <div className="flex items-center">
+                    <div className="bg-[var(--primary)]/20 p-3 rounded-full mr-4">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-[var(--primary)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" />
+                      </svg>
+                    </div>
+                    <div>
+                      <h3 className="font-medium">Ekskluzywne Pakiety Zadań</h3>
+                      <p className="text-sm text-[var(--text-gray)]">Dostęp do specjalnych zestawów zadań aktualizowanych co tydzień</p>
                     </div>
                   </div>
                 </Link>
