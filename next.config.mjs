@@ -8,15 +8,7 @@ const nextConfig = {
   
   // Other Next.js configuration
   reactStrictMode: true,
-  swcMinify: true,
   output: 'standalone',
-  
-  // PWA configuration
-  pwa: {
-    dest: 'public',
-    register: false, // We handle registration in service-worker-register.js
-    skipWaiting: true,
-  },
   
   // Security Headers (synchronized with middleware.js)
   async headers() {

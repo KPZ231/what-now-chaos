@@ -378,7 +378,7 @@ export default function CustomTasksPage() {
                 ) : taskSets.length === 0 ? (
                   <div className="card p-6 text-center">
                     <p className="text-[var(--text-gray)]">Nie masz jeszcze żadnych własnych zestawów zadań.</p>
-                    <p className="mt-2">Kliknij "Nowy Zestaw", aby utworzyć swój pierwszy własny zestaw zadań.</p>
+                    <p className="mt-2">Kliknij &quot;Nowy Zestaw&quot;, aby utworzyć swój pierwszy własny zestaw zadań.</p>
                   </div>
                 ) : (
                   <div className="space-y-4">

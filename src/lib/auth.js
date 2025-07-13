@@ -71,4 +71,29 @@ export function verifyToken(token) {
     }
     return null
   }
+}
+
+export async function getSession(request) {
+  try {
+    // Extract token from cookies
+    const cookies = request.cookies;
+    
+    // Check if cookies exist and have the token
+    if (!cookies) {
+      return null;
+    }
+    
+    const token = cookies.get('token')?.value;
+    
+    if (!token) {
+      return null;
+    }
+    
+    // Verify token
+    const session = verifyToken(token);
+    return session ? { user: session } : null;
+  } catch (error) {
+    console.error('Error getting session:', error);
+    return null;
+  }
 } 
