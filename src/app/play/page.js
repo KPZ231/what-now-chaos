@@ -218,7 +218,7 @@ export default function PlayPage() {
   return (
     <NavbarWrapper>
       <main className="flex min-h-screen flex-col items-center justify-between p-4 sm:p-8 pt-20 pb-24">
-        <div className="mt-[80px]"></div>
+        <div className="lg:mt-[80px] sm:mt-[0px]"></div>
         <div className="w-full max-w-5xl">
           {renderContent()}
         </div>
